@@ -9,12 +9,9 @@ import express.data.IOHelper.IOHelper;
 import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataService;
 import express.po.ReceiveDocPO;
 
-public class ReceiveDocIO extends UnicastRemoteObject implements
-       BusinessSaleReceiveDocumentDataService{
-	
+public class ReceiveDocIO extends UnicastRemoteObject implements BusinessSaleReceiveDocumentDataService{
 	ArrayList<ReceiveDocPO> receivedoclist;
 	String filepath="SerializableData/ARReceiveDoc.ser";
-	
 	public  ReceiveDocIO() throws RemoteException {
 		super();
 		receivedoclist=new ArrayList<ReceiveDocPO>();
@@ -31,7 +28,7 @@ public class ReceiveDocIO extends UnicastRemoteObject implements
 
 	@Override
 	public boolean createReceiveDoc(ReceiveDocPO po) {
-		//System.out.println("writing...receivedoc......");
+		System.out.println("writing...receivedoc......");
 		receivedoclist.add(po);
 		//writeAllDeliverDoc();//决定是否在此时写入磁盘
 		return true;
@@ -69,5 +66,5 @@ public class ReceiveDocIO extends UnicastRemoteObject implements
 		else
 			return null;
 	}
-	
+
 }

@@ -1,23 +1,22 @@
 package express.businessLogic.documentBL;
 
-import java.rmi.RemoteException;
-
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.businessSaleBLService.BusinessSaleReceiveDocumentblService;
 import express.businesslogicService.managerBLService.SysLogBLService;
+import express.dataService.documentDataService.BusinessSaleDeliverDocumentDataService;
 import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataService;
+import express.po.DeliverDocPO;
 import express.po.ReceiveDocPO;
 import express.vo.ReceiveDocVO;
 import express.rmi.RMIClient;
 
 public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
-	
 	BusinessSaleReceiveDocumentDataService rmiObj;
 	
 	public ReceiveDoc(){
 		rmiObj=RMIClient.getReceiveDocObject();
 	}
-
+	
 	public boolean addReceiveDoc(ReceiveDocVO vo){
 		String date=vo.getReceiveDate();
 		String delivermanID=vo.getDeliverManID();
@@ -88,5 +87,6 @@ public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
 			e.printStackTrace();
 		}
 	}
+	
 	
 }
