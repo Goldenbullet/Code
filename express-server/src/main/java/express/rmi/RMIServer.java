@@ -37,7 +37,7 @@ import express.data.vehicleAndDriverData.VehicleIO;
 
 public class RMIServer {
 	 private static Map<String, Class<? extends UnicastRemoteObject>> NAMING_MAP =
-	            new HashMap<>();
+	            new HashMap<String, Class<? extends UnicastRemoteObject>>();
 
 	 private static String file="config/config.txt";
 	 private static String IP; //read from config file
