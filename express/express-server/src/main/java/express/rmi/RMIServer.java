@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import express.data.bankAccountData.BankAccountIO;
+import express.data.documentData.ArrivalDocBusinessHallIO;
 import express.data.documentData.ArrivalDocTransCenterIO;
 import express.data.documentData.DeliverDocIO;
 import express.data.documentData.GoodTransStatusIO;
@@ -68,7 +69,8 @@ public class RMIServer {
 		 //NAMING_MAP.put("PredictTime-data", PredictTimeIO.class);
 		 NAMING_MAP.put("ReceiveInfo-data", ReceiveInfoIO.class);
 		 NAMING_MAP.put("TransferDoc-data", TransferDocIO.class);
-		  NAMING_MAP.put("ArrivalDoc-data", ArrivalDocTransCenterIO.class);
+		 // NAMING_MAP.put("ArrivalDoc-data", ArrivalDocTransCenterIO.class);
+		  NAMING_MAP.put("BusinessHallArrivalDoc-data", ArrivalDocBusinessHallIO.class);
 	 }
 
      public synchronized static void init() throws ServerException {

@@ -1,5 +1,7 @@
 package express.businessLogic.documentBL;
 
+import java.rmi.RemoteException;
+
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.businessSaleBLService.BusinessSaleReceiveDocumentblService;
 import express.businesslogicService.managerBLService.SysLogBLService;

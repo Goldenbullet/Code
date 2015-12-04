@@ -128,8 +128,6 @@ public class RMIClient {
 				.lookup(urlPrefix + "DeliverDoc-data");
 		// shipmentdoc=(BusinessSaleShipmentDocumentDataService)
 		// Naming.lookup(urlPrefix+"ShipmentDoc-data");
-		arrivaldoc = (BusinessSaleArrivalDocumentDataService) Naming
-				.lookup((urlPrefix) + "ArrivalDoc-data");
 		receivedoc=(BusinessSaleReceiveDocumentDataService)
 				Naming.lookup((urlPrefix)+"ReceiveDoc-data");
 		order = (DeliverCreateOrderDataService) Naming.lookup(urlPrefix

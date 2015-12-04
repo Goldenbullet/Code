@@ -21,7 +21,7 @@ import express.po.ReceiveInfoPO;
 import express.vo.GoodTransStatusVO;
 import express.vo.OrderVO;
 import express.vo.ReceiveInfoVO;
-import rmi.RMIClient;
+import express.rmi.RMIClient;
 
 public class ReceiveInfo implements ReceiveInfoBLService{
 	ReceiveInfoDataService rmiObj;
