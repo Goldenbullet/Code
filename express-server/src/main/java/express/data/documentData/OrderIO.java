@@ -12,7 +12,7 @@ import express.po.GoodTransStatusPO;
 import express.po.OrderPO;
 
 public class OrderIO extends UnicastRemoteObject implements DeliverCreateOrderDataService{
-	private long orderID=0;//需要序列化
+	private long orderID=0L;//需要序列化
 	ArrayList<OrderPO> orderlist;
 	String orderfilepath="SerializableData/AROrder.ser";
 	String nextIDfilepath="SerializableData/NextID.ser";
@@ -25,7 +25,7 @@ public class OrderIO extends UnicastRemoteObject implements DeliverCreateOrderDa
 		IOHelper io2=new IOHelper();
 		try{
 			orderlist=(ArrayList<OrderPO>) io.readFromDisk(orderfilepath);
-			orderID=(long) io2.readFromDisk(nextIDfilepath);
+			orderID=Long.valueOf(String.valueOf(io2.readFromDisk(nextIDfilepath))).longValue();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
