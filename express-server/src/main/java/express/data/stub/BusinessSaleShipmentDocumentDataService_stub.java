@@ -1,5 +1,6 @@
 package express.data.stub;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import express.dataService.documentDataService.BusinessSaleShipmentDocumentDataService;
@@ -7,41 +8,30 @@ import express.po.ShipmentDocPO;
 
 
 public class BusinessSaleShipmentDocumentDataService_stub implements BusinessSaleShipmentDocumentDataService {
-	private String date;
-	private String transcenterNumber;
-	private String arrival;
-	private String vin;
-	private String checkMan;
-	private String transMan;
-	private String shipmentID;
-	private ArrayList<String> orderID;
-	private double money;
-	
-	
-	public BusinessSaleShipmentDocumentDataService_stub(String d,String transnumber,String ar,String v,String che,
-			String transman,String shipmentID,ArrayList<String> orderID,double m){
-		this.date=d;
-		this.transcenterNumber=transnumber;
-		this.arrival=ar;
-		this.vin=v;
-		this.checkMan=che;
-		this.transMan=transman;
-		this.shipmentID=shipmentID;
-		this.money=m;
+
+	@Override
+	public boolean createShipmentDoc(ShipmentDocPO po) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	public boolean createShipmentDoc(ShipmentDocPO po){
-		if (po.getcheckMan()=="Lu Hailong"){
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	public ShipmentDocPO getShipmentDoc(String OrderID){
-		System.out.println("we have found an ShipmentDoc");
+
+	@Override
+	public ShipmentDocPO getShipmentDoc(String OrderID) throws RemoteException {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public boolean writeAllShipmentDoc() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<ShipmentDocPO> getShipmentDoclist() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

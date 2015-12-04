@@ -2,6 +2,7 @@ package express.data.stub;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+
 import express.dataService.statisticsDataService.OperateFormDataService;
 import express.dataService.statisticsDataService.ProfitFormDataService;
 import express.po.OperateFormPO;
@@ -10,47 +11,49 @@ import express.po.PaymentItemPO;
 import express.po.ProfitFormPO;
 
 public class StatisticsDataService_stub implements ProfitFormDataService,OperateFormDataService{
-//需要类之间调用，需要得到收款单和付款单
-	ArrayList<OrderPO> order;
-	ArrayList<PaymentItemPO> payment;
-	ArrayList<ProfitFormPO> profitForm;
-	ArrayList<OperateFormPO> operateForm;
-	
-	public StatisticsDataService_stub(ArrayList<OrderPO> order,
-			ArrayList<PaymentItemPO> payment,ArrayList<ProfitFormPO> profitForm,
-			ArrayList<OperateFormPO> operateForm){
-		this.order=order;
-		this.payment=payment;
-		this.profitForm=profitForm;
-		this.operateForm=operateForm;
+
+	@Override
+	public boolean createOperateForm(OperateFormPO operateForm)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public boolean createProfitForm(ProfitFormPO profitForm){
-		return true;
+
+	@Override
+	public ArrayList<String> getOperateFormListTitle() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public boolean createOperateForm(OperateFormPO operateForm){
-		return true;
+
+	@Override
+	public OperateFormPO getOperateForm(int index) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public ArrayList<ProfitFormPO> getProfitFormList(){
-		System.out.println("get profit form list");
-		return profitForm;
+
+	@Override
+	public boolean writeAllOperateForm() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public ArrayList<OperateFormPO> getOperateFormList(){
-		System.out.println("get operate form list");
-		return operateForm;
+
+	@Override
+	public boolean createProfitForm(ProfitFormPO profitForm)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public ProfitFormPO getProfitForm(int index){
-		System.out.println("get profit form");
-		return profitForm.get(index);
+
+	@Override
+	public ArrayList<String> getProfitFormListTitle() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public OperateFormPO getOperateForm(int index){
-		System.out.println("get operate form");
-		return operateForm.get(index);
+
+	@Override
+	public ProfitFormPO getProfitForm(String date) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -59,9 +62,4 @@ public class StatisticsDataService_stub implements ProfitFormDataService,Operate
 		return false;
 	}
 
-	@Override
-	public boolean writeAllOperateForm() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

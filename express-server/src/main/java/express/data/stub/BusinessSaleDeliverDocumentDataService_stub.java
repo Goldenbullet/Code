@@ -1,33 +1,34 @@
 package express.data.stub;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import express.dataService.documentDataService.BusinessSaleDeliverDocumentDataService;
 import express.po.DeliverDocPO;
 
 public class BusinessSaleDeliverDocumentDataService_stub implements BusinessSaleDeliverDocumentDataService {
-	private String arriveDate;
-	private String orderID;
-	private String deliverManID;//快递员工号
-	
-	
-	
-	//consturctor
-	public BusinessSaleDeliverDocumentDataService_stub(String arriveDate,String orderID,String deliverManID){
-		this.arriveDate=arriveDate;	
-		this.orderID=orderID;
-		this.deliverManID=deliverManID;
-		
+
+	@Override
+	public boolean createDeliverDoc(DeliverDocPO po) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public boolean createDeliverDoc(DeliverDocPO po){
-		if (po.getDeliverManID()=="Lu Hailong"){
-			return true;
-		}
-		else {
-			return false;
-		}
+
+	@Override
+	public DeliverDocPO getDeliverDoc(String OrderID) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	public DeliverDocPO getDeliverDoc(String OrderID){
-		System.out.println("we have found an DeliverDoc");
+
+	@Override
+	public boolean writeAllDeliverDoc() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<DeliverDocPO> getDeliverDoclist() throws RemoteException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

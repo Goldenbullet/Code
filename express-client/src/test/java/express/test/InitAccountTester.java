@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import express.businessLogic.documentBL.MockInDoc;
-
 public class InitAccountTester {
 
 	@Test

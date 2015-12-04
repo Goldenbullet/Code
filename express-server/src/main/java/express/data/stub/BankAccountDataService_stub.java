@@ -7,44 +7,57 @@ import express.dataService.bankAccountDataService.BankAccountDataService;
 import express.po.BankAccountPO;
 
 public class BankAccountDataService_stub implements BankAccountDataService{
-	BankAccountPO bankAccount;
-	
-	
-	public boolean createBankAccount(BankAccountPO bankAccount){
-		return true;
-	}
-	
-	public boolean deleteBankAccount(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean changeBankAccount(BankAccountPO bankAccount){
-		return true;
-	}
-	public ArrayList<BankAccountPO> getAllBankAccount() {
+
+	@Override
+	public ArrayList<BankAccountPO> getAllBankAccount() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public ArrayList<BankAccountPO> getBankAccount(String name) {
+
+	@Override
+	public ArrayList<BankAccountPO> getBankAccount(String name)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public boolean changeBankAccount(BankAccountPO bankAccount, int index) {
+
+	@Override
+	public ArrayList<String> getBankAccountName() throws RemoteException {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
+	@Override
+	public BankAccountPO getBankAccountByName(String name)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public boolean writeAllBankAccount() {
+	@Override
+	public boolean createBankAccount(BankAccountPO bankAccount)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean changeBankAccount(BankAccountPO bankAccount, String id)
+	public boolean deleteBankAccount(String name) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean changeBankAccount(BankAccountPO bankAccount, String name)
 			throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean writeAllBankAccount() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }

@@ -1,5 +1,6 @@
 package express.data.stub;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataService;
@@ -7,27 +8,29 @@ import express.po.ReceiveDocPO;
 
 
 public class BusinessSaleReceiveDocumentDataService_stub implements BusinessSaleReceiveDocumentDataService {
-	private String receiveDate;
-	private double receivePrice;
-	private String deliverManID;
-	private ArrayList<String> allOrderIDs;
-	
-	public BusinessSaleReceiveDocumentDataService_stub(String receiveDate,double receivePrice,String deliverManID,ArrayList<String> allOrderIDs){
-		this.receiveDate=receiveDate;
-		this.receivePrice=receivePrice;
-		this.deliverManID=deliverManID;
-		this.allOrderIDs=allOrderIDs;
+
+	@Override
+	public boolean createReceiveDoc(ReceiveDocPO po) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	public boolean createReceiveDoc(ReceiveDocPO po){
-		if (po.getDeliverManID()=="Lu Hailong"){
-			return true;
-		}
-		else {
-			return false;
-		}
+
+	@Override
+	public ReceiveDocPO getReceiveDoc(String date, String delivermanID)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	public ReceiveDocPO getReceiveDoc(String date){
-		System.out.println("we have found an ReceiveDoc");
+
+	@Override
+	public boolean writeAllReceiveDoc() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<ReceiveDocPO> getReceiveDoclist() throws RemoteException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
