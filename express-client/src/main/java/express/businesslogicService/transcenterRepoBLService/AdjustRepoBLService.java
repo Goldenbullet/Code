@@ -8,9 +8,9 @@ public interface AdjustRepoBLService {
 	
 	public boolean setRepoBlock(RepoPositionVO position);
 	
-	public boolean alarm();
+	public boolean alarm(RepoPositionVO position);
 	
-	public void adjustRepo(RepoPositionVO oldPosition,RepoPositionVO newPosition);
+	public boolean adjustRepo(RepoPositionVO oldPosition,RepoPositionVO newPosition);
 	
 	public void endRepoManage();
 }

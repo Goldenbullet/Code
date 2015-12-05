@@ -2,7 +2,7 @@ package express.po;
 
 import java.io.Serializable;
 
-public class PaymentItemPO implements Serializable{
+public class PaymentItem implements Serializable{
 	private String name;
 	private String date;
 	private String account;
@@ -10,7 +10,7 @@ public class PaymentItemPO implements Serializable{
 	private String comment;
 	private double sum;
 	
-	public PaymentItemPO(String name,String date,String account,
+	public PaymentItem(String name,String date,String account,
 			String entry,String comment,double sum){
 		this.name=name;
 		this.date=date;
@@ -20,7 +20,7 @@ public class PaymentItemPO implements Serializable{
 		this.sum=sum;
 	}
 	
-	public PaymentItemPO(){
+	public PaymentItem(){
 		this.name=null;
 		this.date=null;
 		this.account=null;

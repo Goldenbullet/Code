@@ -7,7 +7,7 @@ import express.dataService.statisticsDataService.OperateFormDataService;
 import express.dataService.statisticsDataService.ProfitFormDataService;
 import express.po.OperateFormPO;
 import express.po.OrderPO;
-import express.po.PaymentItemPO;
+import express.po.PaymentItem;
 import express.po.ProfitFormPO;
 
 public class StatisticsDataService_stub implements ProfitFormDataService,OperateFormDataService{

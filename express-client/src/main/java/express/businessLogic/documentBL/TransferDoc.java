@@ -1,5 +1,6 @@
 package express.businessLogic.documentBL;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import express.businessLogic.infoManageBL.DistanceManager;
@@ -135,5 +136,16 @@ public class TransferDoc implements TransCenterTransferDocblService{
 			return -1;
 		}
 	}
+	
+	public ArrayList<TransferDocPO>  getAllTransferDoc(){
+		try {
+			ArrayList<TransferDocPO> transferdoclist=rmiObj.getTransferDoclist();
+			return transferdoclist;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	
 }

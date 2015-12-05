@@ -1,5 +1,6 @@
 package express.businessLogic.documentBL;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import express.businessLogic.syslogBL.SysLog;
@@ -7,6 +8,7 @@ import express.businesslogicService.managerBLService.SysLogBLService;
 import express.businesslogicService.transcenterSaleBLService.TransCenterSaleShipmentDocblService;
 import express.dataService.documentDataService.TransCenterShipmentDocDataService;
 import express.po.DeliverDocPO;
+import express.po.ShipmentDocBusinessHallPO;
 import express.po.ShipmentDocTransCenterPO;
 import express.vo.ShipmentDocTransCenterVO;
 import express.rmi.RMIClient;
@@ -74,7 +76,7 @@ public class ShipmentDocTransCenter {   //不用implements
 	
 	
 	
-	public void  endDeliverDoc(){
+	public void  endShipmentDoc(){
 		SysLogBLService syslog=new SysLog();
 		syslog.addSysLog("生成中转中心装车单");
 		try{
@@ -89,5 +91,16 @@ public class ShipmentDocTransCenter {   //不用implements
 		CheckOrder checker=new CheckOrder();
 		return checker.isOrderIDAvailable(id);
 	}
+	
+	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDoc(){
+		try {
+			ArrayList<ShipmentDocTransCenterPO> shipmentdoclist=rmiObj.getShipmentDoclist();
+			return shipmentdoclist;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	
 }

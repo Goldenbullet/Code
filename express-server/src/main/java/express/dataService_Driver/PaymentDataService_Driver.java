@@ -3,7 +3,7 @@ package express.dataService_Driver;
 import java.rmi.RemoteException;
 
 import express.dataService.documentDataService.PaymentDocDataService;
-import express.po.PaymentItemPO;
+import express.po.PaymentItem;
 
 public class PaymentDataService_Driver {
 

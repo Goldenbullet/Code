@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import express.dataService.documentDataService.PaymentDocDataService;
 import express.po.PaymentDocPO;
-import express.po.PaymentItemPO;
+import express.po.PaymentItem;
 
 public class PaymentDataService_stub implements PaymentDocDataService{
 

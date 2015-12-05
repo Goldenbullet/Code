@@ -2,11 +2,13 @@ package express.businessLogic.repoBL;
 
 import java.util.ArrayList;
 
+import express.businessLogic.syslogBL.SysLog;
 import express.vo.InDocVO;
 
 public class InventoryRepo {
 	
 	public ArrayList<InDocVO> inventoryRepo() {
+		
 		return null;
 	}
 	
@@ -15,7 +17,8 @@ public class InventoryRepo {
 	}
 	
 	public void endRepoInventory() {
-		
+		SysLog log=new SysLog();
+		log.addSysLog("库存盘点");
 	}
 
 }

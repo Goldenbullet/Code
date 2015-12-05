@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import express.businessLogic.IDKeeper;
 import express.businessLogic.infoManageBL.Admin;
+import express.businessLogic.infoManageBL.OrgForManager;
 import express.businessLogic.infoManageBL.StaffForManager;
+import express.businesslogicService.managerBLService.OrgManageBLService;
 import express.businesslogicService.managerBLService.StaffManageBLService;
 import express.businesslogicService.signBLService.LogInBLService;
 import express.dataService.userDataService.AdminUserDataService;
@@ -15,6 +17,7 @@ import express.po.UserInfoAdminPO;
 import express.po.UserInfoPO;
 import express.po.UserPO;
 import express.rmi.RMIClient;
+import express.vo.OrganizationVO;
 import express.vo.SignInVO;
 import express.vo.UserInfoAdminVO;
 import express.vo.UserInfoSignVO;
@@ -32,6 +35,8 @@ public class User implements LogInBLService{
 		
 		AdminUserDataService adminUser=RMIClient.getUserAdminObject();
 		StaffManageBLService staffManager=new StaffForManager();
+		OrgManageBLService orgManager=new OrgForManager();
+		
 		try {
 			ArrayList<UserInfoAdminPO> userList=adminUser.getAllUserAdmin();
 			if(userList!=null){
@@ -52,6 +57,10 @@ public class User implements LogInBLService{
 							UserInfoVO userInfo=staffManager.getUser(id);
 							String orgID=userInfo.getCity();
 							IDKeeper.setOrgID(orgID);
+							
+							OrganizationVO org=orgManager.getOrgInfo(orgID);
+							String city=org.getCity();
+							IDKeeper.setCity(city);
 							//保存id
 							return SignInVO.PERMIT;
 						}

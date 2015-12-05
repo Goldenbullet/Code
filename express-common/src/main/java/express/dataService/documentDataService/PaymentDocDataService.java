@@ -10,7 +10,7 @@ public interface PaymentDocDataService extends Remote{
 
 	public boolean createPaymentDoc(PaymentDocPO payment) throws RemoteException;
 	
-	public boolean changePaymentDoc(PaymentDocPO payment,int index) throws RemoteException;
+	public boolean changePaymentDoc(PaymentDocPO payment,String id) throws RemoteException;
 	
 	public PaymentDocPO getPaymentDoc(String id) throws RemoteException;
 	

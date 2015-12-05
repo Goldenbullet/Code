@@ -1,15 +1,24 @@
 package express.businesslogicService.financialBLService;
 
+import java.util.ArrayList;
+
+import express.po.PaymentDocPO;
 import express.vo.DateAvailableVO;
 import express.vo.PaymentDocVO;
 
 public interface PaymentBLService {
 
-	public boolean addPaymentDoc(PaymentDocVO payment);
+	public PaymentDocVO createPaymentDoc();
+	
+	public boolean addPaymentDoc(PaymentDocVO vo);
 	
 	public PaymentDocVO getPaymentDoc(String id);
 	
-	public DateAvailableVO checkDateAvailable(String date);
+	public boolean changePaymentDoc(PaymentDocVO vo,String id);
+	
+	public boolean checkDateAvailable(String date);
+	
+	public ArrayList<PaymentDocVO> getUnexamedPaymentDoc();
 	
 	public void endPaymentDoc();
 }

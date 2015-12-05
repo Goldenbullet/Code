@@ -1,5 +1,6 @@
 package express.businessLogic.documentBL;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -135,6 +136,15 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 		}
 	}
 	
-	
+	public ArrayList<ShipmentDocBusinessHallPO>  getAllShipmentDoc(){
+		try {
+			ArrayList<ShipmentDocBusinessHallPO> shipmentdoclist=rmiObj.getShipmentDoclist();
+			return shipmentdoclist;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 }

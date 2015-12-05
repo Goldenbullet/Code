@@ -1,15 +1,17 @@
 package express.vo;
 
+import express.po.Area;
+
 public class RepoPositionVO {
 
 	private String orderID;
-	private String block;
+	private Area block;
 	private int row;
 	private int shelf;
 	private int position;
 	private boolean isUsed;
 	
-	public RepoPositionVO(String id,String b,int r,int s,int p,boolean isUsed){
+	public RepoPositionVO(String id,Area b,int r,int s,int p,boolean isUsed){
 		this.orderID=id;
 		this.block=b;
 		this.row=r;
@@ -31,7 +33,7 @@ public class RepoPositionVO {
 		return orderID;
 	}
 	
-	public String getblock(){
+	public Area getblock(){
 		return block;
 	}
 	
@@ -59,7 +61,7 @@ public class RepoPositionVO {
 		orderID = id;
 	}
 	
-	public void setblock(String b){
+	public void setblock(Area b){
 		block = b;
 	}
 	

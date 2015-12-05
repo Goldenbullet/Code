@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class RepoPosition implements Serializable{
 	private String orderID;
-	private String block;
+	private Area block;
 	private int row;
 	private int shelf;
 	private int position;
 	private boolean isUsed;
 	
-	public RepoPosition(String id,String b,int r,int s,int p,boolean isUsed){
+	public RepoPosition(String id,Area b,int r,int s,int p,boolean isUsed){
 		this.orderID=id;
 		this.block=b;
 		this.row=r;
@@ -32,7 +32,7 @@ public class RepoPosition implements Serializable{
 		return orderID;
 	}
 	
-	public String getblock(){
+	public Area getblock(){
 		return block;
 	}
 	
@@ -60,7 +60,7 @@ public class RepoPosition implements Serializable{
 		orderID = id;
 	}
 	
-	public void setblock(String b){
+	public void setblock(Area b){
 		block = b;
 	}
 	

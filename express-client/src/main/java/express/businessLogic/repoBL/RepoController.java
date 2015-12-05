@@ -13,9 +13,13 @@ public class RepoController implements AdjustRepoBLService,
 		InventoryRepoBLService, ScanRepoBLService {
 	
 	ViewRepo view;
+	InventoryRepo inventry;
+	AdjustRepo adjust;
 	
 	public RepoController(){
 		view=new ViewRepo();
+		inventry=new InventoryRepo();
+		adjust=new AdjustRepo();
 	}
 
 	public RepoCacheVO getRepoInfo(String city, String startDate, String endDate) {
@@ -31,43 +35,37 @@ public class RepoController implements AdjustRepoBLService,
 	}
 
 	public ArrayList<InDocVO> inventoryRepo() {
-		// TODO Auto-generated method stub
-		return null;
+		return inventry.inventoryRepo();
 	}
 
 	public boolean exportExcel(ArrayList<InDocVO> repoCache) {
-		// TODO Auto-generated method stub
-		return false;
+		return inventry.exportExcel(repoCache);
 	}
 
 	public void endRepoInventory() {
-		// TODO Auto-generated method stub
+		inventry.endRepoInventory();
 		
 	}
 
 	public boolean checkRepoBlockUsed(RepoPositionVO position) {
-		// TODO Auto-generated method stub
-		return false;
+		return adjust.checkRepoBlockUsed(position);
 	}
 
 	public boolean setRepoBlock(RepoPositionVO position) {
-		// TODO Auto-generated method stub
-		return false;
+		return adjust.setRepoBlock(position);
 	}
 
-	public boolean alarm() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean alarm(RepoPositionVO position) {
+		return adjust.alarm(position);
 	}
 
-	public void adjustRepo(RepoPositionVO oldPosition,
+	public boolean adjustRepo(RepoPositionVO oldPosition,
 			RepoPositionVO newPosition) {
-		// TODO Auto-generated method stub
-		
+		return adjust.adjustRepo(oldPosition, newPosition);
 	}
 
 	public void endRepoManage() {
-		// TODO Auto-generated method stub
+		adjust.endRepoManage();
 		
 	}
 

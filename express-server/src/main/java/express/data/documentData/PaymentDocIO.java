@@ -42,13 +42,18 @@ public class PaymentDocIO extends UnicastRemoteObject implements PaymentDocDataS
 	}
 
 	@Override
-	public boolean changePaymentDoc(PaymentDocPO payment,int index) throws RemoteException {
-		if(index>=0&&index<paymentList.size()){
-			paymentList.set(index, payment);
-			return true;
+	public boolean changePaymentDoc(PaymentDocPO payment,String id) throws RemoteException {
+		if(paymentList.size()>0){
+			int index=0;
+			for(PaymentDocPO po:paymentList){
+				if(po.getPaymentID().equals(id)){
+					paymentList.set(index, po);
+					return true;
+				}
+				index++;
+			}
 		}
-		else
-			return false;
+		return false;
 	}
 
 	@Override

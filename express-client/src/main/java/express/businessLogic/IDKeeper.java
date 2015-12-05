@@ -4,6 +4,7 @@ public class IDKeeper {
 
 	private static String id;
 	private static String orgID;
+	private static String city;
 	
 	public IDKeeper(){
 		id=null;
@@ -24,5 +25,13 @@ public class IDKeeper {
 	
 	public static void setOrgID(String org){
 		orgID=org;
+	}
+	
+	public static String getCity(){
+		return city;
+	}
+	
+	public static void setCity(String c){
+		city=c;
 	}
 }
