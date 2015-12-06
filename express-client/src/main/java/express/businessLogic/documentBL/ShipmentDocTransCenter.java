@@ -2,7 +2,10 @@ package express.businessLogic.documentBL;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import express.businessLogic.IDKeeper;
+import express.businessLogic.infoManageBL.DistanceManager;
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.managerBLService.SysLogBLService;
 import express.businesslogicService.transcenterSaleBLService.TransCenterSaleShipmentDocblService;
@@ -10,6 +13,8 @@ import express.dataService.documentDataService.TransCenterShipmentDocDataService
 import express.po.DeliverDocPO;
 import express.po.ShipmentDocBusinessHallPO;
 import express.po.ShipmentDocTransCenterPO;
+import express.vo.OrderVO;
+import express.vo.ShipmentDocBusinessHallVO;
 import express.vo.ShipmentDocTransCenterVO;
 import express.rmi.RMIClient;
 
@@ -21,10 +26,10 @@ public class ShipmentDocTransCenter {   //不用implements
 	}
 	
 	public boolean addShipmentDoc(ShipmentDocTransCenterVO vo){
-		ShipmentDocTransCenterPO po=new ShipmentDocTransCenterPO(vo.getdate(), vo.gettranscenterNumber(),vo.getarrival(), vo.getvin(),
-											vo.getcheckMan(), vo.gettransMan(), vo.getshipmentID(), vo.getOrderID(), vo.getmoney());
+		ShipmentDocTransCenterPO po=new ShipmentDocTransCenterPO(vo.getDate(), vo.getTransId(), vo.getArrivalPlace(), vo.getVanID(), vo.getCheckMan(), 
+				vo.getTransMan(), vo.getAllOrder(), vo.getMoney(), vo.getShipmentID(), vo.getStartPlace());
 		
-		ArrayList<String> idlist=vo.getOrderID();
+		ArrayList<String> idlist=vo.getAllOrder();
 		for(String id:idlist){
 			if(!isOrderIDavailable(id))
 				return false;
@@ -46,8 +51,8 @@ public class ShipmentDocTransCenter {   //不用implements
 		
 			try{
 				ShipmentDocTransCenterPO po=rmiObj.getShipmentDoc(shipmentID);
-				ShipmentDocTransCenterVO vo=new ShipmentDocTransCenterVO(po.getdate(), po.gettranscenterNumber(),po.getarrival(), po.getvin(),
-						po.getcheckMan(), po.gettransMan(), po.getshipmentID(), po.getOrderID(), po.getmoney());
+				ShipmentDocTransCenterVO vo=new ShipmentDocTransCenterVO(po.getDate(), po.getTransId(), po.getArrivalPlace(), po.getVanID(), po.getCheckMan(), 
+						po.getTransMan(), po.getAllOrder(), po.getMoney(), po.getShipmentID(), po.getStartPlace());
 				return vo;
 			}catch(Exception e){
 				e.printStackTrace();
@@ -92,15 +97,73 @@ public class ShipmentDocTransCenter {   //不用implements
 		return checker.isOrderIDAvailable(id);
 	}
 	
-	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDoc(){
+	public ArrayList<ShipmentDocTransCenterVO>  getAllShipmentDoc(){
 		try {
 			ArrayList<ShipmentDocTransCenterPO> shipmentdoclist=rmiObj.getShipmentDoclist();
-			return shipmentdoclist;
+			ArrayList<ShipmentDocTransCenterVO> volist=new ArrayList<ShipmentDocTransCenterVO>();
+			
+			for(ShipmentDocTransCenterPO po :shipmentdoclist){
+				ShipmentDocTransCenterVO vo=new ShipmentDocTransCenterVO(po.getDate(), po.getTransId(), po.getArrivalPlace(), po.getVanID(), po.getCheckMan(), 
+						po.getTransMan(), po.getAllOrder(), po.getMoney(), po.getShipmentID(), po.getStartPlace());
+				volist.add(vo);
+			}
+
+			
+			return volist;
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
+	
+	public String getShipmentDocID(){
+		String ID="";
+		String orgID=IDKeeper.getOrgID();
+		Calendar c = Calendar.getInstance();
+		int year=c.get(Calendar.YEAR);
+		int month=c.get(Calendar.MONTH+1)+1;
+		int day=c.get(Calendar.DATE);
+		
+		ID+=orgID+year+month+day;
+		long a=System.currentTimeMillis();
+		String x="";
+		x+=a;
+		int l=x.length();
+		x=x.substring(l-7, l);
+		ID+=x;
+		return ID;
+		
+	}
+	
+	
+	public double getShipmentfee(ShipmentDocTransCenterVO vo) {
+		DistanceManager disman=new DistanceManager();
+		double distance=disman.getTwoCityDistance(vo.getArrivalPlace(), vo.getStartPlace());
+		//计算本次装车总重量
+		ArrayList<String> orderlist=vo.getAllOrder();
+		OrderController orderctr=new OrderController();
+		double totalWeight=0;
+		double totalfee=0;
+		
+		
+		try{
+			for(String id:orderlist){
+				OrderVO orderinstance=orderctr.getOrder(id);				
+				totalWeight+=orderinstance.getWeight();
+			}
+			
+			totalWeight=totalWeight/1000;
+			totalfee=2*distance*totalWeight;//汽车每公里每吨2¥
+			return totalfee;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	
+	
 	
 	
 }

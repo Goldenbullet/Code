@@ -11,7 +11,7 @@ public class ShipmentDocController implements TransCenterSaleShipmentDocblServic
 	ShipmentDocCheck shipmentdocchecker= new ShipmentDocCheck();
 	
 			public boolean addShipmentDoc(ShipmentDocTransCenterVO vo){
-					if(isTransIDavailable(vo.gettranscenterNumber())){
+					if(isTransIDavailable(vo.getTransId())){
 						return shipmentdoc.addShipmentDoc(vo);
 						
 					}
@@ -38,7 +38,21 @@ public class ShipmentDocController implements TransCenterSaleShipmentDocblServic
 
 
 			@Override
-			public ArrayList<ShipmentDocTransCenterPO> getAllShipmentDoc() {
+			public ArrayList<ShipmentDocTransCenterVO> getAllShipmentDoc() {
 				return shipmentdoc.getAllShipmentDoc();
+			}
+
+
+
+			@Override
+			public String getShipmentDocID() {
+				return shipmentdoc.getShipmentDocID();
+			}
+
+
+
+			@Override
+			public double getShipmentfee(ShipmentDocTransCenterVO vo) {
+				return shipmentdoc.getShipmentfee(vo);
 			}
 }

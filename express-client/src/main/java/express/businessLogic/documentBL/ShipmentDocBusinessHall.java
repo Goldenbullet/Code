@@ -4,11 +4,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.sun.media.jfxmedia.events.NewFrameEvent;
 
 import express.businessLogic.IDKeeper;
 import express.businessLogic.infoManageBL.DistanceManager;
-import express.businessLogic.searchBL.Search;
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.businessSaleBLService.BusinessSaleShipmentDocumentblService;
 import express.businesslogicService.managerBLService.SysLogBLService;
@@ -136,6 +134,7 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 		}
 	}
 	
+	
 	public ArrayList<ShipmentDocBusinessHallPO>  getAllShipmentDoc(){
 		try {
 			ArrayList<ShipmentDocBusinessHallPO> shipmentdoclist=rmiObj.getShipmentDoclist();
@@ -145,6 +144,26 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 			return null;
 		}
 	}
-
-
+	
+	public String getShipmentDocID(){
+		String ID="";
+		String orgID=IDKeeper.getOrgID();
+		Calendar c = Calendar.getInstance();
+		int year=c.get(Calendar.YEAR);
+		int month=c.get(Calendar.MONTH+1)+1;
+		int day=c.get(Calendar.DATE);
+		
+		ID+=orgID+year+month+day;
+		long a=System.currentTimeMillis();
+		String x="";
+		x+=a;
+		int l=x.length();
+		x=x.substring(l-5, l);
+		ID+=x;
+		return ID;
+		
+	}
+	
+	
+	
 }

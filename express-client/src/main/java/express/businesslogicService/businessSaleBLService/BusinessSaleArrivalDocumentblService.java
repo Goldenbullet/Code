@@ -9,6 +9,7 @@ public interface BusinessSaleArrivalDocumentblService {
 	public ArrivalDocBusinessHallVO getArrivalDoc(String OrderID);
 	public void endArrivalDoc();
 	public String getTransferDocID(String orderID);
+	public String getDeparture(String orderID) ;
 	
 	
 }

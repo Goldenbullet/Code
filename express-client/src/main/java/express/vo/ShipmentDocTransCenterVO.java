@@ -2,103 +2,78 @@ package express.vo;
 
 import java.util.ArrayList;
 
-public class ShipmentDocTransCenterVO {
+
+public class ShipmentDocTransCenterVO{
 	private String date;
-	private String transcenterNumber;
-	private String arrival;
-	private String vin;
+	private String transID;//汽运编号 中转中心编号+日期+0000000七位数字
+	private String arrivalplace; //到达地（本地中转中心或者其它营业厅）
+	private String vanID;
 	private String checkMan;
 	private String transMan;
-	private String shipmentID;
 	private ArrayList<String> orderID;
 	private double money;
+	private String shipmentID;
+	private String startPlace;
 	
-	
-	public ShipmentDocTransCenterVO(String d,String transnumber,String ar,String v,String che,
-			String transman,String shipmentID,ArrayList<String> orderID,double m){
-		this.date=d;
-		this.transcenterNumber=transnumber;
-		this.arrival=ar;
-		this.vin=v;
-		this.checkMan=che;
+	public ShipmentDocTransCenterVO(String date,String transID,
+			String arrivalplace,String vanID,String checkman,String transman,
+			ArrayList<String> order ,double money,String shipment,String startPlace){
+		this.date=date;
+		this.transID=transID;
+		this.arrivalplace=arrivalplace;
+		this.vanID=vanID;
+		this.checkMan=checkman;
 		this.transMan=transman;
-		this.orderID=orderID;
-		this.shipmentID=shipmentID;
-		this.money=m;
+		this.orderID=order;
+		this.money=money;
+		this.shipmentID=shipment;
+		this.startPlace=startPlace;
 	}
 	
-	public String getdate(){
+	public String getStartPlace(){
+		return startPlace;
+	}
+	
+	
+	public String getDate(){
 		return date;
 	}
-	public void setdate(String date){
-		this.date=date;
+	public String getTransId(){
+		return transID;
 	}
 	
-	public String gettranscenterNumber(){
-		return transcenterNumber;
+	
+	public String getArrivalPlace(){
+		return arrivalplace;
 	}
 	
-	public void settranscenterNumber(String transcenterNumber){
-		this.transcenterNumber=transcenterNumber;
+	public String getVanID(){
+		return vanID;
 	}
 	
-	public  String getarrival(){
-		return arrival;
-	}
-	
-	public  void setarrival(String arrival){
-		this.arrival=arrival;
-	}
-	
-	public  String getvin(){
-		return vin;
-	}
-	
-	public  void setvin(String vin){
-		this.vin=vin;
-	}
-	
-	public String getcheckMan(){
+	public String getCheckMan(){
 		return checkMan;
 	}
 	
-	public void setcheckMan(String checkMan){
-		this.checkMan=checkMan;
-	}
-	
-	public String gettransMan(){
+	public String getTransMan(){
 		return transMan;
 	}
 	
-	public void settransMan(String transMan){
-		this.transMan=transMan;
+	public ArrayList<String> getAllOrder(){
+		return orderID;
 	}
 	
-	public String getshipmentID(){
-		return shipmentID;
-	}
-	public void setshipmentID(String shipmentid){
-		this.shipmentID=shipmentid;
-	}
-	
-	public double getmoney(){
+	public double getMoney(){
 		return money;
 	}
 	
-	public void  setmoney(double money){
+	
+	public String getShipmentID(){
+		return shipmentID;
+	}
+	//set methods
+	public void setMoney(double money){
 		this.money=money;
 	}
-	
-	public ArrayList<String> getOrderID(){
-		return  orderID;
-	}
-	
-	public void setOrderID(ArrayList<String> order){
-		orderID=order;
-	}
-	
-	
-	
-	
-	
+
 }
