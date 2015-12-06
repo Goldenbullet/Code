@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class TransferDocPO extends DocumentPO implements Serializable {
 	private String date;
-	private String transNumber;//
+	private String transDocID;//
 	private String flightNumber;
 	private String begin;
 	private String arrival;
@@ -18,7 +18,7 @@ public class TransferDocPO extends DocumentPO implements Serializable {
 	public TransferDocPO(String d, String transnumber, String f, String b, String ar, String c, String che, double m,
 			TransWay transway, ArrayList<String> orderlist) {
 		this.date = d;
-		this.transNumber = transnumber;
+		this.transDocID = transnumber;
 		this.flightNumber = f;
 		this.begin = b;
 		this.arrival = ar;
@@ -45,12 +45,12 @@ public class TransferDocPO extends DocumentPO implements Serializable {
 		this.date = date;
 	}
 
-	public String gettranscenterNumber() {
-		return transNumber;
+	public String getTransDocID() {
+		return transDocID;
 	}
 
 	public void settranscenterNumber(String transcenterNumber) {
-		this.transNumber = transcenterNumber;
+		this.transDocID = transcenterNumber;
 	}
 
 	public String getflightNumber() {

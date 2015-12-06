@@ -21,9 +21,9 @@ public class BankAccountIO extends UnicastRemoteObject implements BankAccountDat
 		try{
 			bankAccountList=(ArrayList<BankAccountPO>)io.readFromDisk(filename);
 		}catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		}catch(IOException e){
-			
+			e.printStackTrace();
 		}
 	}
 	

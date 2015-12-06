@@ -77,6 +77,16 @@ public class OrgForManager implements OrgManageBLService,OrgInfoManageService{
 		}
 		return null;
 	}
+	
+	public ArrayList<String> getOrgIDByProperty(OrgProperty property){
+		try {
+			return org.getAllOrgIDByProperty(property);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public OrganizationVO getOrgInfo(String orgID) {
 		try {

@@ -4,5 +4,7 @@ import express.vo.ProfitFormVO;
 
 public interface ProfitFinanceBLService extends ProfitManagerBLService {
 	
-	public ProfitFormVO addProfitForm();
+	public boolean addProfitForm(ProfitFormVO vo);
+	
+	public ProfitFormVO createProfitForm();
 }

@@ -9,4 +9,6 @@ public interface ProfitManagerBLService {
 	public ArrayList<String> getProfitFormListTitle() ;
 	
 	public ProfitFormVO getProfitForm(String date);
+	
+	public boolean exportExcel(ProfitFormVO profit);
 }

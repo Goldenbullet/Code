@@ -77,6 +77,8 @@ public class ShipmentDocBusinessHallVO {
 		return shipmentID;
 	}
 	//set methods
-	
+	public void setMoney(double money){
+		this.money=money;
+	}
 
 }

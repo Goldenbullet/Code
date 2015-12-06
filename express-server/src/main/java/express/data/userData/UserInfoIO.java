@@ -21,9 +21,9 @@ public class UserInfoIO extends UnicastRemoteObject implements UserDataService{
 		try {
 			userList=(ArrayList<UserInfoPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

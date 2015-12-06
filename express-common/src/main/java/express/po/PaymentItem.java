@@ -6,8 +6,8 @@ public class PaymentItem implements Serializable{
 	private String name;
 	private String date;
 	private String account;
-	private String entry;
-	private String comment;
+	private String entry;//条目
+	private String comment;//备注
 	private double sum;
 	
 	public PaymentItem(String name,String date,String account,

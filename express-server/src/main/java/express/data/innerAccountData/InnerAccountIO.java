@@ -22,9 +22,9 @@ public class InnerAccountIO extends UnicastRemoteObject implements InnerAccountD
 		try {
 			innerAccountList=(ArrayList<InnerAccountPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

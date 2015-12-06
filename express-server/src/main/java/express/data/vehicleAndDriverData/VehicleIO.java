@@ -22,9 +22,9 @@ public class VehicleIO extends UnicastRemoteObject implements VehicleDataService
 		try {
 			vehicleInfoList=(ArrayList<VehicleInfoPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

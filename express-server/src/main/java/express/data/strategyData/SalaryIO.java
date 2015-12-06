@@ -21,9 +21,9 @@ public class SalaryIO extends UnicastRemoteObject implements SalaryDataService{
 		try {
 			salaryStartegyList=(ArrayList<SalaryPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

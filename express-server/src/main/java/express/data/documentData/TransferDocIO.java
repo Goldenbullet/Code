@@ -39,7 +39,7 @@ public class TransferDocIO extends UnicastRemoteObject implements TransCenterTra
 	@Override
 	public TransferDocPO getTransferDoc(String transID) throws RemoteException {
 		for(TransferDocPO po:transferdoclist){
-			if(po.gettranscenterNumber().equals(transID)){
+			if(po.getTransDocID().equals(transID)){
 				return po;
 			}
 		}

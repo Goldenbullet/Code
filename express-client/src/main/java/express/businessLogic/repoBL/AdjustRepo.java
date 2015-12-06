@@ -52,7 +52,8 @@ public class AdjustRepo {
 		try {
 			RepoPosition r = new RepoPosition(position.getOrderID(),
 					position.getblock(), position.getrow(),
-					position.getshelf(), position.getposition(), true);
+					position.getshelf(), position.getposition(),
+					position.getIsUsed());
 
 			
 			return repo.addBlock(IDKeeper.getOrgID(), r);
@@ -124,4 +125,5 @@ public class AdjustRepo {
 		SysLog log=new SysLog();
 		log.addSysLog("仓库调整");
 	}
+
 }

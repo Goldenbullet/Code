@@ -2,12 +2,15 @@ package express.businessLogic.documentBL;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import express.businessLogic.IDKeeper;
 import express.businessLogic.infoManageBL.DistanceManager;
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.managerBLService.SysLogBLService;
 import express.businesslogicService.transcenterSaleBLService.TransCenterTransferDocblService;
 import express.dataService.documentDataService.TransCenterTransferDocDataService;
+import express.po.ShipmentDocBusinessHallPO;
 import express.po.TransWay;
 import express.po.TransferDocPO;
 import express.vo.OrderVO;
@@ -53,7 +56,7 @@ public class TransferDoc implements TransCenterTransferDocblService{
 	public TransferDocVO getTransferDoc(String transID) {
 		try{
 			TransferDocPO po=rmiObj.getTransferDoc(transID);
-			TransferDocVO vo=new TransferDocVO(po.getdate(), po.gettranscenterNumber(), po.getflightNumber(), po.getbegin(), po.getarrival(), po.getcontainerNumber(), 
+			TransferDocVO vo=new TransferDocVO(po.getdate(), po.getTransDocID(), po.getflightNumber(), po.getbegin(), po.getarrival(), po.getcontainerNumber(), 
 					po.getcheckMan(), po.getmoney(), po.getTransWay(), po.getOrderlist());
 			
 			return vo;
@@ -146,6 +149,25 @@ public class TransferDoc implements TransCenterTransferDocblService{
 			return null;
 		}
 	}
-
 	
+	
+	public String getTransferDocID(){
+		String ID="";
+		String orgID=IDKeeper.getOrgID();
+		Calendar c = Calendar.getInstance();
+		int year=c.get(Calendar.YEAR);
+		int month=c.get(Calendar.MONTH+1)+1;
+		int day=c.get(Calendar.DATE);
+		
+		ID+=orgID+year+month+day;
+		long a=System.currentTimeMillis();
+		String x="";
+		x+=a;
+		int l=x.length();
+		x=x.substring(l-7, l);
+		ID+=x;
+		return ID;
+		
+	}
+
 }

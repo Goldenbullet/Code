@@ -22,9 +22,9 @@ public class RepoInfoIO extends UnicastRemoteObject implements RepoDataService{
 		try {
 			repoList=(ArrayList<RepoInfoPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

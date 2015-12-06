@@ -20,9 +20,9 @@ public class ProfitFormIO extends UnicastRemoteObject implements ProfitFormDataS
 		try {
 			profitFormList=(ArrayList<ProfitFormPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

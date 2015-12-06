@@ -15,6 +15,9 @@ public interface OrganizationDataService extends Remote{
 	
 	public ArrayList<String> getAllOrgNameByProperty(OrgProperty property)
 			throws RemoteException;
+	
+	public ArrayList<String> getAllOrgIDByProperty(OrgProperty property)
+			throws RemoteException;
 
 	public OrganizationPO getOrgInfo(String orgID) throws RemoteException;
 	

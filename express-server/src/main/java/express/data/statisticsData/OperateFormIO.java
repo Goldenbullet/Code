@@ -20,9 +20,9 @@ public class OperateFormIO extends UnicastRemoteObject implements OperateFormDat
 		try {
 			operateFormList=(ArrayList<OperateFormPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

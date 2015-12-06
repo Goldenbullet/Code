@@ -21,9 +21,9 @@ public class DriverIO extends UnicastRemoteObject implements DriverDataService{
 		try {
 			driverInfoList=(ArrayList<DriverInfoPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

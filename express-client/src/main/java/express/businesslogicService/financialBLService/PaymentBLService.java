@@ -3,7 +3,6 @@ package express.businesslogicService.financialBLService;
 import java.util.ArrayList;
 
 import express.po.PaymentDocPO;
-import express.vo.DateAvailableVO;
 import express.vo.PaymentDocVO;
 
 public interface PaymentBLService {
@@ -19,6 +18,10 @@ public interface PaymentBLService {
 	public boolean checkDateAvailable(String date);
 	
 	public ArrayList<PaymentDocVO> getUnexamedPaymentDoc();
+	
+	public ArrayList<PaymentDocVO> getAllPaymentDoc();
+	
+	ArrayList<PaymentDocPO> getAllPaymentDocPO();
 	
 	public void endPaymentDoc();
 }

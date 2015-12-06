@@ -22,9 +22,9 @@ public class UserAdminIO extends UnicastRemoteObject implements AdminUserDataSer
 		try {
 			userAdminList=(ArrayList<UserInfoAdminPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 

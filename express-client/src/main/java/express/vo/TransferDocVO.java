@@ -6,7 +6,7 @@ import express.po.TransWay;
 
 public class TransferDocVO {
 	private String date;
-	private String transcenterNumber;
+	private String transDocID;
 	private String flightNumber;
 	private String begin;
 	private String arrival;
@@ -20,7 +20,7 @@ public class TransferDocVO {
 	                       String c,String che,
 	                       double m,TransWay transway,ArrayList<String> orderlist){
 		this.date=d;
-		this.transcenterNumber=transnumber;
+		this.transDocID=transnumber;
 		this.flightNumber=f;
 		this.begin=b;
 		this.arrival=ar;
@@ -48,11 +48,11 @@ public class TransferDocVO {
 	}
 	
 	public String gettranscenterNumber(){
-		return transcenterNumber;
+		return transDocID;
 	}
 	
-	public void settranscenterNumber(String transcenterNumber){
-		this.transcenterNumber=transcenterNumber;
+	public void settranscenterNumber(String transDocID){
+		this.transDocID=transDocID;
 	}
 	
 	public String getflightNumber(){

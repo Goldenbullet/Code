@@ -9,4 +9,6 @@ public interface OperateManagerBLService {
 	public ArrayList<String> getOperateFormListTitle();
 	
 	public OperateFormVO getOperateForm(int index);
+	
+	public boolean exportExcel(OperateFormVO operateForm);
 }

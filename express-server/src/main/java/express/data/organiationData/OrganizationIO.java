@@ -22,9 +22,9 @@ public class OrganizationIO extends UnicastRemoteObject implements OrganizationD
 		try {
 			orgInfoList=(ArrayList<OrganizationPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 
@@ -110,6 +110,22 @@ public class OrganizationIO extends UnicastRemoteObject implements OrganizationD
 			for(OrganizationPO org:orgInfoList){
 				if(org.getOrgProperty().equals(property)){
 					nameList.add(org.getName());
+				}
+			}
+		}
+		if(nameList.size()>0)
+			return nameList;
+		else
+			return null;
+	}
+	
+	public ArrayList<String> getAllOrgIDByProperty(OrgProperty property)
+			throws RemoteException {
+		ArrayList<String> nameList=new ArrayList<String>();
+		if(orgInfoList.size()>0){
+			for(OrganizationPO org:orgInfoList){
+				if(org.getOrgProperty().equals(property)){
+					nameList.add(org.getOrgID());
 				}
 			}
 		}

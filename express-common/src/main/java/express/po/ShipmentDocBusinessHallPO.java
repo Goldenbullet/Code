@@ -77,5 +77,10 @@ public class ShipmentDocBusinessHallPO extends DocumentPO implements Serializabl
 		return shipmentID;
 	}
 	
+	public void setMoney(double money){
+		this.money=money;
+	}
+	
+	
 	//set methods
 }
