@@ -27,7 +27,6 @@ public interface MainUIService {
 	
     public boolean jumpTomanagerExamDocUI ();
 	
-	public boolean jumpToViewStatisticUI (String s);
 	
 	public boolean jumpToStatisticDataUI (String s,int index,String date);
 	

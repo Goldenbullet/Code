@@ -110,13 +110,6 @@ public class MainUI implements MainUIService {
 		card1.show(pane1, "manexam");
 		return true;
 	}
-
-	public boolean jumpToViewStatisticUI(String s) {
-		ViewStatisticUI viewstatistic = new ViewStatisticUI(this, s);
-		pane1.add("viewstatistic", viewstatistic);
-		card1.show(pane1, "viewstatistic");
-		return true;
-	}
 	
 	public boolean jumpToStatisticDataUI (String s,int index,String date){
 		StatisticDataUI statisticdata = new StatisticDataUI(this, index,s,date);

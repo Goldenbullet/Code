@@ -117,7 +117,7 @@ public class StatisticDataUI extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == exit) {
-				m.jumpToViewStatisticUI(str);
+//				m.jumpToViewStatisticUI(str);
 			}
 			updateUI();
 		}

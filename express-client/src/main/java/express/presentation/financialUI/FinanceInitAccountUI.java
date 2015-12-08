@@ -33,12 +33,12 @@ public class FinanceInitAccountUI extends JPanel {
 	private JTabbedPane tabpane;
 	private JTable[] table;
 	private DefaultTableModel[] tableModel;
-	private JTextField nametf, phonetf, datetf, idtf;
-	private JComboBox gendercb, positioncb, orgcb;
+	private JTextField nametf, phonetf, datetf, idtf, orgnametf, orgidtf;
+	private JComboBox gendercb, positioncb, orgcb,citycb, butypecb;
 	private DateChooser datechooser;
 	private String[][] header;
 	private String[][][] data;
-	private JButton ok, exit, detele, add;
+	private JButton ok, change, detele, add;
 	private int leftside = 10;
 	private int textwidth = 120;
 	private int textheight = 30;
@@ -117,6 +117,11 @@ public class FinanceInitAccountUI extends JPanel {
 		add.setBounds(500, 620, 110, 30);
 		add.setFont(font);
 		this.add(add);
+		
+		change = new JButton("修改");
+		change.setBounds(500, 620, 110, 30);
+		change.setFont(font);
+		this.add(change);
 
 		// staff.addMouseListener(listener);
 		// org.addMouseListener(listener);
@@ -125,7 +130,7 @@ public class FinanceInitAccountUI extends JPanel {
 		// bankaccount.addMouseListener(listener);
 		// showprevious.addMouseListener(listener);
 		ok.addMouseListener(listener);
-		// exit.addMouseListener(listener);
+		change.addMouseListener(listener);
 		detele.addMouseListener(listener);
 		add.addMouseListener(listener);
 	}
@@ -263,7 +268,6 @@ public class FinanceInitAccountUI extends JPanel {
 		tableModel[1] = new DefaultTableModel(datas, headers);
 		table[1] = new JTable(tableModel[0]);
 		table[1].setRowHeight(40);
-		// FitTableColumns(table[0]);
 		table[1].setFont(f);
 		table[1].setBounds(0, 0, tablewidth, tableheight);
 
@@ -271,6 +275,51 @@ public class FinanceInitAccountUI extends JPanel {
 		scrollPanes.setFont(font);
 		scrollPanes.setBounds(0, 0, tablewidth, tableheight);
 		org.add(scrollPanes);
+		
+		JLabel cityl = new JLabel("所属城市");
+		cityl.setBounds(leftside, tableheight + 10, labelwidth, labelheight);
+		cityl.setFont(font);
+		org.add(cityl);
+
+		citycb = new JComboBox();
+		citycb.setBounds(leftside + labelwidth, tableheight + 10,
+				textwidth, textheight);
+		citycb.setFont(f);
+		org.add(citycb);
+		
+		JLabel orgnamel = new JLabel("机构全称");
+		orgnamel.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
+		orgnamel.setFont(font);
+		org.add(orgnamel);
+		
+		orgnametf = new JTextField();
+		orgnametf.setBounds(leftside + 2*labelwidth + textwidth, tableheight + 10,
+				textwidth, textheight);
+		orgnametf.setFont(f);
+		org.add(orgnametf);
+		
+		JLabel  butypel = new JLabel("机构性质");
+		 butypel.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
+		 butypel.setFont(font);
+		org.add( butypel);
+		
+		String[] butype = {"营业厅","中转中心"};
+		butypecb = new JComboBox(butype);
+		butypecb.setBounds(leftside + labelwidth, tableheight + 10,
+				textwidth, textheight);
+		butypecb.setFont(f);
+		org.add(butypecb);
+		
+		JLabel orgidl = new JLabel("机构代号");
+		orgidl.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
+		orgidl.setFont(font);
+		org.add(orgidl);
+		
+		orgidtf = new JTextField();
+		orgidtf.setBounds(leftside + 2*labelwidth + textwidth, tableheight + 10,
+				textwidth, textheight);
+		orgidtf.setFont(f);
+		org.add(orgidtf);
 	}
 
 	private class Listener implements MouseListener {

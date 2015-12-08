@@ -4,200 +4,227 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
+import express.businessLogic.infoManageBL.StaffForManager;
+import express.businesslogicService.managerBLService.StaffManageBLService;
 import express.po.UserRole;
 import express.presentation.mainUI.MainUIService;
+import express.presentation.mainUI.MyTableModel;
 import express.vo.UserInfoVO;
 
-public class managerMemberUI extends JPanel{
+public class managerMemberUI extends JPanel {
 
 	private MainUIService m;
-	private JButton ok,exit;
-	private JRadioButton male,female;
-	private ButtonGroup gender;
-	private JTextField nametf,idtf,phonetf,datetf;
-	private JComboBox positioncb,citycb;
-	private String name,id,city,phone,date;
-	private UserRole position;
-	private boolean sex;
+	private JTable table;
+	private MyTableModel tableModel;
+	private TableColumnModel tcm;
+	private JButton detele, add, change;
+	private JTextField idtf;
+	private JComboBox positioncb, gendercb, citycb;
+	private StaffManageBLService smb;
 	private UserInfoVO userinfo;
-	
-	public managerMemberUI(MainUIService main){
+	private UserInfoVO vo;
+	private ArrayList<UserInfoVO> userarr;
+	private String changeunder = "<HTML><U>修改</U></HTML>";
+	private String confirmunder = "<HTML><U>确认</U></HTML>";
+	private String id;
+	private Object[][] data;
+	private String[] header = { "选择", "姓名", "性别", "工号", "职位", "所在单位", "联系方式",
+			"入职日期", "修改" };
+
+	public managerMemberUI(MainUIService main) {
 		setLayout(null);
 		m = main;
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
-		
-		int leftside1 = 200;
-		int leftside2 = 300;
-		Font font = new Font("楷体",Font.PLAIN,18);
-		Font f = new Font("仿宋",Font.PLAIN,16);
-		
-		JLabel namel = new JLabel("姓名");
-		namel.setFont(font);
-		namel.setBounds(leftside1, 90, 100, 50);
-		this.add(namel);
-		
-		nametf = new JTextField();
-//		nametf.setText("姓名");
-		nametf.setBounds(leftside2, 100, 100, 40);
-		nametf.setFont(f);
-		this.add(nametf);
-		
-		JLabel genderl = new JLabel("性别");
-		genderl.setFont(font);
-		genderl.setBounds(leftside1, 150, 100, 50);
-		this.add(genderl);
-		
-		gender = new ButtonGroup();
-		male = new JRadioButton("男");
-		male.setBounds(leftside2, 150, 50, 40);
-		male.setFont(font);
-		female = new JRadioButton("女");
-		female.setBounds(leftside2, 190, 50, 40);
-		female.setFont(font);
-		gender.add(male);
-		gender.add(female);
-		this.add(male);
-		this.add(female);
-		
+
+		Font font = new Font("楷体", Font.PLAIN, 18);
+		Font f = new Font("仿宋", Font.PLAIN, 16);
+		smb = new StaffForManager();
+		JListener listener = new JListener();
+
+		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
+				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
+		String[] genders = { "男", "女" };
+		String[] cities = { "南京", "北京", "上海" };
+		Class[] typeArray = { Boolean.class, Object.class, JComboBox.class,
+				Object.class, JComboBox.class, JComboBox.class, Object.class,
+				 Object.class, Object.class };
+
+		userarr = smb.getAllUser();
+		if (userarr != null) {
+			data = new Object[userarr.size()][9];
+			for (int i = 0; i < userarr.size(); i++) {
+				UserInfoVO temp = userarr.get(i);
+				data[i][0] = false;
+				data[i][1] = temp.getName();
+				data[i][2] = temp.getGender() ? "男" : "女";
+				data[i][3] = temp.getID();
+				data[i][4] = temp.getPosition();
+				data[i][5] = temp.getCity();
+				data[i][6] = temp.getPhoneNum();
+				data[i][7] = temp.getDate();
+				data[i][8] = changeunder;
+			}
+		}
+//		 Object[] user1 = { true, "lhl", "man", "10001", "110", " ", " ", " ",
+//		 changeunder };
+//		 Object[] user2 = { false, "hmt", "woman", "10086", "120", " ", " ",
+//		 " ", changeunder };
+//		 Object user[][] = { user1, user2 };
+//		 data = user;
+
+		tableModel = new MyTableModel(data, header,typeArray);
+		table = new JTable(tableModel);
+		table.setRowHeight(40);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setBounds(50, 60, 750, 600);
+		table.setFont(f);
+		table.addMouseListener(listener);
+
+		tcm = table.getColumnModel();
+		positioncb = new JComboBox(pos);
+		gendercb = new JComboBox(genders);
+		citycb = new JComboBox(cities);
+		tcm.getColumn(4).setCellEditor(new DefaultCellEditor(positioncb));
+		tcm.getColumn(2).setCellEditor(new DefaultCellEditor(gendercb));
+		tcm.getColumn(5).setCellEditor(new DefaultCellEditor(citycb));
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(50, 60, 750, 600);
+		this.add(scrollPane);
+
+		detele = new JButton("删除");
+		detele.setBounds(50, 10, 100, 40);
+		detele.setFont(font);
+		detele.addMouseListener(listener);
+		this.add(detele);
+
+		add = new JButton("添加");
+		add.setBounds(190, 10, 100, 40);
+		add.addMouseListener(listener);
+		add.setFont(font);
+		this.add(add);
+
+		change = new JButton("查找");
+		change.setBounds(320, 10, 100, 40);
+		change.addMouseListener(listener);
+		change.setFont(font);
+		this.add(change);
+
 		JLabel idl = new JLabel("工号");
-		idl.setBounds(leftside1, 240, 100, 50);
+		idl.setBounds(450, 10, 50, 40);
 		idl.setFont(font);
 		this.add(idl);
-		
+
 		idtf = new JTextField();
-//		idtf.setText("工号");
-		idtf.setBounds(leftside2, 250, 160, 40);
+		idtf.setBounds(510, 10, 150, 40);
 		idtf.setFont(f);
 		this.add(idtf);
-		
-		JLabel positionl = new JLabel("职位");
-		positionl.setBounds(leftside1, 300, 100, 50);
-		positionl.setFont(font);
-		this.add(positionl);
-		
-		positioncb = new JComboBox();
-		positioncb.addItem("快递员");
-		positioncb.addItem("管理员");
-		positioncb.addItem("总经理");	
-		positioncb.addItem("普通财务人员");	
-		positioncb.addItem("最高权限财务人员");	
-		positioncb.addItem("中转中心仓库管理人员");	
-		positioncb.addItem("中转中心业务员");
-		positioncb.addItem("营业厅业务员");
-		positioncb.setBounds(leftside2, 310, 100, 40);
-		positioncb.setFont(f);
-		this.add(positioncb);
-		
-		JLabel cityl = new JLabel("所在城市");
-		cityl.setBounds(leftside1, 360, 100, 50);
-		cityl.setFont(font);
-		this.add(cityl);
-		
-		citycb = new JComboBox();
-		 addcity();
-		citycb.setBounds(leftside2, 370, 100, 40);
-		citycb.setFont(f);
-		this.add(citycb);
-		
-		JLabel phonel = new JLabel("联系方式");
-		phonel.setBounds(leftside1, 420, 100, 50);
-		phonel.setFont(font);
-		this.add(phonel);
-		
-		phonetf = new JTextField();
-//		phonetf.setText("联系方式");
-		phonetf.setBounds(leftside2, 430, 160, 40);
-		phonetf.setFont(f);
-		this.add(phonetf);
-		
-		JLabel datel = new JLabel("入职日期");
-		datel.setBounds(leftside1, 480, 100, 50);
-		datel.setFont(font);
-		this.add(datel);
-		
-		datetf = new JTextField();
-//		phonetf.setText("入职日期");
-		datetf.setBounds(leftside2, 490, 160, 40);
-		datetf.setFont(f);
-		this.add(datetf);
-		
-		
-		ok = new JButton("确认");
-		ok.setBounds(220, 580, 110, 40);
-		this.add(ok);
-		
-		exit = new JButton("取消");
-		exit.setBounds(420, 580, 110, 40);
-		this.add(exit);
-		
-		ok.addMouseListener(new Listener());
-		exit.addMouseListener(new Listener());
 	}
-	
-	private void addcity(){
-		citycb.addItem("南京");
-		citycb.addItem("北京");
-		citycb.addItem("上海");
-	}
-	private class Listener implements MouseListener{
+
+	private class JListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(e.getSource()==exit){
-//				m.jumpTomanagerMenuUI();
-				nametf.setText("");
-				idtf.setText("");
-				positioncb.setSelectedIndex(0);
-				citycb.setSelectedIndex(0);
-				phonetf.setText("");
-				datetf.setText("");
-				gender.clearSelection();
-			}else if(e.getSource()==ok){
-				name = nametf.getText();
+			if (e.getSource() == detele) {
+				// m.jumpTomanagerMenuUI();
+				for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
+					if ((boolean) tableModel.getValueAt(i, 0)) {
+						tableModel.removeRow(i);
+						smb.removeUser((String) tableModel.getValueAt(i, 3));
+						smb.endManage();
+					}
+				}
+				JOptionPane.showMessageDialog(null, "删除成功", "提示",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else if (e.getSource() == add) {
+				managerMemberAddUI mmaui = new managerMemberAddUI(tableModel);
+				mmaui.setVisible(true);
+
+			} else if (e.getSource() == change) {
 				id = idtf.getText();
-				position = UserRole.values()[positioncb.getSelectedIndex()];
-				System.out.println(position);System.out.println(UserRole.DeliverMan);
-				city = citycb.getSelectedItem().toString();
-				phone = phonetf.getText();
-				date = datetf.getText();
-				if(male.isSelected())
-					sex = true;
-				else if(female.isSelected())
-					sex = false;		
-				String tip = "信息未填写完整";
-				Reminder re = new Reminder(tip);
+				managerMemberChangeUI mmcui = new managerMemberChangeUI(
+						tableModel, id);
+				mmcui.setVisible(true);
+
+			} else if (e.getSource() == table) {
+				int row = table.getSelectedRow();
+				int col = table.getSelectedColumn();
+				if (col == 8) {
+					if (tableModel.getValueAt(row, col).equals(changeunder)) {
+						tableModel.setrowedit(row);
+						tableModel.setValueAt(confirmunder, row, col);
+					} else if (tableModel.getValueAt(row, col).equals(
+							confirmunder)) {
+						tableModel.setrowunedit();
+						tableModel.setValueAt(changeunder, row, col);
+
+						String name = (String) tableModel.getValueAt(row, 1);
+						String gender = (String) tableModel.getValueAt(row, 2);
+						String position = (String) tableModel
+								.getValueAt(row, 4);
+						String id = (String) tableModel.getValueAt(row, 3);
+						String city = (String) tableModel.getValueAt(row, 5);
+						String phone = (String) tableModel.getValueAt(row, 6);
+						String date = (String) tableModel.getValueAt(row, 7);
+
+						//System.out.println(positioncb.getSelectedIndex()+1);
+						UserRole posit = UserRole.values()[positioncb.getSelectedIndex()+1];
+						boolean sex;
+						if (gender.equals("男")) {
+							sex = true;
+						} else {
+							sex = false;
+						}
+
+						vo = new UserInfoVO(name, sex, id, phone, posit, city,
+								date);
+						smb.changeUser(vo, id);
+						JOptionPane.showMessageDialog(null, "信息修改成功", "提示",
+								JOptionPane.INFORMATION_MESSAGE);
+						smb.endManage();
+					}
+				}
 			}
 			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
-	}	
+	}
 }

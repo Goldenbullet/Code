@@ -29,8 +29,8 @@ public class FinanceMenuUI extends JPanel {
 	// private JFrame frame;
 	private JPanel mainPanel, pane;
 	private JLabel userinfo;
-//	private JMenuBar viewstatisticbar, createstatisticbar;
-//	private JMenu viewstatisticm, createstatisticm;
+	// private JMenuBar viewstatisticbar, createstatisticbar;
+	// private JMenu viewstatisticm, createstatisticm;
 	private JMenuItem viewprofits, viewoperate, createprofits, createoperate;
 	private JPopupMenu viewstatisticpop, createstatisticpop;
 	private JButton log;
@@ -60,7 +60,7 @@ public class FinanceMenuUI extends JPanel {
 
 		m.setcard1(card);
 		m.setpane1(mainPanel);
-		
+
 		userinfo = new JLabel();
 		userinfo.setBounds(0, 0, 150, base);
 		userinfo.setText("      userinfo");
@@ -106,7 +106,7 @@ public class FinanceMenuUI extends JPanel {
 		viewstatisticpop.setFont(font);
 		viewprofits = new JMenuItem("查看成本收益表");
 		viewprofits.setFont(font);
-		viewoperate = new JMenuItem("查看经营状态表");
+		viewoperate = new JMenuItem("查看经营状况表");
 		viewoperate.setFont(font);
 		viewstatisticpop.add(viewprofits);
 		viewstatisticpop.add(viewoperate);
@@ -234,10 +234,12 @@ public class FinanceMenuUI extends JPanel {
 				m.jumpToFinanceCreateProfitUI();
 			} else if (e.getSource().equals(createoperate)) {
 				m.jumpToFinanceCreateOperateUI();
-			}else if (e.getSource().equals(viewprofits)) {
+			} else if (e.getSource().equals(viewprofits)) {
 				m.jumpToViewProfitUI();
-			}else if (e.getSource().equals(viewoperate)) {
+				// m.jumpToViewStatisticUI("成本收益表");
+			} else if (e.getSource().equals(viewoperate)) {
 				m.jumpToViewOperateUI();
+				// m.jumpToViewStatisticUI("经营状况表");
 			}
 			updateUI();
 		}

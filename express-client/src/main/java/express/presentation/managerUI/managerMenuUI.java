@@ -170,9 +170,11 @@ public class managerMenuUI extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource().equals(viewprofits)) {
-			    m.jumpToViewStatisticUI("成本收益表");
+				m.jumpToViewProfitUI();
+			 //   m.jumpToViewStatisticUI("成本收益表");
 			} else if (e.getSource().equals(viewoperate)) {
-				m.jumpToViewStatisticUI("经营状况表");
+				m.jumpToViewOperateUI();
+			//	m.jumpToViewStatisticUI("经营状况表");
 			}
 			updateUI();
 		}

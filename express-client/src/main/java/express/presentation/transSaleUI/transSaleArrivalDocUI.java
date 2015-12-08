@@ -199,7 +199,7 @@ public class transSaleArrivalDocUI extends JPanel {
 						tadb.endArrivalDoc();
 					}else{
 						JOptionPane.showMessageDialog(null, "生成到达单失败", "提示",
-								JOptionPane.WARNING_MESSAGE);
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 
