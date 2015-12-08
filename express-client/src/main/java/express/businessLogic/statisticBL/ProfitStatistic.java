@@ -38,9 +38,22 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 		profit = RMIClient.getProfitFormObject();
 	}
 
-	public ArrayList<String> getProfitFormListTitle() {
+	public ArrayList<ProfitFormVO> getProfitFormList() {
 		try {
-			return profit.getProfitFormListTitle();
+			ArrayList<ProfitFormPO> list = profit.getProfitFormList();
+			
+			ArrayList<ProfitFormVO> transList = new ArrayList<ProfitFormVO>();
+			if(list!=null){
+				for(int i = 0;i < list.size();i++){
+					ProfitFormPO po = list.get(i);
+					ProfitFormVO vo = new ProfitFormVO(po.getTitle(),
+							po.getIncome(), po.getOutCome(), po.getProfit());
+					
+					transList.add(vo);
+				}
+			}
+			
+			return transList;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,7 +165,7 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 			}
 			
 			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-			HSSFSheet sheet = wb.createSheet(profit.getTitle().substring(0, 10));
+			HSSFSheet sheet = wb.createSheet(profit.getTitle());
 
 			HSSFCellStyle style = wb.createCellStyle();
 			style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式

@@ -9,7 +9,7 @@ public interface ProfitFormDataService extends Remote{
 
 	public boolean createProfitForm(ProfitFormPO profitForm) throws RemoteException;
 
-	public ArrayList<String> getProfitFormListTitle() throws RemoteException;
+	public ArrayList<ProfitFormPO> getProfitFormList() throws RemoteException;
 	
 	public ProfitFormPO getProfitForm(String date) throws RemoteException;
 	

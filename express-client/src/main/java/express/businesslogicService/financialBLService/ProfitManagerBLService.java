@@ -6,7 +6,7 @@ import express.vo.ProfitFormVO;
 
 public interface ProfitManagerBLService {
 
-	public ArrayList<String> getProfitFormListTitle() ;
+	public ArrayList<ProfitFormVO> getProfitFormList() ;
 	
 	public ProfitFormVO getProfitForm(String date);
 	
