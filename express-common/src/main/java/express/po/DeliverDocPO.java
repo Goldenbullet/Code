@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class DeliverDocPO  extends DocumentPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8505147907076218773L;
 	private String arriveDate;
 	private String orderID;
 	private String deliverManID;//快递员工号

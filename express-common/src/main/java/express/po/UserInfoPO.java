@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class UserInfoPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9175803722831235684L;
 	private String name;
 	private boolean gender;
 	private String id;

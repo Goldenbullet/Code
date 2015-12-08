@@ -2,16 +2,18 @@ package express.vo;
 
 import java.util.ArrayList;
 
+import express.po.PaymentItem;
+
 public class OperateFormVO {
 
 	private String startDate;
 	private String endDate;
 	private ArrayList<ReceiveDocVO> receiveDoc;
-	private ArrayList<PaymentDocVO> paymentDoc;
+	private ArrayList<PaymentItem> paymentDoc;
 
 	public OperateFormVO(String startDate, String endDate,
 			ArrayList<ReceiveDocVO> receiveDoc,
-			ArrayList<PaymentDocVO> paymentDoc) {
+			ArrayList<PaymentItem> paymentDoc) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.receiveDoc = receiveDoc;
@@ -37,7 +39,7 @@ public class OperateFormVO {
 		return receiveDoc;
 	}
 
-	public ArrayList<PaymentDocVO> getPaymentDoc() {
+	public ArrayList<PaymentItem> getPaymentDoc() {
 		return paymentDoc;
 	}
 
@@ -53,7 +55,7 @@ public class OperateFormVO {
 		receiveDoc = r;
 	}
 
-	public void setPaymentDoc(ArrayList<PaymentDocVO> p) {
+	public void setPaymentDoc(ArrayList<PaymentItem> p) {
 		paymentDoc = p;
 	}
 }

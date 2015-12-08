@@ -70,7 +70,7 @@ public class BankAccountIO extends UnicastRemoteObject implements BankAccountDat
 		if(bankAccountList.size()>0){
 			int count=0;
 			for(BankAccountPO bank:bankAccountList){
-				if(bankAccount.getName().equals(name)){
+				if(bank.getName().equals(name)){
 					bankAccountList.set(count, bankAccount);
 					return true;
 				}

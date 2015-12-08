@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ShipmentDocPO  extends DocumentPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8066969354718291935L;
 	private String date;
 	private String transcenterNumber;
 	private String arrival;

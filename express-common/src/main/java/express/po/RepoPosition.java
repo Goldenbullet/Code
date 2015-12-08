@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class RepoPosition implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4538085650019167731L;
 	private String orderID;
 	private Area block;
 	private int row;

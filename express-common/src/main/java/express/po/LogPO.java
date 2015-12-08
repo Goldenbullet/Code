@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class LogPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -572106608480900184L;
 	private String operation;
 	private String time;
 	

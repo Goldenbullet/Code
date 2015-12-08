@@ -1,9 +1,12 @@
 package express.po;
-
-import java.io.ObjectInputStream.GetField;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PredictTimePO {//把同一出发地和到达地的historyPO放到PredictPO里
+public class PredictTimePO implements Serializable{//把同一出发地和到达地的historyPO放到PredictPO里
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -568026301802158904L;
 	private String setOutCity;
 	private String arrivalCity;
 	private ArrayList<HistoryTimePO> predictlist;

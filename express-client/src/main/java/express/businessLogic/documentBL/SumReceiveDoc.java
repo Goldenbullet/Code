@@ -80,21 +80,25 @@ public class SumReceiveDoc implements GetReceiveDocBLService {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			return new SumReceiveVO(null,0);
 		}
 	}
 
 	public boolean getSum(double sum, String bankAccountName) {
-
-		BankAccountBLService bank = new BankAccount();
-		BankAccountPO po = bank.getBankAccount(bankAccountName);
-		BankAccountVO vo = new BankAccountVO(po.getName(), po.getIncome(),
-				po.getOutcome(), po.getBalance());
-		vo.addIncome(sum);
-		bank.changeBankAccount(vo, bankAccountName);
-		bank.recordBankAccount();
-		// 将总额加到对应银行账户的收入中
-		return true;
+		
+		if(sum>0.0){
+			BankAccountBLService bank = new BankAccount();
+			BankAccountPO po = bank.getBankAccount(bankAccountName);
+			BankAccountVO vo = new BankAccountVO(po.getName(), po.getIncome(),
+					po.getOutcome(), po.getBalance());
+			vo.addIncome(sum);
+			bank.changeBankAccount(vo, bankAccountName);
+			bank.recordBankAccount();
+			// 将总额加到对应银行账户的收入中
+			return true;
+		}
+		else
+			return true;
 	}
 
 	public ArrayList<ReceiveDocVO> getAllReceiveDoc() {

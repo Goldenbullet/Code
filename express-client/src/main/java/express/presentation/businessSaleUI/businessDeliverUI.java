@@ -4,14 +4,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import express.businessLogic.documentBL.DeliverDoc;
+import express.businesslogicService.businessSaleBLService.BusinessSaleDeliverDocumentblService;
 import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
+import express.vo.DeliverDocVO;
 
 public class businessDeliverUI extends JPanel {
 	private MainUIService m;
@@ -21,6 +27,8 @@ public class businessDeliverUI extends JPanel {
 	private DateChooser datechooser;
 	private JButton button_confirm;
 	private JButton button_cancel;
+	private String arriveDate, orderID, deliverManID;
+	private DeliverDocVO vo;
 
 	public businessDeliverUI(MainUIService main) {
 		int textlength = 150;
@@ -40,7 +48,8 @@ public class businessDeliverUI extends JPanel {
 		JListener listener = new JListener();
 
 		textArea1 = new JTextField();
-		textArea1.setBounds(300, 100, textlength, textwidth);
+		textArea1.setBounds(300, 200, textlength, textwidth);
+		textArea1.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		textArea1.setFont(f);
 		textArea1.setEditable(false);
 		// textArea1.setBackground(Color.BLUE);
@@ -50,11 +59,11 @@ public class businessDeliverUI extends JPanel {
 		this.add(textArea1);
 
 		datechooser = new DateChooser("yyyy-MM-dd", textArea1);
-		datechooser.setBounds(460, 95, 40, 40);
+		datechooser.setBounds(460, 195, 40, 40);
 		this.add(datechooser);
 
 		textArea2 = new JTextField();
-		textArea2.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
+		textArea2.setBounds(300, 200 + textwidth * 2, textlength, textwidth);
 		textArea2.setFont(f);
 		// textArea2.setBackground(Color.BLUE);
 		// textArea2.setLineWrap(true);
@@ -62,7 +71,7 @@ public class businessDeliverUI extends JPanel {
 		this.add(textArea2);
 
 		textArea3 = new JTextField();
-		textArea3.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
+		textArea3.setBounds(300, 200 + textwidth * 4, textlength, textwidth);
 		textArea3.setFont(f);
 		// textArea3.setBackground(Color.BLUE);
 		// textArea3.setLineWrap(true);
@@ -70,28 +79,28 @@ public class businessDeliverUI extends JPanel {
 		this.add(textArea3);
 
 		JLabel label1 = new JLabel("到达日期");
-		label1.setBounds(200, 100, labellength, labelwidth);
+		label1.setBounds(200, 200, labellength, labelwidth);
 		label1.setFont(font);
 		this.add(label1);
 
 		JLabel label2 = new JLabel("派送员");
-		label2.setBounds(200, 100 + labelwidth * 2, labellength, labelwidth);
+		label2.setBounds(200, 200 + labelwidth * 2, labellength, labelwidth);
 		label2.setFont(font);
 		this.add(label2);
 
 		JLabel label3 = new JLabel("订单条形码号");
-		label3.setBounds(200 - 30, 100 + labelwidth * 4, labellength + 30,
+		label3.setBounds(200 - 30, 200 + labelwidth * 4, labellength + 30,
 				labelwidth);// 字数太多，只能把label拉长一些
 		label3.setFont(font);
 		this.add(label3);
 
 		button_confirm = new JButton("确定");
-		button_confirm.setBounds(250, 520, 60, 30);
+		button_confirm.setBounds(230, 490, 120, 30);
 		button_confirm.addMouseListener(listener);
 		this.add(button_confirm);
 
 		button_cancel = new JButton("取消");
-		button_cancel.setBounds(350, 520, 60, 30);
+		button_cancel.setBounds(400, 490, 120, 30);
 		button_cancel.addMouseListener(listener);
 		this.add(button_cancel);
 
@@ -106,8 +115,27 @@ public class businessDeliverUI extends JPanel {
 				textArea2.setText("");
 				textArea3.setText("");
 			} else if (e.getSource() == button_confirm) {
-
+				arriveDate = textArea1.getText();
+				deliverManID = textArea1.getText();
+				orderID = textArea3.getText();
+				if (arriveDate.isEmpty() || deliverManID.isEmpty()
+						|| orderID.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					vo = new DeliverDocVO(arriveDate, orderID, deliverManID);
+					BusinessSaleDeliverDocumentblService bsd = new DeliverDoc();
+					if (!bsd.addDeliverDoc(vo)) {
+						JOptionPane.showMessageDialog(null, "订单号错误", "提示",
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "生成派件单成功", "提示",
+								JOptionPane.INFORMATION_MESSAGE);
+						bsd.endDeliverDoc();
+					}
+				}
 			}
+			repaint();
 		}
 
 		public void mouseEntered(MouseEvent e) {

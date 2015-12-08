@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class PaymentItem implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5680285073017944433L;
 	private String name;
 	private String date;
 	private String account;

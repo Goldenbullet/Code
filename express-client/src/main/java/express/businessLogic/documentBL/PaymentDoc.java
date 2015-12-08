@@ -30,6 +30,7 @@ import express.po.UserInfoPO;
 import express.po.UserRole;
 import express.rmi.RMIClient;
 import express.vo.PaymentDocVO;
+import express.vo.ShipmentDocTransCenterVO;
 
 public class PaymentDoc implements PaymentBLService{
 	
@@ -54,7 +55,7 @@ public class PaymentDoc implements PaymentBLService{
 			cd=cd.substring(1, 2);
 		//如果是6月，将06变为6
 		
-		ArrayList<ShipmentDocTransCenterPO> list1=tShip.getAllShipmentDoc();
+		ArrayList<ShipmentDocTransCenterPO> list1=tShip.getAllShipmentDocPO();
 		ArrayList<TransferDocPO> list2=tTrans.getAllTransferDoc();
 		ArrayList<ShipmentDocBusinessHallPO> list3=bShip.getAllShipmentDoc();
 		
@@ -70,13 +71,13 @@ public class PaymentDoc implements PaymentBLService{
 		if(!isEmpty(list1)){
 			
 			for(ShipmentDocTransCenterPO po:list1){
-				String dt=po.getdate();
+				String dt=po.getDate();
 				if(dt.startsWith(currDate)){
 					
-					all+=po.getmoney();
+					all+=po.getMoney();
 					
 					PaymentItem p=new PaymentItem(null,dt,null,
-							"运费",po.getshipmentID(),po.getmoney());
+							"运费",po.getShipmentID(),po.getMoney());
 					
 					payList.add(p);
 				}
@@ -138,7 +139,7 @@ public class PaymentDoc implements PaymentBLService{
 							all+=sal;
 							
 							PaymentItem p=new PaymentItem(null,date,null,
-									"人员工资",cd+"月工资",sal);
+									"人员工资",cd+"月份工资",sal);
 							
 							payList.add(p);
 						}

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ShipmentDocBusinessHallPO extends DocumentPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2779026822209564281L;
 	private String date;
 	private String transID;//汽运编号 （营业厅编号+20150921日期+00000编码 、五位数字）
 	private String businessHallNumber;  //本营业厅编号（025城市编码+000鼓楼营业厅）

@@ -118,8 +118,8 @@ public class MainUI implements MainUIService {
 		return true;
 	}
 	
-	public boolean jumpToStatisticDataUI (String s,int index){
-		StatisticDataUI statisticdata = new StatisticDataUI(this, index,s);
+	public boolean jumpToStatisticDataUI (String s,int index,String date){
+		StatisticDataUI statisticdata = new StatisticDataUI(this, index,s,date);
 		pane1.add("statisticdata", statisticdata);
 		card1.show(pane1, "statisticdata");
 		return true;
@@ -371,6 +371,20 @@ public class MainUI implements MainUIService {
 		pane1.add("transSaleArrivalDocPanel", transSaleArrivalDocPanel);
 		card1.show(pane1, "transSaleArrivalDocPanel");
 
+		return true;
+	}
+
+	public boolean jumpToViewProfitUI() {
+		ViewProfitUI viewProfitPanel = new ViewProfitUI(this);
+		pane1.add("viewProfitPanel", viewProfitPanel);
+		card1.show(pane1, "viewProfitPanel");
+		return true;
+	}
+
+	public boolean jumpToViewOperateUI() {
+		ViewOperateUI viewOperatePanel = new ViewOperateUI(this);
+		pane1.add("viewOperatePanel", viewOperatePanel);
+		card1.show(pane1, "viewProfitPanel");
 		return true;
 	}
 

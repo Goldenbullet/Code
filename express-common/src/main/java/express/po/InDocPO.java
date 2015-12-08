@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class InDocPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8769532078588459715L;
 	private String deliveryNumber;
 	private String date;
 	private String arrival;

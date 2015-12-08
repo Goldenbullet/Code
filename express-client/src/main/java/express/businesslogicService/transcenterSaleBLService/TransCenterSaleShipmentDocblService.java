@@ -10,6 +10,7 @@ public interface TransCenterSaleShipmentDocblService {
 	public ShipmentDocTransCenterVO getShipmentDoc(String shipmentID) ;
 	public boolean isTransIDavailable(String transid);
 	public ArrayList<ShipmentDocTransCenterVO>  getAllShipmentDoc();
+	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDocPO();
 	public String getShipmentDocID();
 	public double getShipmentfee(ShipmentDocTransCenterVO vo) ;
 	public void endShipmentDoc();

@@ -3,8 +3,11 @@ package express.po;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RepoInfoPO implements Serializable{
-	
+public class RepoInfoPO implements Serializable{	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2252546653125512096L;
 	private String city;//orgID
 	private int airShelfSize;//航运区排数
 	private int trainShelfSize;//铁运区排数

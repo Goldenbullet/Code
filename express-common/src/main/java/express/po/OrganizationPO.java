@@ -3,6 +3,10 @@ import java.io.Serializable;
 
 
 public class OrganizationPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7958276314099597994L;
 	private String city;
 	private String name;
 	private String address;

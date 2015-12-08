@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TransferDocPO extends DocumentPO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5098402620708166498L;
 	private String date;
 	private String transDocID;//
 	private String flightNumber;

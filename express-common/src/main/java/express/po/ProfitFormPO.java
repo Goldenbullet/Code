@@ -1,9 +1,12 @@
 package express.po;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ProfitFormPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8572762249925216779L;
 	private String date;
 	private double income;
 	private double outcome;

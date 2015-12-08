@@ -6,6 +6,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -15,86 +17,74 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import express.businessLogic.IDKeeper;
 import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
 
 public class businessArrivalUI extends JPanel {
+	
 	private MainUIService m;
 
-	private JTextField textArea1;
-	private JTextField textArea3;
+	private JTextField ordertf, startplacetf,datetf, transDocNumtf;
 	private JButton button_confirm;
 	private JButton button_cancel;
 	private ButtonGroup bg1;
 	private JRadioButton radioButton, radioButton_1, radioButton_2;
-	private JComboBox comboBox, comboBox1;
 	private DateChooser datechooser;
-	private String date, transNum, transDocNum;
+	private String date,transDocNum, order, startplace;
 
 	public businessArrivalUI(MainUIService main) {
+		
 		int textlength = 150;
 		int textwidth = 30;
-
 		int labellength = 100;
 		int labelwidth = 30;
+		
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
 		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
 		JListener listener = new JListener();
 
-		textArea1 = new JTextField();
-		textArea1.setBounds(300, 100, textlength, textwidth);
-		textArea1.addMouseListener(listener);
-		textArea1.setFont(f);
-		textArea1.setEditable(false);
-		// textArea1.setBackground(Color.BLUE);
-		// textAreaOutput.setSelectedTextColor(Color.RED);
-		// textArea1.setLineWrap(true); // 激活自动换行功能
-		// textArea1.setWrapStyleWord(true);// 激活断行不断字功能
-		this.add(textArea1);
+		datetf = new JTextField();
+		datetf.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		datetf.setBounds(300, 100, textlength, textwidth);
+		datetf.setFont(f);
+		datetf.setEditable(false);
+		this.add(datetf);
 
-		datechooser = new DateChooser("yyyy-MM-dd", textArea1);
+		datechooser = new DateChooser("yyyy-MM-dd", datetf);
 		datechooser.setBounds(460, 95, 40, 40);
 		this.add(datechooser);
 
-		comboBox = new JComboBox();
-		comboBox.addItem("110");
-		comboBox.addItem("119");
-		comboBox.addItem("120");
-		comboBox.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
-		comboBox.setFont(f);
-		this.add(comboBox);
+		ordertf = new JTextField();
+		ordertf.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
+		ordertf.setFont(f);
+		this.add(ordertf);
 
-		textArea3 = new JTextField();
-		textArea3.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
-		textArea3.setFont(f);
-		// textArea2.setBackground(Color.BLUE);
-		// textArea2.setLineWrap(true);
-		// textArea2.setWrapStyleWord(true);
-		this.add(textArea3);
+		transDocNumtf = new JTextField();
+		transDocNumtf.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
+		transDocNumtf.setFont(f);
+		transDocNumtf.setEditable(false);
+		this.add(transDocNumtf);
 
-		comboBox1 = new JComboBox();
-		comboBox1.addItem("南京");
-		comboBox1.addItem("北京");
-		comboBox1.addItem("上海");
-		comboBox1.setBounds(300, 100 + textwidth * 6, textlength, textwidth);
-		comboBox1.setFont(f);
-		this.add(comboBox1);
+		startplacetf = new JTextField();
+		startplacetf.setBounds(300, 100 + textwidth * 6, textlength, textwidth);
+		startplacetf.setFont(f);
+		startplacetf.setEditable(false);
+		this.add(startplacetf);
 
 		JLabel label1 = new JLabel("到达日期");
 		label1.setBounds(200, 100, labellength, labelwidth);
 		label1.setFont(font);
 		this.add(label1);
 
-		JLabel label2 = new JLabel("中转中心编号");
-		label2.setBounds(200 - 30, 100 + labelwidth * 2, labellength + 30,
-				labelwidth);
+		JLabel label2 = new JLabel("订单号");
+		label2.setBounds(200, 100 + labelwidth * 2, labellength, labelwidth);
 		label2.setFont(font);
 		this.add(label2);
 
@@ -102,7 +92,7 @@ public class businessArrivalUI extends JPanel {
 		label3.setBounds(200, 100 + labelwidth * 4, labellength, labelwidth);
 		label3.setFont(font);
 		this.add(label3);
-		
+
 		JLabel label4 = new JLabel("出发地");
 		label4.setBounds(200, 100 + labelwidth * 6, labellength + 30,
 				labelwidth);
@@ -151,15 +141,14 @@ public class businessArrivalUI extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == button_cancel) {
-				textArea1.setText("");
-				textArea3.setText("");
-				comboBox.setSelectedIndex(0);
-				comboBox1.setSelectedIndex(0);
+				ordertf.setText("");
+				datetf.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 				bg1.clearSelection();
 			} else if (e.getSource() == button_confirm) {
-				date = textArea1.getText();
-
-				transDocNum = textArea3.getText();
+				date = datetf.getText();
+				startplace = startplacetf.getText();
+				order = ordertf.getText();
+				transDocNum = startplacetf.getText();
 			}
 		}
 

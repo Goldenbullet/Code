@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class OrderPO  extends DocumentPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7657789011273737410L;
 	private String senderName;//寄件人信息
 	private String senderAddress;
 	private String senderWorkPlace;

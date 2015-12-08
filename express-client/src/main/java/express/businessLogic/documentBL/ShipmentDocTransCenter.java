@@ -117,6 +117,16 @@ public class ShipmentDocTransCenter {   //不用implements
 		}
 	}
 	
+	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDocPO(){
+		try {
+			return rmiObj.getShipmentDoclist();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public String getShipmentDocID(){
 		String ID="";
 		String orgID=IDKeeper.getOrgID();

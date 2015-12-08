@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public class GoodTransStatusPO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6846101496473638199L;
 	private String orderID;// orderID=-1 表示没找到
 	ArrayList<String> time=new ArrayList<String>();  
 	ArrayList<String> statusString=new ArrayList<String>();

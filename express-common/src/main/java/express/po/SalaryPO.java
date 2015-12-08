@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class SalaryPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4155278183171900950L;
 	private UserRole position;//职位
 	private Strategy strategy;//薪水策略：提成、月薪、计次
 	private double value;//提成百分比，或月薪工资，或每次多少钱

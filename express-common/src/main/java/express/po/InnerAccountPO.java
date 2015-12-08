@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class InnerAccountPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 196935946990671321L;
 	private String innerAccountID;//日期
 	private ArrayList<UserInfoPO> userInfo;
 	private ArrayList<OrganizationPO> organizationInfo;

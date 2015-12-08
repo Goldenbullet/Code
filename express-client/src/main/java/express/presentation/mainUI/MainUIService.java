@@ -29,7 +29,7 @@ public interface MainUIService {
 	
 	public boolean jumpToViewStatisticUI (String s);
 	
-	public boolean jumpToStatisticDataUI (String s,int index);
+	public boolean jumpToStatisticDataUI (String s,int index,String date);
 	
 	public boolean jumpToFinanceMenuUI ();
 	
@@ -102,4 +102,8 @@ public interface MainUIService {
 	public boolean jumpTotransSaleShipmentDocUI ();
 	
 	public boolean jumpTotransSaleArrivalDocUI ();
+
+	public boolean jumpToViewProfitUI();
+
+	public boolean jumpToViewOperateUI();
 }

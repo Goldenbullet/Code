@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class ReceiveInfoPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8319499838263305137L;
 	private String receiverName;
 	private String receiveTime;
 	private String OrderID;

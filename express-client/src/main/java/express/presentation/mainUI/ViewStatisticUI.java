@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -12,6 +13,11 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import express.businessLogic.statisticBL.OperateStatistic;
+import express.businessLogic.statisticBL.ProfitStatistic;
+import express.businesslogicService.financialBLService.OperateManagerBLService;
+import express.businesslogicService.financialBLService.ProfitManagerBLService;
+
 
 public class ViewStatisticUI extends JPanel{
 
@@ -19,7 +25,7 @@ public class ViewStatisticUI extends JPanel{
 	private MainUIService m;
 	private JTable table;
     private JScrollPane scrollPane; 
-	private String[] title;
+	private ArrayList<String> title;
 	private String str;
 	
 	public ViewStatisticUI(MainUIService main,String s){
@@ -34,9 +40,9 @@ public class ViewStatisticUI extends JPanel{
 		title = getdate(s);
 		String[] tableheader =new String[1];
 		tableheader[0] = s;
-		String[][] tabledata = new String[title.length][1];
-		for(int i = 0;i<title.length;i++){
-			tabledata[i][0] = title[i];
+		String[][] tabledata = new String[title.size()][1];
+		for(int i = 0;i<title.size();i++){
+			tabledata[i][0] = title.get(i);
 		}
 		table = new JTable(tabledata,tableheader);
 		table.setRowHeight(40);
@@ -63,9 +69,16 @@ public class ViewStatisticUI extends JPanel{
 		exit.addMouseListener(listener);
 	}
 	
-	private String[] getdate(String s){
-		String[] str = {"2015-10-11--2015-11-27","2015-3-15--2015-5-21"};
-		return str;
+	private ArrayList<String> getdate(String s){
+		ArrayList<String> titlearr = new ArrayList<String>();
+		if(s.equals("经营状况表")){
+		OperateManagerBLService oper = new OperateStatistic();
+		titlearr = oper.getOperateFormListTitle();
+		}else if(s.equals("成本收益表")){
+			ProfitManagerBLService profits = new ProfitStatistic();
+			titlearr = profits.getProfitFormListTitle();
+		}
+		return titlearr;
 	}
 	
 	private class Listener implements MouseListener{
@@ -76,9 +89,10 @@ public class ViewStatisticUI extends JPanel{
 				m.jumpTomanagerMenuUI();			
 			}else if(e.getSource()==table){
 				int index = table.getSelectedRow();
-				m.jumpToStatisticDataUI(str, index);
+				String date = title.get(index);
+				m.jumpToStatisticDataUI(str, index,date);
 			}	
-			repaint();
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent e) {
@@ -100,5 +114,5 @@ public class ViewStatisticUI extends JPanel{
 			// TODO Auto-generated method stub
 			
 		}
-	}	
+	}
 }

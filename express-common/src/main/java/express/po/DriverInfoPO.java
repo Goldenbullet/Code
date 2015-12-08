@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class DriverInfoPO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6556719974735812163L;
 	private String driverNumber;
 	private String orgID;
 	private String name;

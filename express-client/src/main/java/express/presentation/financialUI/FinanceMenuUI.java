@@ -106,7 +106,7 @@ public class FinanceMenuUI extends JPanel {
 		viewstatisticpop.setFont(font);
 		viewprofits = new JMenuItem("查看成本收益表");
 		viewprofits.setFont(font);
-		viewoperate = new JMenuItem("查看经营状况表");
+		viewoperate = new JMenuItem("查看经营状态表");
 		viewoperate.setFont(font);
 		viewstatisticpop.add(viewprofits);
 		viewstatisticpop.add(viewoperate);
@@ -235,9 +235,9 @@ public class FinanceMenuUI extends JPanel {
 			} else if (e.getSource().equals(createoperate)) {
 				m.jumpToFinanceCreateOperateUI();
 			}else if (e.getSource().equals(viewprofits)) {
-				m.jumpToViewStatisticUI("成本收益表");
+				m.jumpToViewProfitUI();
 			}else if (e.getSource().equals(viewoperate)) {
-				m.jumpToViewStatisticUI("经营状况表");
+				m.jumpToViewOperateUI();
 			}
 			updateUI();
 		}

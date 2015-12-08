@@ -7,11 +7,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import express.po.UserRole;
 import express.presentation.mainUI.MainUIService;
 import express.vo.UserInfoVO;
 
@@ -20,8 +22,11 @@ public class managerMemberUI extends JPanel{
 	private MainUIService m;
 	private JButton ok,exit;
 	private JRadioButton male,female;
-	private JTextField nametf,idtf,citytf,positiontf,phonetf,datetf;
-	private String name,id,city,position,phone,date;
+	private ButtonGroup gender;
+	private JTextField nametf,idtf,phonetf,datetf;
+	private JComboBox positioncb,citycb;
+	private String name,id,city,phone,date;
+	private UserRole position;
 	private boolean sex;
 	private UserInfoVO userinfo;
 	
@@ -52,7 +57,7 @@ public class managerMemberUI extends JPanel{
 		genderl.setBounds(leftside1, 150, 100, 50);
 		this.add(genderl);
 		
-		ButtonGroup gender = new ButtonGroup();
+		gender = new ButtonGroup();
 		male = new JRadioButton("男");
 		male.setBounds(leftside2, 150, 50, 40);
 		male.setFont(font);
@@ -80,22 +85,29 @@ public class managerMemberUI extends JPanel{
 		positionl.setFont(font);
 		this.add(positionl);
 		
-		positiontf = new JTextField();
-//		positiontf.setText("职位");
-		positiontf.setBounds(leftside2, 310, 100, 40);
-		positiontf.setFont(f);
-		this.add(positiontf);
+		positioncb = new JComboBox();
+		positioncb.addItem("快递员");
+		positioncb.addItem("管理员");
+		positioncb.addItem("总经理");	
+		positioncb.addItem("普通财务人员");	
+		positioncb.addItem("最高权限财务人员");	
+		positioncb.addItem("中转中心仓库管理人员");	
+		positioncb.addItem("中转中心业务员");
+		positioncb.addItem("营业厅业务员");
+		positioncb.setBounds(leftside2, 310, 100, 40);
+		positioncb.setFont(f);
+		this.add(positioncb);
 		
 		JLabel cityl = new JLabel("所在城市");
 		cityl.setBounds(leftside1, 360, 100, 50);
 		cityl.setFont(font);
 		this.add(cityl);
 		
-		citytf = new JTextField();
-//		phonetf.setText("所在城市");
-		citytf.setBounds(leftside2, 370, 100, 40);
-		citytf.setFont(f);
-		this.add(citytf);
+		citycb = new JComboBox();
+		 addcity();
+		citycb.setBounds(leftside2, 370, 100, 40);
+		citycb.setFont(f);
+		this.add(citycb);
 		
 		JLabel phonel = new JLabel("联系方式");
 		phonel.setBounds(leftside1, 420, 100, 50);
@@ -132,6 +144,11 @@ public class managerMemberUI extends JPanel{
 		exit.addMouseListener(new Listener());
 	}
 	
+	private void addcity(){
+		citycb.addItem("南京");
+		citycb.addItem("北京");
+		citycb.addItem("上海");
+	}
 	private class Listener implements MouseListener{
 
 		public void mouseClicked(MouseEvent e) {
@@ -140,23 +157,27 @@ public class managerMemberUI extends JPanel{
 //				m.jumpTomanagerMenuUI();
 				nametf.setText("");
 				idtf.setText("");
-				positiontf.setText("");
-				citytf.setText("");
+				positioncb.setSelectedIndex(0);
+				citycb.setSelectedIndex(0);
 				phonetf.setText("");
 				datetf.setText("");
+				gender.clearSelection();
 			}else if(e.getSource()==ok){
 				name = nametf.getText();
 				id = idtf.getText();
-				position = positiontf.getText();
-				city = citytf.getText();
+				position = UserRole.values()[positioncb.getSelectedIndex()];
+				System.out.println(position);System.out.println(UserRole.DeliverMan);
+				city = citycb.getSelectedItem().toString();
 				phone = phonetf.getText();
 				date = datetf.getText();
 				if(male.isSelected())
 					sex = true;
 				else if(female.isSelected())
-					sex = false;			
+					sex = false;		
+				String tip = "信息未填写完整";
+				Reminder re = new Reminder(tip);
 			}
-			repaint();
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent e) {

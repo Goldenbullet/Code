@@ -20,9 +20,9 @@ public class PaymentDocIO extends UnicastRemoteObject implements PaymentDocDataS
 		try {
 			paymentList=(ArrayList<PaymentDocPO>)io.readFromDisk(filename);
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class PaymentDocIO extends UnicastRemoteObject implements PaymentDocDataS
 		try {
 			io.writeToDisk(filename, paymentList);
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return false;
 	}

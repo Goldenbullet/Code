@@ -5,14 +5,18 @@ import java.util.ArrayList;
 
 public class OperateFormPO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4528353185474014511L;
 	private String startDate;
 	private String endDate;
 	private ArrayList<ReceiveDocPO> receiveDoc;
-	private ArrayList<PaymentDocPO> paymentDoc;
+	private ArrayList<PaymentItem> paymentDoc;
 
 	public OperateFormPO(String startDate, String endDate,
 			ArrayList<ReceiveDocPO> receiveDoc,
-			ArrayList<PaymentDocPO> paymentDoc) {
+			ArrayList<PaymentItem> paymentDoc) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.receiveDoc = receiveDoc;
@@ -38,7 +42,7 @@ public class OperateFormPO implements Serializable{
 		return receiveDoc;
 	}
 
-	public ArrayList<PaymentDocPO> getPaymentDoc() {
+	public ArrayList<PaymentItem> getPaymentDoc() {
 		return paymentDoc;
 	}
 
@@ -54,7 +58,7 @@ public class OperateFormPO implements Serializable{
 		receiveDoc = r;
 	}
 
-	public void setPaymentDoc(ArrayList<PaymentDocPO> p) {
+	public void setPaymentDoc(ArrayList<PaymentItem> p) {
 		paymentDoc = p;
 	}
 }

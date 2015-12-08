@@ -41,7 +41,7 @@ public class ShipmentDocTransCenterIO extends UnicastRemoteObject implements Tra
 	public ShipmentDocTransCenterPO getShipmentDoc(String ShipmenID) throws RemoteException{  //根据订单号找装车单？//根据shipmentID
 		int len=shipmentdoclist.size();
 		for(int i=0;i<len;i++){
-			if(shipmentdoclist.get(i).getshipmentID().equals(ShipmenID)){
+			if(shipmentdoclist.get(i).getShipmentID().equals(ShipmenID)){
 				return shipmentdoclist.get(i);
 			}
 

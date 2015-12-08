@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class UserInfoAdminPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5302126120989367642L;
 	private String name;
 	private String id;
 	private UserRole position;

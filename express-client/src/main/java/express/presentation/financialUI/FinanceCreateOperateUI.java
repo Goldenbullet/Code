@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,23 +22,25 @@ import javax.swing.table.TableColumnModel;
 
 import express.businessLogic.statisticBL.OperateStatistic;
 import express.businesslogicService.financialBLService.OperateFinanceBLService;
+import express.po.PaymentItem;
 import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
+import express.vo.OperateFormVO;
+import express.vo.PaymentDocVO;
 import express.vo.ReceiveDocVO;
 
 public class FinanceCreateOperateUI extends JPanel {
 
 	private MainUIService m;
-	private JButton ok, exit;
+	private JButton ok, exit,count;
 	private JTable operatetable;
 	private JScrollPane scrollPane;
 	private JTextField startdatetf, enddatetf;
 	private DateChooser datechoosers, datechoosere;
 	private String beginDate ="", endDate = "";
-	private String[][] data= {{" "," "},{" "," "}};
-	private String[] tableheader = { "收款单", "付款单" };
-	 private DefaultTableModel tableModel;
-
+	private String[] tableheader = { "收款日期", "收款金额", "付款日期", "付款金额", "付款条目" };
+	private DefaultTableModel tableModel;
+	private String[][] data= null;
 	public FinanceCreateOperateUI(MainUIService main) {
 		setLayout(null);
 		m = main;
@@ -78,8 +84,8 @@ public class FinanceCreateOperateUI extends JPanel {
 	
 		tableModel = new DefaultTableModel(data, tableheader);
 		operatetable = new JTable(tableModel);
+		operatetable.getTableHeader().setFont(f);
 		operatetable.setRowHeight(40);
-
 		// TableColumnModel columns = operatetable.getColumnModel();
 		// TableColumn column1 = columns.getColumn(0);
 		// column1.setPreferredWidth(200);
@@ -103,15 +109,24 @@ public class FinanceCreateOperateUI extends JPanel {
 
 		Listener listen = new Listener();
 
-		ok = new JButton("生成");
-		ok.setBounds(250, 590, 110, 40);
+		count = new JButton("查看经营状态");
+		count.setBounds(300, 570, 200, 40);
+		count.setFont(new Font("隶书", Font.PLAIN, 20));
+		count.setVisible(true);
+		count.addMouseListener(listen);
+		this.add(count);
+		
+		ok = new JButton("添加表格");
+		ok.setBounds(250, 570, 120, 40);
 		ok.setFont(new Font("隶书", Font.PLAIN, 20));
+		ok.setVisible(false);
 		ok.addMouseListener(listen);
 		this.add(ok);
 
 		exit = new JButton("取消");
-		exit.setBounds(420, 590, 110, 40);
+		exit.setBounds(420, 570, 120, 40);
 		exit.setFont(new Font("隶书", Font.PLAIN, 20));
+		exit.setVisible(false);
 		exit.addMouseListener(listen);
 		this.add(exit);
 
@@ -120,21 +135,89 @@ public class FinanceCreateOperateUI extends JPanel {
 	public void getdocs() {
 		String[][] docs = null;
 		
-		if (!beginDate.equals("") && !endDate.equals("")) {
-			OperateFinanceBLService oper = new OperateStatistic();
-			ArrayList<ReceiveDocVO> receive = oper.addOperateForm(beginDate,
-					endDate).getReceiveDoc();
-			if (receive != null) {
-				docs = new String[receive.size()][2];
-				for (int i = 0; i < receive.size(); i++) {
-					docs[i][0] = receive.get(i).getReceiveDate() + "    "
-							+ receive.get(i).getReceivePrice();System.out.println(docs[i][0]);
-							docs[i][1] = "  ";
-				}
-			}
-			tableModel.setDataVector(docs, tableheader);
+		if (endDate.equals("")) {
+			Date d = new Date();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String time = format.format(d);
+			endDate = time;
+		}
+		if(beginDate.equals("")){	
+			beginDate = " ";
 		}
 		
+		OperateFinanceBLService oper = new OperateStatistic();
+		
+		if (!oper.checkDateAvailable(beginDate, endDate)) {
+			
+			JOptionPane.showConfirmDialog(null, "日 期 选 择 错 误：\n"
+					+ "起 始 日 期 晚 于 终 止 日 期", null, JOptionPane.DEFAULT_OPTION,
+					JOptionPane.WARNING_MESSAGE, null);
+		} else {
+			OperateFormVO vo = oper.createOperateForm(beginDate, endDate);
+			
+			ArrayList<ReceiveDocVO> receList = vo.getReceiveDoc();
+			ArrayList<PaymentItem> payList = vo.getPaymentDoc();
+			int lenRece = 0;
+			int lenPay = 0;
+			int max = 0;
+			
+			if (receList != null) {
+				lenRece = receList.size();
+			}
+			if(payList != null){
+				lenPay = payList.size();
+			}
+			
+			max = Math.max(lenRece, lenPay);
+				
+			docs = new String[max][5];
+			for (int i = 0; i < lenRece; i++) {
+				ReceiveDocVO rece = receList.get(i);
+				docs[i][0] = rece.getReceiveDate();
+				docs[i][1] = rece.getReceivePrice() + "";
+			}
+			
+			for (int i = 0; i < lenPay; i++) {
+				PaymentItem pay = payList.get(i);
+				docs[i][2] = pay.getDate();
+				docs[i][3] = pay.getSum() + "";
+				docs[i][4] = pay.getEntry();
+			}
+			
+			tableModel.setDataVector(docs, tableheader);
+		}
+
+	}
+	
+	private void addOperateForm(){
+		if (endDate.equals("")) {
+			Date d = new Date();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String time = format.format(d);
+			endDate = time;
+		}
+		if(beginDate.equals("")){	
+			beginDate = " ";
+		}
+		
+		OperateFinanceBLService oper = new OperateStatistic();
+		boolean succ = oper.addOperateForm(beginDate, endDate);
+		if(succ){
+			if(succ){
+				JOptionPane.showConfirmDialog(null,
+					       "添 加 成 功！", null,JOptionPane.DEFAULT_OPTION,
+					       JOptionPane.INFORMATION_MESSAGE, null);
+			}
+			else{
+				JOptionPane.showConfirmDialog(null,
+					       "添 加 失 败！", null,JOptionPane.DEFAULT_OPTION,
+					       JOptionPane.WARNING_MESSAGE, null);
+			}
+		}
+		count.setVisible(true);
+		ok.setVisible(false);
+		exit.setVisible(false);
+		repaint();
 	}
 
 	private class Listener implements MouseListener {
@@ -142,11 +225,21 @@ public class FinanceCreateOperateUI extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == exit) {
-				m.jumpToFinanceMenuUI();
-			} else if (e.getSource() == ok) {
+				startdatetf.setText("");
+				enddatetf.setText("");
+				tableModel.setRowCount(0);
+				count.setVisible(true);
+				ok.setVisible(false);
+				exit.setVisible(false);
+			} else if (e.getSource() == count) {
+				count.setVisible(false);
+				ok.setVisible(true);
+				exit.setVisible(true);
 				beginDate = startdatetf.getText();
 				endDate = enddatetf.getText();
 				getdocs();
+			} else if(e.getSource() == ok) {
+				addOperateForm();
 			}
 			repaint();
 		}

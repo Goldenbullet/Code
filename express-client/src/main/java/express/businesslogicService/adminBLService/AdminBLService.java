@@ -7,6 +7,8 @@ import express.vo.UserInfoVO;
 
 public interface AdminBLService {
 	
+	public boolean checkUserID(String id);
+	
 	public boolean addUser(UserInfoAdminVO vo);
 	
 	public UserInfoAdminVO getUser(String id);

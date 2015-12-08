@@ -3,11 +3,9 @@ package express.businessLogic.statisticBL;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,7 +78,7 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 		p = income - outcome;
 
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = format.format(date);
 
 		ProfitFormVO profitForm = new ProfitFormVO(time, income, outcome, p);
@@ -154,7 +152,7 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 			}
 			
 			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-			HSSFSheet sheet = wb.createSheet(profit.getTitle());
+			HSSFSheet sheet = wb.createSheet(profit.getTitle().substring(0, 10));
 
 			HSSFCellStyle style = wb.createCellStyle();
 			style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
@@ -166,7 +164,7 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 			// 第一行，设置表头，yyyy-MM-dd 成本收益表
 			HSSFRow row = sheet.createRow(0);
 			cell = row.createCell(0);
-			cell.setCellValue(profit.getTitle() + " 成本收益表");
+			cell.setCellValue(profit.getTitle().substring(0, 10) + " 成本收益表");
 			cell.setCellStyle(style);
 
 			// 第二行

@@ -78,7 +78,7 @@ public class OperateStatistic implements OperateFinanceBLService {
 		ArrayList<PaymentDocVO> payList = pay.getAllPaymentDoc();
 
 		ArrayList<ReceiveDocVO> selectReceive = new ArrayList<ReceiveDocVO>();
-		ArrayList<PaymentDocVO> selectPay = new ArrayList<PaymentDocVO>();
+		ArrayList<PaymentItem> selectPay = new ArrayList<PaymentItem>();
 
 		if (receiveList != null) {
 
@@ -100,8 +100,13 @@ public class OperateStatistic implements OperateFinanceBLService {
 				date = date.substring(0, 10);
 				if (date.compareTo(beginDate) >= 0
 						&& date.compareTo(endDate) <= 0) {
-
-					selectPay.add(vo);
+					ArrayList<PaymentItem> list = vo.getPaymentList();
+					if(list != null){
+						for(int i = 0;i < list.size();i++){
+							selectPay.add(list.get(i));
+						}
+					}
+					
 				}
 			}
 		}
@@ -122,7 +127,7 @@ public class OperateStatistic implements OperateFinanceBLService {
 		operateForm.setEndDate(endDate);
 
 		ArrayList<ReceiveDocPO> selectReceive = new ArrayList<ReceiveDocPO>();
-		ArrayList<PaymentDocPO> selectPay = new ArrayList<PaymentDocPO>();
+		ArrayList<PaymentItem> selectPay = new ArrayList<PaymentItem>();
 
 		if (receiveList != null) {
 
@@ -144,8 +149,12 @@ public class OperateStatistic implements OperateFinanceBLService {
 				date = date.substring(0, 10);
 				if (date.compareTo(beginDate) >= 0
 						&& date.compareTo(endDate) <= 0) {
-
-					selectPay.add(po);
+					ArrayList<PaymentItem> list = po.getPaymentList();
+					if(list != null){
+						for(int i = 0;i < list.size();i++){
+							selectPay.add(list.get(i));
+						}
+					}
 				}
 			}
 		}
@@ -165,7 +174,8 @@ public class OperateStatistic implements OperateFinanceBLService {
 	public boolean checkDateAvailable(String beginDate, String endDate) {
 		if (beginDate.compareTo(endDate) > 0)
 			return false;
-		return true;
+		else
+			return true;
 	}
 
 	private OperateFormVO transPOToVO(OperateFormPO po) {
@@ -260,13 +270,11 @@ public class OperateStatistic implements OperateFinanceBLService {
 			}
 
 			ArrayList<ReceiveDocVO> receiveList = operateForm.getReceiveDoc();
-			ArrayList<PaymentDocVO> payList = operateForm.getPaymentDoc();
-			ArrayList<PaymentItem> itemList = new ArrayList<PaymentItem>();
+			ArrayList<PaymentItem> payList = operateForm.getPaymentDoc();
 			ArrayList<HSSFRow> rowList = new ArrayList<HSSFRow>();
 
 			int lenReceive = 0;
 			int lenPay = 0;
-			int lenItem = 0;
 			int max;
 			if (receiveList != null) {
 				lenReceive = receiveList.size();
@@ -274,18 +282,8 @@ public class OperateStatistic implements OperateFinanceBLService {
 			if (payList != null) {
 				lenPay = payList.size();
 			}
-			for (int i = 0; i < lenPay; i++) {
-				PaymentDocVO vo = payList.get(i);
-				ArrayList<PaymentItem> list = vo.getPaymentList();
-				if (list != null) {
-					for (int j = 0; j < list.size(); j++) {
-						itemList.add(list.get(j));
-					}
-					lenItem += list.size();
-				}
-			}
 
-			max = Math.max(lenReceive, lenItem);
+			max = Math.max(lenReceive, lenPay);
 
 			for (int i = 0; i < max; i++) {
 				HSSFRow row3 = sheet.createRow(i + 3);
@@ -305,8 +303,8 @@ public class OperateStatistic implements OperateFinanceBLService {
 				cell.setCellStyle(style);
 			}
 
-			for (int i = 0; i < lenItem; i++) {
-				PaymentItem vo = itemList.get(i);
+			for (int i = 0; i < lenPay; i++) {
+				PaymentItem vo = payList.get(i);
 				HSSFRow row3 = rowList.get(i);
 				// 付款日期
 				cell = row3.createCell(2);

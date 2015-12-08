@@ -1,8 +1,14 @@
 package express.po;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class HistoryTimePO {//每次完成一个订单后 生成一个Po
+public class HistoryTimePO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7074031700356105007L;
+	//每次完成一个订单后 生成一个Po
 	private String startCity;
 	private String endCity;
 	private String setOutTime;

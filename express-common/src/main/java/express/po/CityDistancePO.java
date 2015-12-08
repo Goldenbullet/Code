@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class CityDistancePO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4335918348452469653L;
 	private String city1;
 	private String city2;
 	private double distance;

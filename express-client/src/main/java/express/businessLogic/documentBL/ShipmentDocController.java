@@ -42,7 +42,9 @@ public class ShipmentDocController implements TransCenterSaleShipmentDocblServic
 				return shipmentdoc.getAllShipmentDoc();
 			}
 
-
+			public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDocPO(){
+				return shipmentdoc.getAllShipmentDocPO();
+			}
 
 			@Override
 			public String getShipmentDocID() {

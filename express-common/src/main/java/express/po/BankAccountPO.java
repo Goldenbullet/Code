@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class BankAccountPO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8285366658373568397L;
 	private String name;
 	private double income;
 	private double outcome;

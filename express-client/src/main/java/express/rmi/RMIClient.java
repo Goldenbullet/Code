@@ -16,6 +16,7 @@ import express.dataService.documentDataService.BusinessSaleShipmentDocDataServic
 import express.dataService.documentDataService.BusinessSaleShipmentDocumentDataService;
 import express.dataService.documentDataService.DeliverCreateOrderDataService;
 import express.dataService.documentDataService.GoodsStatusDataService;
+import express.dataService.documentDataService.OutDocDataService;
 import express.dataService.documentDataService.PaymentDocDataService;
 import express.dataService.documentDataService.PredictTimeDataService;
 import express.dataService.documentDataService.ReceiveInfoDataService;
@@ -62,18 +63,16 @@ public class RMIClient {
 	private static BusinessSaleArrivalDocumentDataService arrivaldoc;
 	private static BusinessSaleReceiveDocumentDataService receivedoc;
 	private static DeliverCreateOrderDataService order;
-	//
 	private static GoodsStatusDataService search;
 	private static TransCenterArrivalDocumentDataService transcenterarrivaldoc;
 	private static TransCenterShipmentDocDataService shipmentdoc;
 	private static PredictTimeDataService predicttime;
 	private static ReceiveInfoDataService receiveinfo;
 	private static TransCenterTransferDocDataService transferdoc;
-
 	private static GoodsStatusDataService goodstatus;
 	private static BusinessSaleShipmentDocDataService businessShipmentdoc;
-
-	  private static BusinessSaleArrivalDocumentDataService businessArrivalDoc;
+	private static BusinessSaleArrivalDocumentDataService businessArrivalDoc;
+	private static OutDocDataService outDoc;
 
 	public synchronized static void init() throws ClientException {
 		if (inited) {
@@ -96,6 +95,7 @@ public class RMIClient {
 	private static void initObjects() throws MalformedURLException,
 			RemoteException, NotBoundException {
 		String urlPrefix = "rmi://" + IP + ":1099/";
+		
 		bankAccount = (BankAccountDataService) Naming.lookup(urlPrefix
 				+ "BankAccount-data");
 		paymentDoc = (PaymentDocDataService) Naming.lookup(urlPrefix
@@ -126,25 +126,17 @@ public class RMIClient {
 				+ "UserSign-data");
 		deliverdoc = (BusinessSaleDeliverDocumentDataService) Naming
 				.lookup(urlPrefix + "DeliverDoc-data");
-		// shipmentdoc=(BusinessSaleShipmentDocumentDataService)
-		// Naming.lookup(urlPrefix+"ShipmentDoc-data");
-		receivedoc=(BusinessSaleReceiveDocumentDataService)
-				Naming.lookup((urlPrefix)+"ReceiveDoc-data");
+		receivedoc = (BusinessSaleReceiveDocumentDataService) Naming
+				.lookup((urlPrefix) + "ReceiveDoc-data");
 		order = (DeliverCreateOrderDataService) Naming.lookup(urlPrefix
 				+ "Order-data");
-		//
-
-//	      shipmentdoc=(BusinessSaleShipmentDocumentDataService) Naming.lookup(urlPrefix+"ShipmentDoc-data");
-//	      transcenterarrivaldoc=(TransCenterArrivalDocumentDataService) Naming.lookup((urlPrefix)+"TransCenterArrivalDoc-data");
-//	      receivedoc=(BusinessSaleReceiveDocumentDataService) Naming.lookup((urlPrefix)+"ReceiveDoc-data");
-//	      log=(LogDataService)Naming.lookup(urlPrefix+"Log-data");
-//	      price=(PriceDataService) Naming.lookup(urlPrefix+"PriceStrategy-data");
-	     // predicttime=(PredictTimeDataService) Naming.lookup(urlPrefix+"PredictTime-data");
-	      receiveinfo=(ReceiveInfoDataService) Naming.lookup(urlPrefix+"ReceiveInfo-data");
-	      //goodstatus=(GoodsStatusDataService) Naming.lookup(urlPrefix+"Search-data");
-	      //businessShipmentdoc=(BusinessSaleShipmentDocDataService) Naming.lookup(urlPrefix+"BusinessShipmentDoc-data");
-	      transferdoc=(TransCenterTransferDocDataService) Naming.lookup(urlPrefix+"TransferDoc-data");
-	      businessArrivalDoc=(BusinessSaleArrivalDocumentDataService)Naming.lookup(urlPrefix+"BusinessHallArrivalDoc-data");
+		receiveinfo = (ReceiveInfoDataService) Naming.lookup(urlPrefix
+				+ "ReceiveInfo-data");
+		transferdoc = (TransCenterTransferDocDataService) Naming
+				.lookup(urlPrefix + "TransferDoc-data");
+		businessArrivalDoc = (BusinessSaleArrivalDocumentDataService) Naming
+				.lookup(urlPrefix + "BusinessHallArrivalDoc-data");
+		outDoc = (OutDocDataService)  Naming.lookup(urlPrefix + "OutDoc-data");
 	}
 
 	public static BankAccountDataService getBankAccountObject() {
@@ -226,36 +218,45 @@ public class RMIClient {
 	public static DeliverCreateOrderDataService getOrderObject() {
 		return order;
 	}
-	//
-	  public static GoodsStatusDataService getSearchObject() {
+
+	public static GoodsStatusDataService getSearchObject() {
 		return search;
-	  }
-	  public static TransCenterArrivalDocumentDataService getTransCenterArrivalDocObject(){
-		  return transcenterarrivaldoc;
-	  }
-	  public static TransCenterShipmentDocDataService getShipmentDocObject(){
-		  return shipmentdoc;
-	  }
-	  public static PredictTimeDataService getPredictTimeObject(){
-		  return predicttime;
-	  }
-	  public static ReceiveInfoDataService getReceiveInfoObject() {
+	}
+
+	public static TransCenterArrivalDocumentDataService getTransCenterArrivalDocObject() {
+		return transcenterarrivaldoc;
+	}
+
+	public static TransCenterShipmentDocDataService getShipmentDocObject() {
+		return shipmentdoc;
+	}
+
+	public static PredictTimeDataService getPredictTimeObject() {
+		return predicttime;
+	}
+
+	public static ReceiveInfoDataService getReceiveInfoObject() {
 		return receiveinfo;
-	  }
-	  public static GoodsStatusDataService getGoodStatusObject(){
-		  return goodstatus;
-	  }
-	  
-	  public static BusinessSaleShipmentDocDataService getBusinessShipmentDocObject(){
-		  return businessShipmentdoc;
-	  }
-	  
-	  public static TransCenterTransferDocDataService getTransferDocObject(){
-		  return transferdoc;
-	  }
-	 
-	  public static BusinessSaleArrivalDocumentDataService getBusinessHallArrivalDocObject() {
+	}
+
+	public static GoodsStatusDataService getGoodStatusObject() {
+		return goodstatus;
+	}
+
+	public static BusinessSaleShipmentDocDataService getBusinessShipmentDocObject() {
+		return businessShipmentdoc;
+	}
+
+	public static TransCenterTransferDocDataService getTransferDocObject() {
+		return transferdoc;
+	}
+
+	public static BusinessSaleArrivalDocumentDataService getBusinessHallArrivalDocObject() {
 		return businessArrivalDoc;
+	}
+	
+	public static OutDocDataService getOutDocObject(){
+		return outDoc;
 	}
 
 }

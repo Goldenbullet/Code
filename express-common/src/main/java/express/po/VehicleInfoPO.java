@@ -3,6 +3,10 @@ package express.po;
 import java.io.Serializable;
 
 public class VehicleInfoPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9078943558557300245L;
 	private String mark;//车辆代号
 	private String license;//车牌号
 	private String orgID;//机构名称
