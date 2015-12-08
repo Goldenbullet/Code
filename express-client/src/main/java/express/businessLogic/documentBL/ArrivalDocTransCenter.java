@@ -112,7 +112,7 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 	
 	public void endArrivalDoc() {
 		SysLogBLService syslog=new SysLog();
-		syslog.addSysLog("生成到达单");
+		syslog.addSysLog("生成中转中心到达单");
 		
 		try{
 			rmiobj.writeAllArrivalDoc();
@@ -121,5 +121,39 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 		}
 		
 	}
+	
+	public ArrayList<ArrivalDocTransCenterVO> getUnExamedTransArrivalDoc(){
+		try{
+			ArrayList<ArrivalDocTransCenterPO> list=rmiobj.getArrivalDoclist();
+			ArrayList<ArrivalDocTransCenterVO> unexam=new ArrayList<ArrivalDocTransCenterVO>();
+			
+			
+			for(ArrivalDocTransCenterPO po:list){
+				if(po.getState()==false){
+					ArrivalDocTransCenterVO vo=new ArrivalDocTransCenterVO(po.getOrderID(), po.getArriveDate(), po.getTransCenterID(), 
+															po.getTransferDocID(),po.getDeparture(), po.getArrivalStatus());
+					unexam.add(vo);				
+				}
+			}
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean changeTransCenterArrivalDoc(ArrivalDocTransCenterVO vo){
+		ArrivalDocTransCenterPO po=new ArrivalDocTransCenterPO(vo.getOrderID(),vo.getArriveDate(),vo.getTransCenterID(),vo.getTransferDocID()
+				,vo.getDeparture(),vo.getArrivalStatus());
+			try{
+				rmiobj.changeArrialDoc(po);
+				return true;
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+	}
+	
+	
 
 }

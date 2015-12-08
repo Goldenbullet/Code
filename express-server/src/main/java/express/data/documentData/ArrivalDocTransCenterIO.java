@@ -17,7 +17,7 @@ import express.po.DeliverDocPO;
 public class ArrivalDocTransCenterIO extends UnicastRemoteObject implements TransCenterArrivalDocumentDataService{
 
 	ArrayList<ArrivalDocTransCenterPO> arrivaldoclist;
-	String filepath="SerializableData/ARArrivalDoc.ser";
+	String filepath="SerializableData/ARTransCenterArrivalDoc.ser";
 	
 	
 	public  ArrivalDocTransCenterIO() throws RemoteException{
@@ -53,8 +53,8 @@ public class ArrivalDocTransCenterIO extends UnicastRemoteObject implements Tran
 			}
 		}
 		
-		ArrivalDocTransCenterPO notfind=new ArrivalDocTransCenterPO("-1",null,null,null,null,null);
-		return notfind;
+		
+		return null;
 
 	}
 	
@@ -72,5 +72,20 @@ public class ArrivalDocTransCenterIO extends UnicastRemoteObject implements Tran
 	public ArrayList<ArrivalDocTransCenterPO> getArrivalDoclist() throws RemoteException{
 		return arrivaldoclist;
 	}
+	
+	
+	public boolean changeArrialDoc(ArrivalDocTransCenterPO po) throws RemoteException{
+		String orderid=po.getOrderID();
+		int len=arrivaldoclist.size();
+		for(int i=0;i<len;i++){
+			if(arrivaldoclist.get(i).getOrderID().equals(orderid)){
+				arrivaldoclist.set(i, po);
+				 writeAllArrivalDoc();
+				return true;
+			}
+		}
+		return false;
+	}
+	
 		
 }

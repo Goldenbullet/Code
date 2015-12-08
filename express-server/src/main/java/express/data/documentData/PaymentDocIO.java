@@ -48,6 +48,7 @@ public class PaymentDocIO extends UnicastRemoteObject implements PaymentDocDataS
 			for(PaymentDocPO po:paymentList){
 				if(po.getPaymentID().equals(id)){
 					paymentList.set(index, po);
+					writeAllPaymentDoc();
 					return true;
 				}
 				index++;

@@ -18,6 +18,7 @@ import express.po.OrderPO;
 import express.po.PackageType;
 import express.po.PredictTimePO;
 import express.vo.ArrivalTimeVO;
+import express.vo.DeliverDocVO;
 import express.vo.OrderVO;
 import express.rmi.RMIClient;
 
@@ -36,7 +37,6 @@ public class Order {
 		if(!isCellPhoneAvailable(vo.getReceiverCellPhoneNum())||!isCellPhoneAvailable(vo.getSenderCellPhoneNum())){
 			return "cellPhone error";
 		}
-		
 		
 		OrderPO po=new OrderPO();
 		po.setGoodsInfo(vo.getNumberOfGoods(), vo.getWeight(), 
@@ -201,7 +201,7 @@ public class Order {
 	
 
 	
-	public long dateToNum(String date){// date format :yyyy-mm-dd
+	private long dateToNum(String date){// date format :yyyy-mm-dd
 		String res[]=date.split("-");
 		String result=res[0]+res[1]+res[2];
 		long a=Long.parseLong(result);
@@ -228,5 +228,62 @@ public class Order {
 			return null;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public ArrayList<OrderVO> getUnExamedOrder(){
+		try{
+			ArrayList<OrderPO> list=rmiObj.getOrderlist();
+			ArrayList<OrderVO> unexam=new ArrayList<OrderVO>();
+			for(OrderPO po:list){
+				if(po.getState()==false){
+					OrderVO vo=new OrderVO();
+					vo.setOrderID(po.getOrderID());
+					vo.setGoodsInfo(po.getNumberOfGoods(), po.getWeight(), po.getVolume(), po.getNameOfGoods(), po.getType(), po.getPackageType());
+					vo.setReceiverInfo(po.getReceiverName(), po.getReceiverAddress(), po.getReceiverWorkPlace(), po.getReceiverCellPhoneNum(), po.getReceiverTelephoneNum(), po.getEndCity());
+					vo.setSenderInfo(po.getSenderName(), po.getSenderAddress(), po.getSenderWorkPlace(), po.getSenderCellPhoneNum(), po.getSenderTelephoneNum(), po.getStartCity());
+					unexam.add(vo);
+					
+				}	
+			}
+			
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public boolean changeOrder(OrderVO vo){
+		OrderPO po=new OrderPO();
+		po.setOrderID(vo.getOrderID());
+		po.setGoodsInfo(vo.getNumberOfGoods(), vo.getWeight(), vo.getVolume(), vo.getNameOfGoods(), vo.getType(), vo.getPackageType());
+		po.setReceiverInfo(vo.getReceiverName(), vo.getReceiverAddress(), vo.getReceiverWorkPlace(), vo.getReceiverCellPhoneNum(), vo.getReceiverTelephoneNum(), vo.getEndCity());
+		po.setSenderInfo(vo.getSenderName(), vo.getSenderAddress(), vo.getSenderWorkPlace(), vo.getSenderCellPhoneNum(), vo.getSenderTelephoneNum(), vo.getStartCity());
+		try{
+			rmiObj.changeOrder(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	
+	
+	
+	
 	
 }

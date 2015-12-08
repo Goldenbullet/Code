@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import express.data.IOHelper.IOHelper;
 import express.dataService.documentDataService.BusinessSaleDeliverDocumentDataService;
 import express.po.DeliverDocPO;
+import express.po.TransferDocPO;
 
 public class DeliverDocIO extends UnicastRemoteObject implements BusinessSaleDeliverDocumentDataService{
 	ArrayList<DeliverDocPO> deliverdoclist;
@@ -69,5 +70,19 @@ public class DeliverDocIO extends UnicastRemoteObject implements BusinessSaleDel
 	public ArrayList<DeliverDocPO> getDeliverDoclist() throws RemoteException{
 		return deliverdoclist;
 	}
+	
+	public boolean changeDeliverDoc(DeliverDocPO po) throws RemoteException{
+		String orderid=po.getOrderID();
+		int len=deliverdoclist.size();
+		for(int i=0;i<len;i++){
+			if(deliverdoclist.get(i).getOrderID().equals(orderid)){
+				deliverdoclist.set(i, po);
+				writeAllDeliverDoc();
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 }

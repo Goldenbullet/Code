@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import express.data.IOHelper.IOHelper;
 import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataService;
+import express.po.DeliverDocPO;
 import express.po.ReceiveDocPO;
 
 public class ReceiveDocIO extends UnicastRemoteObject implements BusinessSaleReceiveDocumentDataService{
@@ -65,6 +66,22 @@ public class ReceiveDocIO extends UnicastRemoteObject implements BusinessSaleRec
 			return receivedoclist;
 		else
 			return null;
+	}
+	
+	public boolean changeReceiveDoc(ReceiveDocPO po) throws RemoteException{
+		String delivermanID=po.getDeliverManID();
+		String date=po.getReceiveDate();
+		int len=receivedoclist.size();
+		for(int i=0;i<len;i++){
+			if(receivedoclist.get(i).getDeliverManID().equals(delivermanID)){
+				if(receivedoclist.get(i).getReceiveDate().equals(date)){
+					receivedoclist.set(i, po);
+					writeAllReceiveDoc();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

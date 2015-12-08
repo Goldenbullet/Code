@@ -82,6 +82,19 @@ public class OrderIO extends UnicastRemoteObject implements DeliverCreateOrderDa
 		return orderlist;
 	}
 	
+	public boolean changeOrder(OrderPO po) throws RemoteException{
+		String orderid=po.getOrderID();
+		int len=orderlist.size();
+		for(int i=0;i<len;i++){
+			if(orderlist.get(i).getOrderID().equals(orderid)){
+				orderlist.set(i, po);
+				writeAllOrder();
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	
 }

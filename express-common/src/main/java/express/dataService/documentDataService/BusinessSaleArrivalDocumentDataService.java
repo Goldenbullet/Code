@@ -11,7 +11,7 @@ public interface BusinessSaleArrivalDocumentDataService extends Remote{
 	public ArrivalDocBusinessHallPO getArrivalDoc(String OrderID) throws RemoteException;
 	public boolean writeAllArrivalDoc() throws RemoteException;
 	public ArrayList<ArrivalDocBusinessHallPO> getArrivalDoclist() throws RemoteException;
-	
+	public boolean changeBusinessHallArrivalDoc(ArrivalDocBusinessHallPO po) throws RemoteException;
 	
 	
 	

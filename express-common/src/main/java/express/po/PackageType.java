@@ -1,6 +1,6 @@
 package express.po;
 
 public enum PackageType {
-	DeliverBag,CardBox, WoodBox;
+	DeliverBag,CardBox, WoodBox,Other;
 
 }

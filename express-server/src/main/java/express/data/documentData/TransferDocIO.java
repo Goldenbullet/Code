@@ -61,5 +61,19 @@ public class TransferDocIO extends UnicastRemoteObject implements TransCenterTra
 	public ArrayList<TransferDocPO> getTransferDoclist() throws RemoteException {
 		return transferdoclist;
 	}
+	
+	public boolean changeTransferDoc(TransferDocPO po) throws RemoteException{
+		String transid=po.getTransDocID();
+		int len=transferdoclist.size();
+		for(int i=0;i<len;i++){
+			if(transferdoclist.get(i).getTransDocID().equals(transid)){
+				transferdoclist.set(i, po);
+				writeAllTransferDoc();
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 }

@@ -139,7 +139,39 @@ public class ArrivalDocBusinessHall implements BusinessSaleArrivalDocumentblServ
 		return checker.isOrderIDAvailable(id);
 	}
 
-
+	public ArrayList<ArrivalDocBusinessHallVO> getUnExamedBusinessHallArrivalDoc(){
+		try{
+			ArrayList<ArrivalDocBusinessHallPO> list=rmiObj.getArrivalDoclist();
+			ArrayList<ArrivalDocBusinessHallVO> unexam=new ArrayList<ArrivalDocBusinessHallVO>();
+			
+			
+			for(ArrivalDocBusinessHallPO po:list){
+				if(po.getState()==false){
+					ArrivalDocBusinessHallVO vo=new ArrivalDocBusinessHallVO(po.getArriveTime(), po.getTransferDocID(), po.getDeparture(), 
+							po.getArrivalStatus(), po.getOrderID());
+					unexam.add(vo);
+				}
+			}
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	public boolean changeBusinessHallArrivalDoc(ArrivalDocBusinessHallVO vo){
+		ArrivalDocBusinessHallPO po=new ArrivalDocBusinessHallPO(vo.getArriveTime(), vo.getTransferDocID(), vo.getDeparture(),
+				vo.getArrivalStatus(), vo.getOrderID());
+		try{
+			rmiObj.changeBusinessHallArrivalDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		
+		
+	}
 
 }

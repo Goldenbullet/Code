@@ -64,5 +64,18 @@ public class ShipmentDocBusinessHallIO extends UnicastRemoteObject implements Bu
 	public ArrayList<ShipmentDocBusinessHallPO> getShipmentDoclist() throws RemoteException {
 		return shipmentdoclist;
 	}
+	
+	public boolean changeBusinessHallShipmentDoc(ShipmentDocBusinessHallPO po) throws RemoteException{
+		String shpimentid=po.getShipmentID();
+		int len=shipmentdoclist.size();
+		for(int i=0;i<len;i++){
+			if(shipmentdoclist.get(i).getShipmentID().equals(shpimentid)){
+				shipmentdoclist.set(i, po);
+				writeAllShipmentDoc();
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

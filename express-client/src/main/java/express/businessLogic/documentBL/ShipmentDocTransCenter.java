@@ -13,9 +13,11 @@ import express.dataService.documentDataService.TransCenterShipmentDocDataService
 import express.po.DeliverDocPO;
 import express.po.ShipmentDocBusinessHallPO;
 import express.po.ShipmentDocTransCenterPO;
+import express.po.TransferDocPO;
 import express.vo.OrderVO;
 import express.vo.ShipmentDocBusinessHallVO;
 import express.vo.ShipmentDocTransCenterVO;
+import express.vo.TransferDocVO;
 import express.rmi.RMIClient;
 
 public class ShipmentDocTransCenter {   //不用implements
@@ -117,16 +119,6 @@ public class ShipmentDocTransCenter {   //不用implements
 		}
 	}
 	
-	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDocPO(){
-		try {
-			return rmiObj.getShipmentDoclist();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	public String getShipmentDocID(){
 		String ID="";
 		String orgID=IDKeeper.getOrgID();
@@ -173,7 +165,48 @@ public class ShipmentDocTransCenter {   //不用implements
 	}
 	
 	
+	public ArrayList<ShipmentDocTransCenterVO> getUnExamedShipmentDoc(){
+		try{
+			ArrayList<ShipmentDocTransCenterPO> list=rmiObj.getShipmentDoclist();
+			ArrayList<ShipmentDocTransCenterVO> unexam=new ArrayList<ShipmentDocTransCenterVO>();
+			
+			
+			for(ShipmentDocTransCenterPO po:list){
+				if(po.getState()==false){
+					ShipmentDocTransCenterVO vo=new ShipmentDocTransCenterVO(po.getDate(), po.getTransId(), po.getArrivalPlace(), po.getVanID(), po.getCheckMan(), 
+							po.getTransMan(), po.getAllOrder(), po.getMoney(), po.getShipmentID(), po.getStartPlace());
+					unexam.add(vo);				
+				}
+			}
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	public boolean changeTransCenterShipmentDoc(ShipmentDocTransCenterVO vo){
+		ShipmentDocTransCenterPO po=new ShipmentDocTransCenterPO(vo.getDate(), vo.getTransId(), vo.getArrivalPlace(), vo.getVanID(), vo.getCheckMan(), 
+				vo.getTransMan(), vo.getAllOrder(), vo.getMoney(), vo.getShipmentID(), vo.getStartPlace());
+		try{
+			rmiObj.changeTransCenterShipmentDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	public ArrayList<ShipmentDocTransCenterPO>  getAllShipmentDocPO(){
+		try {
+			return rmiObj.getShipmentDoclist();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 }

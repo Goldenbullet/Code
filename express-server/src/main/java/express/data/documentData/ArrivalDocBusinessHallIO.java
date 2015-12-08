@@ -67,4 +67,22 @@ public class ArrivalDocBusinessHallIO extends UnicastRemoteObject implements Bus
 		return arrivaldoclist;
 	}
 
+	
+	public boolean changeBusinessHallArrivalDoc(ArrivalDocBusinessHallPO po) throws RemoteException{
+		String orderid=po.getOrderID();
+		int len=arrivaldoclist.size();
+		for(int i=0;i<len;i++){
+			if(arrivaldoclist.get(i).getOrderID().equals(orderid)){
+				arrivaldoclist.set(i, po);
+				writeAllArrivalDoc();
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	
+	
+	
 }

@@ -1,6 +1,7 @@
 package express.businessLogic.documentBL;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.businessSaleBLService.BusinessSaleReceiveDocumentblService;
@@ -9,7 +10,9 @@ import express.dataService.documentDataService.BusinessSaleDeliverDocumentDataSe
 import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataService;
 import express.po.DeliverDocPO;
 import express.po.ReceiveDocPO;
+import express.po.TransferDocPO;
 import express.vo.ReceiveDocVO;
+import express.vo.TransferDocVO;
 import express.rmi.RMIClient;
 
 public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
@@ -90,5 +93,37 @@ public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
 		}
 	}
 	
+	
+	public ArrayList<ReceiveDocVO> getUnExamedReceiveDoc(){
+		try{
+			ArrayList<ReceiveDocPO> list=rmiObj.getReceiveDoclist();
+			ArrayList<ReceiveDocVO> unexam=new ArrayList<ReceiveDocVO>();
+			
+			
+			for(ReceiveDocPO po:list){
+				if(po.getState()==false){
+					ReceiveDocVO vo=new ReceiveDocVO(po.getReceiveDate(),po.getReceivePrice(),
+					po.getDeliverManID(), po.getAllOrderIDs(), po.getOrgID());
+					unexam.add(vo);				
+				}
+			}
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean changeReceiveDoc(ReceiveDocVO vo){
+		ReceiveDocPO po=new ReceiveDocPO(vo.getReceiveDate(), vo.getReceivePrice(),
+				vo.getDeliverManID(), vo.getAllOrderIDs(),vo.getOrgID());
+		try{
+			rmiObj.changeReceiveDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 }

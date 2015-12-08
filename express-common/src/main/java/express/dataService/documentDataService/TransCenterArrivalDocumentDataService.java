@@ -11,4 +11,5 @@ public interface TransCenterArrivalDocumentDataService extends Remote{
 	public ArrivalDocTransCenterPO getArrivalDoc(String OrderID) throws RemoteException;
 	public boolean writeAllArrivalDoc() throws RemoteException;
 	public ArrayList<ArrivalDocTransCenterPO> getArrivalDoclist() throws RemoteException;
+	public boolean changeArrialDoc(ArrivalDocTransCenterPO po) throws RemoteException;
 }

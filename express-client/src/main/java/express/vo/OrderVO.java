@@ -22,9 +22,32 @@ public class OrderVO {
 	private String orderID;//生成出来的 ID
 	private PackageType packagetype;//包装类型
 	
+	private double fee;//
+	private String predictTime;
+	
+	
 	//添加 出发城市 和到达城市
 	private String startCity;
 	private String endCity;
+	
+	
+	//自动获得运费和预计时间后 调用set方法
+	public void setFee(double fee){
+		this.fee=fee;
+	}
+	public void setPredictTime(String predicttime){
+		this.predictTime=predicttime;
+	}
+	
+	public double getFee(){
+		return fee;
+	}
+	public String getPredictTime(){
+		return predictTime;
+	}
+	
+	
+	
 	
 	//ID 要自己set
 	public void setOrderID(String orderID){

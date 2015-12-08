@@ -1,4 +1,4 @@
-package express.businessLogic.documentBL;
+ package express.businessLogic.documentBL;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -10,9 +10,11 @@ import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.managerBLService.SysLogBLService;
 import express.businesslogicService.transcenterSaleBLService.TransCenterTransferDocblService;
 import express.dataService.documentDataService.TransCenterTransferDocDataService;
+import express.po.ArrivalDocTransCenterPO;
 import express.po.ShipmentDocBusinessHallPO;
 import express.po.TransWay;
 import express.po.TransferDocPO;
+import express.vo.ArrivalDocTransCenterVO;
 import express.vo.OrderVO;
 import express.vo.TransferDocVO;
 import express.rmi.RMIClient;
@@ -170,4 +172,37 @@ public class TransferDoc implements TransCenterTransferDocblService{
 		
 	}
 
+	public ArrayList<TransferDocVO> getUnExamedTransferDoc(){
+		try{
+			ArrayList<TransferDocPO> list=rmiObj.getTransferDoclist();
+			ArrayList<TransferDocVO> unexam=new ArrayList<TransferDocVO>();
+			
+			
+			for(TransferDocPO po:list){
+				if(po.getState()==false){
+					TransferDocVO vo=new TransferDocVO(po.getdate(), po.getTransDocID(), po.getflightNumber(), 
+													po.getbegin(), po.getarrival(), po.getcontainerNumber(), po.getcheckMan(), 
+													po.getmoney(), po.getTransWay(), po.getOrderlist());
+					unexam.add(vo);				
+				}
+			}
+			return unexam;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean changeTransferDoc(TransferDocVO vo){
+		TransferDocPO po=new TransferDocPO(vo.getdate(), vo.gettranscenterNumber(), vo.getflightNumber(), vo.getbegin(), vo.getarrival(), vo.getcontainerNumber(),vo.getcheckMan(), 
+				vo.getmoney(), vo.getTransWay(), vo.getOrderlist());
+		try{
+			rmiObj.changeTransferDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

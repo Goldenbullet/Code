@@ -12,6 +12,7 @@ public interface DeliverCreateOrderDataService extends Remote{
 	public OrderPO getOrder(String orderid) throws RemoteException;
 	public String getNextOrderID() throws RemoteException;
 	public ArrayList<OrderPO> getOrderlist() throws RemoteException;
+	public boolean changeOrder(OrderPO po) throws RemoteException;
 	public boolean writeAllOrder() throws RemoteException;
 	
 }

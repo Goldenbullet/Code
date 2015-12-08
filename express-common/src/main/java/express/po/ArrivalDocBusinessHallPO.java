@@ -1,6 +1,12 @@
 package express.po;
 
-public class ArrivalDocBusinessHallPO {
+import java.io.Serializable;
+
+public class ArrivalDocBusinessHallPO extends DocumentPO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8434653442398652066L;
 	private String arriveDate;
 	/**
 	 * 营业厅到达单分为两种   营业厅--->营业厅

@@ -11,4 +11,5 @@ public interface BusinessSaleDeliverDocumentDataService extends Remote{
 	public DeliverDocPO getDeliverDoc(String OrderID) throws RemoteException;
 	public boolean writeAllDeliverDoc() throws RemoteException;
 	public ArrayList<DeliverDocPO> getDeliverDoclist() throws RemoteException;
+	public boolean changeDeliverDoc(DeliverDocPO po) throws RemoteException;
 }

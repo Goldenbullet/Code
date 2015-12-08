@@ -11,4 +11,5 @@ public interface TransCenterShipmentDocDataService extends Remote{
 	public ShipmentDocTransCenterPO getShipmentDoc(String OrderID) throws RemoteException;
 	public boolean writeAllShipmentDoc() throws RemoteException;
 	public ArrayList<ShipmentDocTransCenterPO> getShipmentDoclist() throws RemoteException;
+	public boolean changeTransCenterShipmentDoc(ShipmentDocTransCenterPO po) throws RemoteException;
 }

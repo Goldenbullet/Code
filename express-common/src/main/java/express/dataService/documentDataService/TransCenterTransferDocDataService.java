@@ -12,7 +12,7 @@ public interface TransCenterTransferDocDataService extends Remote{
 	public boolean writeAllTransferDoc() throws RemoteException;
 	public ArrayList<TransferDocPO> getTransferDoclist() throws RemoteException;
 	
-	
+	public boolean changeTransferDoc(TransferDocPO po) throws RemoteException;
 	
 	
 }

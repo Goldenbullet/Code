@@ -16,4 +16,6 @@ public interface BusinessSaleReceiveDocumentDataService extends Remote{
 	public boolean writeAllReceiveDoc() throws RemoteException;
 	
 	public ArrayList<ReceiveDocPO> getReceiveDoclist() throws RemoteException;
+	
+	public boolean changeReceiveDoc(ReceiveDocPO po) throws RemoteException;
 }

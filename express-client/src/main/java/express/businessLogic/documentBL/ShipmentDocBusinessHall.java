@@ -165,5 +165,43 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 	}
 	
 	
+	public ArrayList<ShipmentDocBusinessHallVO> getUnExamedBusinessShipmentDoc(){
+		try{
+			ArrayList<ShipmentDocBusinessHallPO> list=rmiObj.getShipmentDoclist();
+			ArrayList<ShipmentDocBusinessHallVO> unexam=new ArrayList<ShipmentDocBusinessHallVO>();
+			for(ShipmentDocBusinessHallPO po:list){
+				if(po.getState()==false){
+					ShipmentDocBusinessHallVO vo=new ShipmentDocBusinessHallVO(po.getDate(), po.getTransId(), po.getBusinessHallNum(), po.getArrivalPlace(), po.getVanID(), po.getCheckMan(), po.getTransMan(), 
+																		po.getAllOrder(), po.getMoney(), po.getShipmentID(), po.getStartPlace());
+					
+					unexam.add(vo);
+				}	
+			}
+			return unexam;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean changeShipmentDoc(ShipmentDocBusinessHallVO vo){
+		ShipmentDocBusinessHallPO po=new ShipmentDocBusinessHallPO(vo.getDate(), vo.getTransId(),
+				vo.getBusinessHallNum(), vo.getArrivalPlace(), vo.getVanID(), vo.getCheckMan(), vo.getTransMan(),
+				vo.getAllOrder(), vo.getMoney(), vo.getShipmentID(),vo.getStartPlace());
+		
+		try{
+			rmiObj.changeBusinessHallShipmentDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 }

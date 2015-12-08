@@ -9,6 +9,7 @@ import express.data.IOHelper.IOHelper;
 import express.dataService.documentDataService.TransCenterShipmentDocDataService;
 import express.po.ArrivalDocTransCenterPO;
 import express.po.DeliverDocPO;
+import express.po.ShipmentDocBusinessHallPO;
 import express.po.ShipmentDocTransCenterPO;
 
 public class ShipmentDocTransCenterIO extends UnicastRemoteObject implements TransCenterShipmentDocDataService{
@@ -65,4 +66,19 @@ public class ShipmentDocTransCenterIO extends UnicastRemoteObject implements Tra
 	public ArrayList<ShipmentDocTransCenterPO> getShipmentDoclist() throws RemoteException{
 		return shipmentdoclist;
 	}
+	
+	public boolean changeTransCenterShipmentDoc(ShipmentDocTransCenterPO po) throws RemoteException{
+		String shpimentid=po.getShipmentID();
+		int len=shipmentdoclist.size();
+		for(int i=0;i<len;i++){
+			if(shipmentdoclist.get(i).getShipmentID().equals(shpimentid)){
+				shipmentdoclist.set(i, po);
+				writeAllShipmentDoc();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 }

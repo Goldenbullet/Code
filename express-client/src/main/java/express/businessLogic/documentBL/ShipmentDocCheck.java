@@ -5,6 +5,8 @@ public class ShipmentDocCheck {
 		//营业厅编号+20150921日期+00000编码 、五位数字
 		//营业厅编号（025城市编码+000鼓楼营业厅）
 		
+		
+	
 		//也可以用中转中心  
 		if(transid.length()!=19){
 			return false;

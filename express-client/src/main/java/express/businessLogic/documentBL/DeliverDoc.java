@@ -72,14 +72,15 @@ public class DeliverDoc implements BusinessSaleDeliverDocumentblService{
 	}
 	
 	
-	public ArrayList<DeliverDocPO> getUnexamedDeliverDoc(){
+	public ArrayList<DeliverDocVO> getUnexamedDeliverDoc(){
 		try{
 		ArrayList<DeliverDocPO> list=rmiObj.getDeliverDoclist();
-		ArrayList<DeliverDocPO> unexam=new ArrayList<DeliverDocPO>();
-		int len=list.size();
-		for(int i=0;i<len;i++){
-			if(list.get(i).getState()==false){
-				unexam.add(list.get(i));
+		ArrayList<DeliverDocVO> unexam=new ArrayList<DeliverDocVO>();
+		
+		for(DeliverDocPO po:list){
+			if(po.getState()==false){
+				DeliverDocVO vo=new DeliverDocVO(po.getArriveDate(), po.getOrderID(), po.getDeliverManID());
+				unexam.add(vo);
 			}
 		}
 		return unexam;
@@ -106,6 +107,18 @@ public class DeliverDoc implements BusinessSaleDeliverDocumentblService{
 		}
 	}
 	
-
+	public boolean changeDeliverDoc(DeliverDocVO vo){
+		DeliverDocPO po=new DeliverDocPO(vo.getArriveDate(), vo.getOrderID(), vo.getDeliverManID());
+		try{
+			rmiObj.changeDeliverDoc(po);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		
+		
+	}
 	
 }
