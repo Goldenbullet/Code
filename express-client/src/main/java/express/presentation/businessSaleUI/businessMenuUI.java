@@ -106,12 +106,14 @@ public class businessMenuUI extends JPanel{
 				
 			}
 			else if (arg0.getSource()==button_vehicle){
-				//main.jumpTobusinessVehicleUI(card,businessPanel);
-				//System.out.println("应该跳转到车辆信息管理界面的");
+				main.jumpTobusinessVehicleUI();
+				System.out.println("应该跳转到车辆信息管理界面的");
 				
 			}
 			else if (arg0.getSource()==button_driver){
-				
+				main.jumpTobusinessDriverUI();
+				System.out.println("应该跳转到司机信息管理界面的");
+		
 			}
 			else if (arg0.getSource()==button_recieve){
 				main.jumpTobusinessReceiveUI();

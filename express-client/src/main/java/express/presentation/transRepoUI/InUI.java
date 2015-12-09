@@ -4,14 +4,18 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.Color;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
 
 public class InUI extends JPanel{
@@ -22,9 +26,10 @@ public class InUI extends JPanel{
 	private JButton button_confirm;
 	private JButton button_cancel;
     private MainUIService m;
-    private JTextField textArea1,textArea2,textArea3,textArea4,textArea5,textArea6,textArea7;
+    private JTextField textArea1,textArea2,textArea4,textArea5,textArea6,textArea7,datetf;
     private String number,date,arrival,district,row,shelf,position;
-	
+	private DateChooser datechooser;
+    private JComboBox combobox;
 	public InUI(MainUIService main){
 		
         int textlength=150;
@@ -52,21 +57,24 @@ public class InUI extends JPanel{
 //		textArea1.setWrapStyleWord(true);// 激活断行不断字功能		
 		this.add(textArea1);
 
-		textArea2 = new JTextField("入库日期");
-		textArea2.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
-		textArea2.setFont(f);
-//		textArea2.setBackground(Color.BLUE);
-//		textArea2.setLineWrap(true);
-//		textArea2.setWrapStyleWord(true);	
-		this.add(textArea2);
+		
+		datetf = new JTextField();
+		datetf.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		datetf.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
+		datetf.setFont(f);
+		datetf.setEditable(false);
+		this.add(datetf);
+		
+		datechooser = new DateChooser("yyyy-MM-dd", datetf);
+		datechooser.setBounds(460, 155, 40, 40);
+		this.add(datechooser);
 
-		textArea3 = new JTextField("目的地");
-		textArea3.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
-		textArea3.setFont(f);
-//		textArea3.setBackground(Color.BLUE);
-//		textArea3.setLineWrap(true);
-//		textArea3.setWrapStyleWord(true);		
-		this.add(textArea3);
+		
+		String[] combo={"北京","南京","上海"};
+		combobox=new JComboBox(combo);
+		combobox.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
+		combobox.setFont(font);
+		this.add(combobox);
 
 		textArea4 = new JTextField("区号");
 		textArea4.setBounds(300, 100 + textwidth * 6, textlength, textwidth);
@@ -155,15 +163,14 @@ public class InUI extends JPanel{
 			if (e.getSource()==button_confirm){
 				number = textArea1.getText();
 				date = textArea2.getText();
-				arrival = textArea3.getText();
 				district = textArea4.getText();
 				row = textArea5.getText();
 				shelf = textArea6.getText();
 				position = textArea7.getText();
 			}else if (e.getSource()==button_cancel){
 				textArea1.setText("");
-				textArea2.setText("");
-				textArea3.setText("");
+				
+				
 				textArea4.setText("");
 				textArea5.setText("");
 				textArea6.setText("");

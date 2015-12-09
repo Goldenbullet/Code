@@ -157,6 +157,8 @@ public class managerMemberAddUI extends JDialog{
 				gender = gendercb.getSelectedItem().toString();
 				Object[] values = {false,name,gender,id,position,city,phone,date,"<HTML><U>修改</U></HTML>"};
 				
+				
+				
 				if (name.isEmpty() || id.isEmpty() || phone.isEmpty()||date.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
 							JOptionPane.ERROR_MESSAGE);
@@ -169,7 +171,8 @@ public class managerMemberAddUI extends JDialog{
 					}
 					UserInfoVO vo = new UserInfoVO(name,sex,id,phone,posit,city,date);
 					StaffManageBLService smb = new StaffForManager();
-					if(smb.addUserFromManager(vo)){
+					if(smb.addUserFromManager(vo)){//注意：判断条件是错的！！，需要改
+						
 						tmodel.addRow(values);
 						JOptionPane.showMessageDialog(null, "添加成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);

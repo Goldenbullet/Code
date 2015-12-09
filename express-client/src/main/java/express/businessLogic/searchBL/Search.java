@@ -37,15 +37,13 @@ public class Search implements SearchBLService{
 			
 		}
 		else{
-			GoodTransStatusVO nullvo=new GoodTransStatusVO();
-			nullvo.setOrderID("-1");
-			return nullvo;
+			return null;
 		}
 		
 		
 		
 	}
-	public boolean isOrderIDAvailable(String id){
+	private boolean isOrderIDAvailable(String id){
 		CheckOrder checker=new CheckOrder();
 		return checker.isOrderIDAvailable(id);
 	}
