@@ -33,17 +33,8 @@ public class ProfitFormIO extends UnicastRemoteObject implements ProfitFormDataS
 	}
 
 	@Override
-	public ArrayList<String> getProfitFormListTitle() throws RemoteException {
-		ArrayList<String> title=new ArrayList<String>();
-		if(profitFormList.size()>0){
-			for(ProfitFormPO po:profitFormList){
-				title.add(po.getTitle());
-			}
-		}
-		if(title.size()>0)
-			return title;
-		else
-			return null;
+	public ArrayList<ProfitFormPO> getProfitFormList() throws RemoteException {
+		return profitFormList;
 	}
 
 	@Override
