@@ -183,7 +183,7 @@ public class businessVehicleUI extends JPanel {
 				int col = table.getSelectedColumn();
 				if (col == 6) {
 					if (tableModel.getValueAt(row, col).equals(changeunder)) {
-						tableModel.setrowedit(row);
+						tableModel.setrowedit();
 						tableModel.setValueAt(confirmunder, row, col);
 					} else if (tableModel.getValueAt(row, col).equals(confirmunder)) {
 						
