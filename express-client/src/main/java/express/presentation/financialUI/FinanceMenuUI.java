@@ -188,7 +188,7 @@ public class FinanceMenuUI extends JPanel {
 			} else if (e.getSource() == viewstatistic) {
 				if (!isclickedv) {
 					isclickedv = true;
-					viewstatisticpop.show(pane, 150, 450);
+					viewstatisticpop.show(pane, 150, 400);
 				} else {
 					isclickedv = false;
 					viewstatisticpop.setVisible(false);

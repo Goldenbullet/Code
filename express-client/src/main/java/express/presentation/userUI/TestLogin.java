@@ -92,7 +92,7 @@ public class TestLogin {
 
 class MyDrawPanel1 extends JPanel{
 		public void paintComponent(Graphics g){
-			Image image=new ImageIcon("/Users/peiyulin/Desktop/picforse/login22.png").getImage();
+			Image image=new ImageIcon("picture/login22.png").getImage();
 			g.drawImage(image,-7,0,this);
 	}
 	}

@@ -20,6 +20,7 @@ import express.presentation.deliverUI.deliverReceiveUI;
 import express.presentation.financialUI.FinanceCreateOperateUI;
 import express.presentation.financialUI.FinanceCreateProfitUI;
 import express.presentation.financialUI.FinanceInitAccountUI;
+import express.presentation.financialUI.FinanceManageBankAccountUI;
 import express.presentation.financialUI.FinanceMenuUI;
 import express.presentation.financialUI.FinancePaymentUI;
 import express.presentation.financialUI.FinanceSumReceiveDocUI;
@@ -150,6 +151,10 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpToFinanceManageBankAccountUI() {
+		FinanceManageBankAccountUI financeManageBankAccount = new FinanceManageBankAccountUI(this);
+		pane1.add("financeManageBankAccount", financeManageBankAccount);
+		card1.show(pane1, "financeManageBankAccount");
+
 		return true;
 	}
 
@@ -385,7 +390,7 @@ public class MainUI implements MainUIService {
 	public boolean jumpToViewOperateUI() {
 		ViewOperateUI viewOperatePanel = new ViewOperateUI(this);
 		pane1.add("viewOperatePanel", viewOperatePanel);
-		card1.show(pane1, "viewProfitPanel");
+		card1.show(pane1, "viewOperatePanel");
 		return true;
 	}
 
