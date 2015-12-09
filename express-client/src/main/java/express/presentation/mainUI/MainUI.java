@@ -9,16 +9,17 @@ import javax.swing.JPanel;
 import express.presentation.adminUI.AdminStartUI;
 import express.presentation.businessSaleUI.businessArrivalUI;
 import express.presentation.businessSaleUI.businessDeliverUI;
+import express.presentation.businessSaleUI.businessDriverUI;
 import express.presentation.businessSaleUI.businessMenuUI;
 import express.presentation.businessSaleUI.businessReceiveUI;
 import express.presentation.businessSaleUI.businessShipmentUI;
+import express.presentation.businessSaleUI.businessVehicleUI;
 import express.presentation.deliverUI.deliverMenuUI;
 import express.presentation.deliverUI.deliverOrderUI;
 import express.presentation.deliverUI.deliverReceiveUI;
 import express.presentation.financialUI.FinanceCreateOperateUI;
 import express.presentation.financialUI.FinanceCreateProfitUI;
 import express.presentation.financialUI.FinanceInitAccountUI;
-import express.presentation.financialUI.FinanceManageBankAccountUI;
 import express.presentation.financialUI.FinanceMenuUI;
 import express.presentation.financialUI.FinancePaymentUI;
 import express.presentation.financialUI.FinanceSumReceiveDocUI;
@@ -149,9 +150,6 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpToFinanceManageBankAccountUI() {
-		FinanceManageBankAccountUI financeManageBankAccount = new FinanceManageBankAccountUI(this);
-		pane1.add("financeManageBankAccount", financeManageBankAccount);
-		card1.show(pane1, "financeManageBankAccount");
 		return true;
 	}
 
@@ -287,6 +285,9 @@ public class MainUI implements MainUIService {
 	}
 	
 	public boolean jumpTobusinessDriverUI (){
+		businessDriverUI businessDriverpanel=new businessDriverUI(this);
+		pane1.add("businessDriverpanel",businessDriverpanel);
+		card1.show(pane1, "businessDriverpanel");
 		return true;
 	}
 	
@@ -299,6 +300,9 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpTobusinessVehicleUI() {
+		businessVehicleUI businessVehiclepanel=new businessVehicleUI(this);
+		pane1.add("businessVehiclepanel",businessVehiclepanel);
+		card1.show(pane1, "businessVehiclepanel");
 		return true;
 	}
 
@@ -381,7 +385,7 @@ public class MainUI implements MainUIService {
 	public boolean jumpToViewOperateUI() {
 		ViewOperateUI viewOperatePanel = new ViewOperateUI(this);
 		pane1.add("viewOperatePanel", viewOperatePanel);
-		card1.show(pane1, "viewOperatePanel");
+		card1.show(pane1, "viewProfitPanel");
 		return true;
 	}
 

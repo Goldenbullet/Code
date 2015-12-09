@@ -178,7 +178,7 @@ public class Vehicle implements VehicleBusinessSaleblService{
 	private VehicleInfoPO transVOToPO(VehicleInfoVO vo){
 		VehicleInfoPO po=new VehicleInfoPO();
 		
-		po.setIsUsing(vo.checkIsUsing());
+		po.setIsUsing(vo.getIsUsing());
 		po.setLicense(vo.getLicense());
 		po.setMark(vo.getMark());
 		po.setOrgID(vo.getOrgID());

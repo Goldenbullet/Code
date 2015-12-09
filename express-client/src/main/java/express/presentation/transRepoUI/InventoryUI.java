@@ -2,80 +2,63 @@ package express.presentation.transRepoUI;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
-
+import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
 
-public class InventoryUI extends JPanel{
-	
+public class InventoryUI extends JPanel {
+
 	private JButton button_inventory;
-	private JButton button_return;
-	
+
 	private MainUIService m;
-	
-	public InventoryUI(MainUIService main){
-		
+
+	private JTable table;
+	private JScrollPane scrollPane;
+
+	public InventoryUI(MainUIService main) {
+
+		int textlength = 150;
+		int textwidth = 30;
+		int labellength = 100;
+		int labelwidth = 30;
+
+		Font font = new Font("楷体", Font.PLAIN, 18);
+		Font f = new Font("仿宋", Font.PLAIN, 16);
+
 		setLayout(null);
-	    this.m=main;
-	    
-	    this.setBounds(0, 0, 850, 700);
-	    this.setBackground(Color.WHITE);
-		
-		
-		JListener listener=new JListener();
-		
-		
-	    button_inventory=new JButton("点击库存盘点之后");
-        button_inventory.setBounds(100, 100, 150, 50);
-        button_inventory.addMouseListener(listener);
-        
+		this.m = main;
 
-		button_return=new JButton("返回");
-	    button_return.setBounds(100, 200, 150, 50);
-	    button_return.addMouseListener(listener);
-	    
-		this.add( button_inventory);
-		this.add(button_return);
-		
-	}
-	class JListener implements MouseListener{
+		this.setBounds(0, 0, 850, 700);
+		this.setBackground(Color.WHITE);
 
-		public void mouseClicked(MouseEvent e) {
-			 if (e.getSource()== button_inventory){
-				 System.out.println("你点击了“点击库存盘点之后”");
-					
-			 }
-			 else if (e.getSource()==button_return){
-				 System.out.println("应该回到了repo界面");
-				 
-			 }
-		}
+		String[] tableheader = { "快递编号", "位置" };
+		String[] data1 = { "10000", "地上" };
+		String[] data2 = { "10001", "车上" };
 
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		String[][] data = { data1, data2 };
+		table = new JTable(data, tableheader);
+		table.setRowHeight(40);
+		table.setFont(f);
+		table.setBounds(100, 50, 650, 550);
+		this.add(table);
 
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		scrollPane = new JScrollPane(table);
+		scrollPane.setFont(font);
+		scrollPane.setBounds(100, 50, 650, 550);
+		this.add(scrollPane);
 
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 
 }

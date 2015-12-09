@@ -36,7 +36,7 @@ public class VehicleInfoVO {
 	public int getUseYear(){
 		return useYear;
 	}
-	public boolean checkIsUsing(){
+	public boolean getIsUsing(){
 		return isUsing;
 	}
 	public void setIsUsing(boolean b){

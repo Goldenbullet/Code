@@ -2,21 +2,50 @@ package express.presentation.transRepoUI;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
+import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
 
 public class ViewUI extends JPanel{
 	private JButton button_view;
 	private JButton button_return;
     private MainUIService m;
-	
+
+    
+    private JTextField datetf;
+    private JTextField datetf2;
+    private DateChooser datechooser;     
+    private DateChooser datechooser2;
+    
+    
+    private JTable table;
+    private JScrollPane scrollPane;
+    
 	public ViewUI(MainUIService main){
-     	setLayout(null);
+     	
+		int textlength = 150;
+		int textwidth = 30;
+		int labellength = 100;
+		int labelwidth = 30;
+		
+		Font font = new Font("楷体", Font.PLAIN, 18);
+		Font f = new Font("仿宋", Font.PLAIN, 16);
+
+		
+		
+		setLayout(null);
 	    this.m=main;
 	    
 	    this.setBounds(0, 0, 850, 700);
@@ -24,53 +53,61 @@ public class ViewUI extends JPanel{
 		
 		
 		
-		JListener listener=new JListener();
+		JLabel label1 = new JLabel("起始日期");
+		label1.setBounds(100, 100, labellength, labelwidth);
+		label1.setFont(font);
+		this.add(label1);
 		
 		
-	    button_view=new JButton("在你点击库存查看之后");
-        button_view.setBounds(100, 100, 150, 50);
-        button_view.addMouseListener(listener);
-        
-    	button_return=new JButton("返回");
-	    button_return.setBounds(100, 200, 150, 50);
-	    button_return.addMouseListener(listener);
-        
-		this.add( button_view);
-		 this.add( button_return);
-	}
-	class JListener implements MouseListener{
-
-		public void mouseClicked(MouseEvent e) {
-			 if (e.getSource()==button_view){
-				 System.out.println("你点击了“点击库存查看之后”");
-				 
-			 }
-			 
-			 else if (e.getSource()==button_return){
-				 System.out.println("应该回到了repo界面");
-			 }
-		}
-
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		datetf = new JTextField();
+		datetf.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		datetf.setBounds(200, 100, textlength, textwidth);
+		datetf.setFont(f);
+		datetf.setEditable(false);
+		this.add(datetf);
 		
+		datechooser = new DateChooser("yyyy-MM-dd", datetf);
+		datechooser.setBounds(360, 95, 40, 40);
+		this.add(datechooser);
+		
+		
+		JLabel label2 = new JLabel("终止日期");
+		label2.setBounds(450, 100, labellength, labelwidth);
+		label2.setFont(font);
+		this.add(label2);
+		
+		
+		datetf2 = new JTextField();
+		datetf2.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		datetf2.setBounds(550, 100, textlength, textwidth);
+		datetf2.setFont(f);
+		datetf2.setEditable(false);
+		this.add(datetf2);
+		
+		datechooser2 = new DateChooser("yyyy-MM-dd", datetf2);
+		datechooser2.setBounds(710, 95, 40, 40);
+		this.add(datechooser2);
+		
+		
+		String[] tableheader = {"快递编号","位置"};
+		String[] data1 = {"110","地上"};
+		String[] data2 = {"120","车上"};
+		
+		String[][] data ={data1,data2};
+		table=new JTable(data,tableheader);
+		table.setRowHeight(40);
+		table.setFont(f);
+		table.setBounds(100, 150, 650, 550);	
+		this.add(table);
+		
+		scrollPane = new JScrollPane(table); 
+		scrollPane.setFont(font);
+		scrollPane.setBounds(100, 150, 650, 550);
+		this.add(scrollPane);
+		
+		
+		
+
 	}
 
 }
