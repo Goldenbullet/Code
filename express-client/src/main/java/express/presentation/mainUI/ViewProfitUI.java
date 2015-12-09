@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,7 +24,6 @@ public class ViewProfitUI extends JPanel {
 	private MainUIService m;
 	private JButton excel, exit, count;
 	private JTextField time,income,outcome,profit;
-	private JLabel title;
 	private JTable profittable;
 	private JScrollPane scrollPane;
 	private String[] tableheader = { "统计时间", "总收入", "总支出", "总利润" };
@@ -40,7 +40,7 @@ public class ViewProfitUI extends JPanel {
 		Font f = new Font("仿宋", Font.PLAIN, 18);
 		Font font2 = new Font("楷体", Font.BOLD, 18);
 		
-		title = new JLabel("成 本 收 益 表");
+		JLabel title = new JLabel("成 本 收 益 表");
 		title.setBounds(320, 50, 200, 40);
 		title.setFont(font2);
 		this.add(title);
@@ -98,9 +98,22 @@ public class ViewProfitUI extends JPanel {
 	private void exportExcel(ProfitFormVO p){
 		ProfitManagerBLService profit = new ProfitStatistic();
 		if(p == null){
-			
+			JOptionPane.showConfirmDialog(null,
+				       "未 选 择 表 格！", null,JOptionPane.DEFAULT_OPTION,
+				       JOptionPane.WARNING_MESSAGE, null);
+		}else{
+			boolean succ = profit.exportExcel(p);
+			if(succ){
+				JOptionPane.showConfirmDialog(null,
+					       "导 出 成 功！", null,JOptionPane.DEFAULT_OPTION,
+					       JOptionPane.INFORMATION_MESSAGE, null);
+			}
+			else{
+				JOptionPane.showConfirmDialog(null,
+					       "导 出 失 败！", null,JOptionPane.DEFAULT_OPTION,
+					       JOptionPane.WARNING_MESSAGE, null);
+			}
 		}
-		boolean succ = profit.exportExcel(p);
 	}
 	
 	private class Listener implements MouseListener {
@@ -110,7 +123,25 @@ public class ViewProfitUI extends JPanel {
 			if (e.getSource() == exit) {
 				m.jumpToFinanceMenuUI();
 			} else if (e.getSource() == excel) {
-				
+				int row = profittable.getSelectedRow();
+				if(row < 0){
+					JOptionPane.showConfirmDialog(null,
+						       "未 选 择 表 格！", null,JOptionPane.DEFAULT_OPTION,
+						       JOptionPane.WARNING_MESSAGE, null);
+					
+				} else {
+					String title = profittable.getValueAt(row, 0).toString();
+					String in = profittable.getValueAt(row, 1).toString();
+					String out = profittable.getValueAt(row, 2).toString();
+					String pro = profittable.getValueAt(row, 3).toString();
+					
+					double income = Double.parseDouble(in);
+					double outcome = Double.parseDouble(out);
+					double profit = Double.parseDouble(pro);
+					
+					ProfitFormVO p = new ProfitFormVO(title,income,outcome,profit);
+					exportExcel(p);
+				}
 			}
 			repaint();
 		}

@@ -91,7 +91,7 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 		p = income - outcome;
 
 		Date date = new Date();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		String time = format.format(date);
 
 		ProfitFormVO profitForm = new ProfitFormVO(time, income, outcome, p);
@@ -222,18 +222,5 @@ public class ProfitStatistic implements ProfitFinanceBLService {
 			return false;
 		}
 
-	}
-	
-	public static void main(String[] args){
-		try {
-	        RMIClient.init();
-	    } catch (ClientException e) {
-	        e.printStackTrace(); 
-	    }
-		
-		ProfitStatistic profit=new ProfitStatistic();
-		ProfitFormVO profitForm=profit.getProfitForm("2015-12-06");
-		System.out.println(profitForm.getProfit());
-		profit.exportExcel(profitForm);
 	}
 }

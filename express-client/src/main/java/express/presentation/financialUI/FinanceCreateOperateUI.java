@@ -132,7 +132,7 @@ public class FinanceCreateOperateUI extends JPanel {
 
 	}
 
-	public void getdocs() {
+	private void getdocs() {
 		String[][] docs = null;
 		
 		if (endDate.equals("")) {
@@ -155,6 +155,8 @@ public class FinanceCreateOperateUI extends JPanel {
 		} else {
 			OperateFormVO vo = oper.createOperateForm(beginDate, endDate);
 			
+			beginDate = vo.getStartDate();
+			endDate = vo.getEndDate();
 			ArrayList<ReceiveDocVO> receList = vo.getReceiveDoc();
 			ArrayList<PaymentItem> payList = vo.getPaymentDoc();
 			int lenRece = 0;
@@ -190,29 +192,17 @@ public class FinanceCreateOperateUI extends JPanel {
 	}
 	
 	private void addOperateForm(){
-		if (endDate.equals("")) {
-			Date d = new Date();
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			String time = format.format(d);
-			endDate = time;
-		}
-		if(beginDate.equals("")){	
-			beginDate = " ";
-		}
 		
 		OperateFinanceBLService oper = new OperateStatistic();
 		boolean succ = oper.addOperateForm(beginDate, endDate);
-		if(succ){
-			if(succ){
-				JOptionPane.showConfirmDialog(null,
-					       "添 加 成 功！", null,JOptionPane.DEFAULT_OPTION,
-					       JOptionPane.INFORMATION_MESSAGE, null);
-			}
-			else{
-				JOptionPane.showConfirmDialog(null,
-					       "添 加 失 败！", null,JOptionPane.DEFAULT_OPTION,
-					       JOptionPane.WARNING_MESSAGE, null);
-			}
+		if (succ) {
+			JOptionPane.showConfirmDialog(null, "添 加 成 功！", null,
+					JOptionPane.DEFAULT_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null);
+		} else {
+			JOptionPane.showConfirmDialog(null, "添 加 失 败！", null,
+					JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+					null);
 		}
 		count.setVisible(true);
 		ok.setVisible(false);
@@ -228,6 +218,7 @@ public class FinanceCreateOperateUI extends JPanel {
 				startdatetf.setText("");
 				enddatetf.setText("");
 				tableModel.setRowCount(0);
+				repaint();
 				count.setVisible(true);
 				ok.setVisible(false);
 				exit.setVisible(false);
@@ -238,6 +229,8 @@ public class FinanceCreateOperateUI extends JPanel {
 				beginDate = startdatetf.getText();
 				endDate = enddatetf.getText();
 				getdocs();
+				startdatetf.setText(beginDate);
+				enddatetf.setText(endDate);
 			} else if(e.getSource() == ok) {
 				addOperateForm();
 			}

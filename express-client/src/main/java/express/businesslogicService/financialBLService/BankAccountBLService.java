@@ -19,11 +19,15 @@ public interface BankAccountBLService {
 	
 	public boolean checkDuplication(String name);
 	
+	public boolean checkMoney(String money);
+	
 	public boolean removeBankAccount(String name);
 	
 	public ArrayList<BankAccountVO> findBankAccount(String name);
 	
 	public boolean changeBankAccount(BankAccountVO bankAccount,String name);
+	
+	public boolean changeBankAccount(String old,String change);
 	
 	public void recordBankAccount();
 	

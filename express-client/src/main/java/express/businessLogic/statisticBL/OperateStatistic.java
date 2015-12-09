@@ -7,7 +7,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -112,6 +115,16 @@ public class OperateStatistic implements OperateFinanceBLService {
 		}
 		operateForm.setPaymentDoc(selectPay);
 
+		if(beginDate.equals(" ")){
+			if (receiveList != null&&receiveList.size()>0){
+				beginDate = receiveList.get(0).getReceiveDate();
+			}
+			else
+				beginDate = endDate;
+		}
+		operateForm.setStartDate(beginDate);
+		operateForm.setEndDate(endDate);
+		
 		return operateForm;
 	}
 
@@ -125,7 +138,7 @@ public class OperateStatistic implements OperateFinanceBLService {
 		OperateFormPO operateForm = new OperateFormPO();
 		operateForm.setStartDate(beginDate);
 		operateForm.setEndDate(endDate);
-
+		
 		ArrayList<ReceiveDocPO> selectReceive = new ArrayList<ReceiveDocPO>();
 		ArrayList<PaymentItem> selectPay = new ArrayList<PaymentItem>();
 
@@ -138,10 +151,10 @@ public class OperateStatistic implements OperateFinanceBLService {
 
 					selectReceive.add(po);
 				}
-			}
+			}		
 		}
 		operateForm.setReceiveDoc(selectReceive);
-
+		
 		if (payList != null) {
 
 			for (PaymentDocPO po : payList) {
@@ -182,21 +195,21 @@ public class OperateStatistic implements OperateFinanceBLService {
 		OperateFormVO vo = new OperateFormVO();
 
 		vo.setEndDate(po.getEndDate());
-		ArrayList<ReceiveDocPO> list = po.getReceiveDoc();
-		if (list == null)
-			vo.setReceiveDoc(null);
-		else if (list.size() == 0)
-			vo.setReceiveDoc(null);
-		else {
-			ArrayList<ReceiveDocVO> l = new ArrayList<ReceiveDocVO>();
-			for (ReceiveDocPO i : list) {
+		ArrayList<ReceiveDocPO> receList = po.getReceiveDoc();
+		
+		ArrayList<ReceiveDocVO> l = new ArrayList<ReceiveDocVO>();
+		
+		if (receList != null&&receList.size() > 0) {
+			
+			for (ReceiveDocPO i : receList) {
 				l.add(new ReceiveDocVO(i.getReceiveDate(), i.getReceivePrice(),
 						i.getDeliverManID(), i.getAllOrderIDs(), i.getOrgID()));
 			}
-			vo.setReceiveDoc(l);
 		}
+		vo.setReceiveDoc(l);
 		vo.setStartDate(po.getStartDate());
-
+		vo.setEndDate(po.getEndDate());
+		vo.setPaymentDoc(po.getPaymentDoc());
 		return vo;
 	}
 
@@ -216,7 +229,7 @@ public class OperateStatistic implements OperateFinanceBLService {
 			else
 				s = "\\";
 
-			String file = filePath + s + "经营状态包.xls";
+			String file = filePath + s + "经营状态表.xls";
 
 			// 第一步，创建一个webbook，对应一个Excel文件
 			HSSFWorkbook wb;
@@ -230,33 +243,35 @@ public class OperateStatistic implements OperateFinanceBLService {
 			}
 
 			// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-			HSSFSheet sheet = wb.createSheet(operateForm.getStartDate() + "~"
-					+ operateForm.getEndDate());
+			Date date = new Date();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+			String time = format.format(date);
 
+			HSSFSheet sheet = wb.createSheet(time);
 			// 第四步，创建单元格，并设置值表头 设置表头居中
 			HSSFCellStyle style = wb.createCellStyle();
 			style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
 
 			// 合并第一行1~5个单元格
 			HSSFCell cell;
+			HSSFRow row = sheet.createRow(0);
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
 
 			// 第一行，设置表头，yyyy-MM-dd~yyyy-MM-dd 经营状态表
-			HSSFRow row = sheet.createRow(0);
 			cell = row.createCell(0);
 			cell.setCellValue(operateForm.getStartDate() + "~"
 					+ operateForm.getEndDate() + " 经营状态表");
-
+			cell.setCellStyle(style);
+			
 			// 第二行，合并1~2个单元格和3~5个单元格
-			sheet.addMergedRegion(new CellRangeAddress(1, 0, 1, 1));
-			sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 4));
-			HSSFRow row1 = sheet.createRow(1);
-
+			HSSFRow row1 = sheet.createRow(1);		
+			sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 1));
+			sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
 			cell = row1.createCell(0);
 			cell.setCellValue("收款单");
 			cell.setCellStyle(style);
 
-			cell = row1.createCell(1);
+			cell = row1.createCell(2);
 			cell.setCellValue("付款单");
 			cell.setCellStyle(style);
 

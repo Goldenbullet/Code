@@ -37,11 +37,8 @@ public class OperateFormIO extends UnicastRemoteObject implements OperateFormDat
 		ArrayList<String> title=new ArrayList<String>();
 		if(operateFormList.size()>0)
 			for(OperateFormPO po:operateFormList)
-				title.add(po.getStartDate()+po.getEndDate());
-		if(title.size()>0)
-			return title;
-		else
-			return null;
+				title.add(po.getStartDate() + "~" +po.getEndDate());
+		return title;
 	}
 
 	@Override

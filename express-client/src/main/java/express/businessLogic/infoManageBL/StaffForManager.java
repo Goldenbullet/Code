@@ -178,10 +178,10 @@ public class StaffForManager implements StaffManageBLService ,UserRegisterServic
 		SimpleDateFormat matter=new SimpleDateFormat("yyyy-MM-dd");
 		String d=matter.format(dt);
 		
-		if(d.compareTo(Date)<=0)
+		if(d.compareTo(Date) < 0)
 			return false;
 		else
-			return false;
+			return true;
 	}
 
 	public boolean register(String id) {

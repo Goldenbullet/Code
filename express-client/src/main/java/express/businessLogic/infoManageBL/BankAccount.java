@@ -104,6 +104,17 @@ public class BankAccount implements BankAccountBLService{
 			return false;
 		}
 	}
+	
+	public boolean changeBankAccount(String old,String change){
+		try {
+			BankAccountPO po = bank.getBankAccountByName(old);
+			po.setName(change);
+			return bank.changeBankAccount(po,old);
+		} catch (RemoteException e) {
+			
+			return false;
+		}
+	}
 
 	public void endManage() {
 		SysLog log=new SysLog();
@@ -150,6 +161,21 @@ public class BankAccount implements BankAccountBLService{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public boolean checkMoney(String money) {
+		if(money == null)
+			return false;
+		char ch = money.charAt(0);
+		if(ch != '+' && (ch < '0' || ch > '9'))
+			return false;
+		for(int i = 1 ;i < money.length();i++){
+			ch = money.charAt(1);
+			if(ch > '9' || ch < '0')
+				return false;
+		}
+		return true;
 	}
 
 }
