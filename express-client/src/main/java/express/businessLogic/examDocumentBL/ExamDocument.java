@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import express.businessLogic.documentBL.ArrivalDocBusinessHall;
 import express.businessLogic.documentBL.ArrivalDocTransCenter;
 import express.businessLogic.documentBL.DeliverDoc;
+import express.businessLogic.documentBL.InDoc;
 import express.businessLogic.documentBL.Order;
+import express.businessLogic.documentBL.OutDoc;
 import express.businessLogic.documentBL.PaymentDoc;
 import express.businessLogic.documentBL.ReceiveDoc;
 import express.businessLogic.documentBL.ShipmentDocBusinessHall;
 import express.businessLogic.documentBL.ShipmentDocTransCenter;
 import express.businessLogic.documentBL.TransferDoc;
+import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.managerBLService.ExamDocumentBLService;
+import express.businesslogicService.managerBLService.SysLogBLService;
 import express.vo.ArrivalDocBusinessHallVO;
 import express.vo.ArrivalDocTransCenterVO;
 import express.vo.DeliverDocVO;
@@ -45,9 +49,9 @@ public class ExamDocument	implements ExamDocumentBLService {
 	}
 
 	@Override
-	public ArrayList<InDocVO> getUEInDoclist() {  ///indoc 还没写好
-		
-
+	public ArrayList<InDocVO> getUEInDoclist() {
+		InDoc indoc=new InDoc();
+		return indoc.getUnexamedInDoc();
 	}
 
 	@Override
@@ -57,9 +61,9 @@ public class ExamDocument	implements ExamDocumentBLService {
 	}
 
 	@Override
-	public ArrayList<OutDocVO> getUEOutDoclist() {  //outdoc 没给我
-	
-		
+	public ArrayList<OutDocVO> getUEOutDoclist() { 
+		OutDoc outDoc=new OutDoc();
+		return outDoc.getUnexamedOutDoc();
 	}
 
 	@Override
@@ -123,7 +127,8 @@ public class ExamDocument	implements ExamDocumentBLService {
 
 	@Override
 	public boolean changeInDoc(InDocVO vo) { //没给我
-	
+		InDoc inDoc=new InDoc();
+		return inDoc.changeInDoc(vo);
 
 	}
 
@@ -134,9 +139,9 @@ public class ExamDocument	implements ExamDocumentBLService {
 	}
 
 	@Override
-	public boolean changeOutDoc(OutDocVO vo) {  //没给我
-
-
+	public boolean changeOutDoc(OutDocVO vo) { 
+		OutDoc outDoc=new OutDoc();
+		return outDoc.changeOutDoc(vo);
 	}
 
 	@Override
@@ -171,7 +176,8 @@ public class ExamDocument	implements ExamDocumentBLService {
 
 	@Override
 	public void endJudge() {
-		//  好像没啥可写的	
+		SysLogBLService syslog=new SysLog();
+		syslog.addSysLog("审批单据");
 	}
 
 }

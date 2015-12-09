@@ -153,10 +153,12 @@ public class AdminStartUI extends JPanel {
 
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == exit) {
+				
 				exit.setForeground(Color.RED);
 				main.jumpToSignInUI();
 
 			} else if (e.getSource() == detele) {
+				
 				RemoveUserBLService rub = new Admin();
 				for (int i = tmodel.getRowCount() - 1; i >= 0; i--) {
 					if ((boolean) tmodel.getValueAt(i, 0)) {
@@ -166,10 +168,14 @@ public class AdminStartUI extends JPanel {
 				}
 				JOptionPane.showMessageDialog(null, "删除成功", "提示",
 						JOptionPane.INFORMATION_MESSAGE);
+				
 			} else if (e.getSource() == add) {
+				
 				AdminAddUI addui = new AdminAddUI(tmodel);
 				addui.setVisible(true);
+				
 			} else if (e.getSource() == search) {
+				
 				id = idtf.getText();
 				if (abs.checkUserID(id)) {
 					AdminChangeUI acui = new AdminChangeUI(tmodel, id);

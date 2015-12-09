@@ -16,6 +16,7 @@ import express.dataService.documentDataService.BusinessSaleShipmentDocDataServic
 import express.dataService.documentDataService.BusinessSaleShipmentDocumentDataService;
 import express.dataService.documentDataService.DeliverCreateOrderDataService;
 import express.dataService.documentDataService.GoodsStatusDataService;
+import express.dataService.documentDataService.InDocDataService;
 import express.dataService.documentDataService.OutDocDataService;
 import express.dataService.documentDataService.PaymentDocDataService;
 import express.dataService.documentDataService.PredictTimeDataService;
@@ -73,7 +74,7 @@ public class RMIClient {
 	private static BusinessSaleShipmentDocDataService businessShipmentdoc;
 	private static BusinessSaleArrivalDocumentDataService businessArrivalDoc;
 	private static OutDocDataService outDoc;
-
+	private static InDocDataService inDoc;
 	public synchronized static void init() throws ClientException {
 		if (inited) {
 			return;
@@ -137,6 +138,8 @@ public class RMIClient {
 		businessArrivalDoc = (BusinessSaleArrivalDocumentDataService) Naming
 				.lookup(urlPrefix + "BusinessHallArrivalDoc-data");
 		outDoc = (OutDocDataService)  Naming.lookup(urlPrefix + "OutDoc-data");
+		
+		inDoc=(InDocDataService) Naming.lookup(urlPrefix+"InDoc-data");
 	}
 
 	public static BankAccountDataService getBankAccountObject() {
@@ -259,4 +262,8 @@ public class RMIClient {
 		return outDoc;
 	}
 
+	public static InDocDataService getInDocObject(){
+		return inDoc;
+	}
+	
 }

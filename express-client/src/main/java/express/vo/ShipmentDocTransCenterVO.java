@@ -3,7 +3,7 @@ package express.vo;
 import java.util.ArrayList;
 
 
-public class ShipmentDocTransCenterVO{
+public class ShipmentDocTransCenterVO extends DocumentVO{
 	private String date;
 	private String transID;//汽运编号 中转中心编号+日期+0000000七位数字
 	private String arrivalplace; //到达地（本地中转中心或者其它营业厅）

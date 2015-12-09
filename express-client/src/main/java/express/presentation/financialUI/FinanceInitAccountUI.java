@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 
 import express.presentation.mainUI.DateChooser;
 import express.presentation.mainUI.MainUIService;
+import express.presentation.mainUI.MyTableModel;
 
 public class FinanceInitAccountUI extends JPanel {
 
@@ -32,9 +33,10 @@ public class FinanceInitAccountUI extends JPanel {
 	private JPanel staff, org, vehicle, repo, bankaccount, showprevious;
 	private JTabbedPane tabpane;
 	private JTable[] table;
-	private DefaultTableModel[] tableModel;
-	private JTextField nametf, phonetf, datetf, idtf, orgnametf, orgidtf;
-	private JComboBox gendercb, positioncb, orgcb,citycb, butypecb;
+	private MyTableModel[] tableModel;
+	private JTextField nametf, phonetf, datetf, idtf, orgnametf, orgidtf,
+			accountnametf, incometf, expensetf, balancetf;
+	private JComboBox gendercb, positioncb, orgcb, citycb, butypecb;
 	private DateChooser datechooser;
 	private String[][] header;
 	private String[][][] data;
@@ -59,14 +61,15 @@ public class FinanceInitAccountUI extends JPanel {
 		Foclistener flis = new Foclistener();
 
 		table = new JTable[6];
-		tableModel = new DefaultTableModel[6];
+		tableModel = new MyTableModel[6];
 
 		initstaffPanel();
+		initorgPanel();
+		initbackaccountPanel();
 		orgcb.addFocusListener(flis);
 
 		vehicle = new JPanel();
 		repo = new JPanel();
-		bankaccount = new JPanel();
 		showprevious = new JPanel();
 
 		tabpane = new JTabbedPane();
@@ -90,11 +93,6 @@ public class FinanceInitAccountUI extends JPanel {
 		// this.add(repo);
 		// 仓库地址，仓库（航运区、铁运区、汽运区、机动区）排数
 
-		// bankaccount.setBounds(leftside, base+8*bheight, bwidth, bheight);
-		// bankaccount.setFont(font);
-		// this.add(bankaccount);
-		// 账户名，收入金额，支出金额，余额（自动生成）
-
 		// showprevious.setBounds(leftside, base+10*bheight, bwidth, bheight);
 		// showprevious.setFont(font);
 		// this.add(showprevious);
@@ -117,7 +115,7 @@ public class FinanceInitAccountUI extends JPanel {
 		add.setBounds(500, 620, 110, 30);
 		add.setFont(font);
 		this.add(add);
-		
+
 		change = new JButton("修改");
 		change.setBounds(500, 620, 110, 30);
 		change.setFont(font);
@@ -140,28 +138,33 @@ public class FinanceInitAccountUI extends JPanel {
 		// 姓名，性别，手机号，入职日期，职位（可选择），所在机构（可选择），工号（选择机构后自动显示一半）
 		staff = new JPanel();
 		staff.setLayout(null);
-		
-		String[] headers = { "姓名", "性别", "手机号", "入职日期", "职位", "所在机构", "工号" };
-		String[][] datas = { { "卢海龙", "男", "123", "123", "123", "123", "123" } };
+
+		Class[] typeArray = { Boolean.class, Object.class, Object.class,
+				Object.class, Object.class, Object.class, Object.class,
+				Object.class };
+		String[] headers = { "选择", "姓名", "性别", "手机号", "入职日期", "职位", "所在机构",
+				"工号" };
+		Object[][] datas = { { false, "卢海龙", "男", "123", "123", "123", "123",
+				"123" } };
 		String[] genders = { "男", "女" };
 		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
 				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
 		String[] orgs = { "110", "101", "100" };
-		
-		tableModel[0] = new DefaultTableModel(datas, headers);
+
+		tableModel[0] = new MyTableModel(datas, headers, typeArray);
 		table[0] = new JTable(tableModel[0]);
 		table[0].setRowHeight(40);
 		// FitTableColumns(table[0]);
 		table[0].setFont(f);
 		table[0].setBounds(0, 0, tablewidth, tableheight);
 
-		TableColumn col_1 = table[0].getColumnModel().getColumn(1);
+		TableColumn col_1 = table[0].getColumnModel().getColumn(2);
 		col_1.setCellEditor(new DefaultCellEditor(new JComboBox(genders)));
-		TableColumn col_2 = table[0].getColumnModel().getColumn(4);
+		TableColumn col_2 = table[0].getColumnModel().getColumn(5);
 		col_2.setCellEditor(new DefaultCellEditor(new JComboBox(pos)));
-		TableColumn col_3 = table[0].getColumnModel().getColumn(5);
+		TableColumn col_3 = table[0].getColumnModel().getColumn(6);
 		col_3.setCellEditor(new DefaultCellEditor(new JComboBox(orgs)));
-		
+
 		JScrollPane scrollPanes = new JScrollPane(table[0]);
 		scrollPanes.setFont(font);
 		scrollPanes.setBounds(0, 0, tablewidth, tableheight);
@@ -183,7 +186,7 @@ public class FinanceInitAccountUI extends JPanel {
 				labelwidth, labelheight);
 		genderl.setFont(font);
 		staff.add(genderl);
-		
+
 		gendercb = new JComboBox(genders);
 		gendercb.setBounds(leftside + 2 * labelwidth + 110, tableheight + 10,
 				labelwidth, textheight);
@@ -207,7 +210,7 @@ public class FinanceInitAccountUI extends JPanel {
 				tableheight + 10, labelwidth, labelheight);
 		positionl.setFont(font);
 		staff.add(positionl);
-		
+
 		positioncb = new JComboBox(pos);
 		positioncb.setBounds(leftside + 5 * labelwidth + 150 + textwidth,
 				tableheight + 10, textwidth + 50, textheight);
@@ -263,10 +266,18 @@ public class FinanceInitAccountUI extends JPanel {
 		// 所属城市，机构全称，性质（选择营业厅、中转中心），机构代号
 		org = new JPanel();
 		org.setLayout(null);
-		String[] headers = { "所属城市", "机构全称", "性质",  "机构代号" };
-		String[][] datas = { { "卢海龙", "男", "123", "123" } };
-		tableModel[1] = new DefaultTableModel(datas, headers);
-		table[1] = new JTable(tableModel[0]);
+		leftside = 50;
+		labelwidth = 100;
+		textwidth = 150;
+
+		Class[] typeArray = { Boolean.class, Object.class, Object.class,
+				Object.class, Object.class };
+		String[] headers = { "选择", "所属城市", "机构全称", "性质", "机构代号" };
+		Object[][] datas = { { false, "卢海龙", "男", "123", "123" } };
+		String[] cities = { "南京", "北京", "上海" };
+
+		tableModel[1] = new MyTableModel(datas, headers, typeArray);
+		table[1] = new JTable(tableModel[1]);
 		table[1].setRowHeight(40);
 		table[1].setFont(f);
 		table[1].setBounds(0, 0, tablewidth, tableheight);
@@ -275,51 +286,125 @@ public class FinanceInitAccountUI extends JPanel {
 		scrollPanes.setFont(font);
 		scrollPanes.setBounds(0, 0, tablewidth, tableheight);
 		org.add(scrollPanes);
-		
+
 		JLabel cityl = new JLabel("所属城市");
 		cityl.setBounds(leftside, tableheight + 10, labelwidth, labelheight);
 		cityl.setFont(font);
 		org.add(cityl);
 
-		citycb = new JComboBox();
-		citycb.setBounds(leftside + labelwidth, tableheight + 10,
+		citycb = new JComboBox(cities);
+		citycb.setBounds(leftside + labelwidth + 10, tableheight + 10,
 				textwidth, textheight);
 		citycb.setFont(f);
 		org.add(citycb);
-		
+
 		JLabel orgnamel = new JLabel("机构全称");
-		orgnamel.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
+		orgnamel.setBounds(leftside + labelwidth + textwidth + 40,
+				tableheight + 10, labelwidth, labelheight);
 		orgnamel.setFont(font);
 		org.add(orgnamel);
-		
+
 		orgnametf = new JTextField();
-		orgnametf.setBounds(leftside + 2*labelwidth + textwidth, tableheight + 10,
-				textwidth, textheight);
+		orgnametf.setBounds(leftside + 2 * labelwidth + textwidth + 50,
+				tableheight + 10, textwidth, textheight);
 		orgnametf.setFont(f);
 		org.add(orgnametf);
-		
-		JLabel  butypel = new JLabel("机构性质");
-		 butypel.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
-		 butypel.setFont(font);
-		org.add( butypel);
-		
-		String[] butype = {"营业厅","中转中心"};
+
+		JLabel butypel = new JLabel("机构性质");
+		butypel.setBounds(leftside, tableheight + 2 * labelheight, labelwidth,
+				labelheight);
+		butypel.setFont(font);
+		org.add(butypel);
+
+		String[] butype = { "营业厅", "中转中心" };
 		butypecb = new JComboBox(butype);
-		butypecb.setBounds(leftside + labelwidth, tableheight + 10,
-				textwidth, textheight);
+		butypecb.setBounds(leftside + labelwidth + 10, tableheight + 2
+				* labelheight, textwidth, textheight);
 		butypecb.setFont(f);
 		org.add(butypecb);
-		
+
 		JLabel orgidl = new JLabel("机构代号");
-		orgidl.setBounds(leftside + labelwidth + textwidth, tableheight + 10, labelwidth, labelheight);
+		orgidl.setBounds(leftside + labelwidth + textwidth + 40, tableheight
+				+ 2 * labelheight, labelwidth, labelheight);
 		orgidl.setFont(font);
 		org.add(orgidl);
-		
+
 		orgidtf = new JTextField();
-		orgidtf.setBounds(leftside + 2*labelwidth + textwidth, tableheight + 10,
-				textwidth, textheight);
+		orgidtf.setBounds(leftside + 2 * labelwidth + textwidth + 50,
+				tableheight + 2 * labelheight, textwidth, textheight);
 		orgidtf.setFont(f);
 		org.add(orgidtf);
+	}
+
+	private void initbackaccountPanel() {
+		// 账户名，收入金额，支出金额，余额（自动生成）
+		bankaccount = new JPanel();
+		bankaccount.setLayout(null);
+
+		Class[] typeArray = { Boolean.class, Object.class, Object.class,
+				Object.class, Object.class };
+		String[] headers = { "选择", "账户名", "收入金额", "支出金额", "余额" };
+		Object[][] datas = { { false, "卢海龙", 223, 123, 100 } };
+
+		tableModel[2] = new MyTableModel(datas, headers, typeArray);
+		table[2] = new JTable(tableModel[2]);
+		table[2].setRowHeight(40);
+		table[2].setFont(f);
+		table[2].setBounds(0, 0, tablewidth, tableheight);
+
+		JScrollPane scrollPanes = new JScrollPane(table[2]);
+		scrollPanes.setFont(font);
+		scrollPanes.setBounds(0, 0, tablewidth, tableheight);
+		bankaccount.add(scrollPanes);
+
+		JLabel accountnamel = new JLabel("账户名");
+		accountnamel.setBounds(leftside, tableheight + 10, labelwidth,
+				labelheight);
+		accountnamel.setFont(font);
+		bankaccount.add(accountnamel);
+
+		accountnametf = new JTextField();
+		accountnametf.setBounds(leftside + labelwidth + 10, tableheight + 10,
+				textwidth, textheight);
+		accountnametf.setFont(f);
+		bankaccount.add(accountnametf);
+
+		JLabel incomel = new JLabel("收入金额");
+		incomel.setBounds(leftside + labelwidth + textwidth + 40,
+				tableheight + 10, labelwidth, labelheight);
+		incomel.setFont(font);
+		bankaccount.add(incomel);
+
+		incometf = new JTextField();
+		incometf.setBounds(leftside + 2 * labelwidth + textwidth + 50,
+				tableheight + 10, textwidth, textheight);
+		incometf.setFont(f);
+		bankaccount.add(incometf);
+
+		JLabel expensel = new JLabel("支出金额");
+		expensel.setBounds(leftside, tableheight + 2 * labelheight, labelwidth,
+				labelheight);
+		expensel.setFont(font);
+		bankaccount.add(expensel);
+
+		expensetf = new JTextField();
+		expensetf.setBounds(leftside + labelwidth + 10, tableheight + 2
+				* labelheight, textwidth, textheight);
+		expensetf.setFont(f);
+		bankaccount.add(expensetf);
+
+		JLabel balancel = new JLabel("余额");
+		balancel.setBounds(leftside + labelwidth + textwidth + 40, tableheight
+				+ 2 * labelheight, labelwidth, labelheight);
+		balancel.setFont(font);
+		bankaccount.add(balancel);
+
+		balancetf = new JTextField();
+		balancetf.setBounds(leftside + 2 * labelwidth + textwidth + 50,
+				tableheight + 2 * labelheight, textwidth, textheight);
+		balancetf.setFont(f);
+		balancetf.setEditable(false);
+		bankaccount.add(balancetf);
 	}
 
 	private class Listener implements MouseListener {
@@ -330,20 +415,42 @@ public class FinanceInitAccountUI extends JPanel {
 
 			} else if (e.getSource() == detele) {
 				int index = tabpane.getSelectedIndex();
-				int row = table[index].getSelectedRow();
-				tableModel[index].removeRow(row);
+				for (int i = tableModel[index].getRowCount() - 1; i >= 0; i++) {
+					if ((boolean) tableModel[index].getValueAt(i, 0)) {
+						tableModel[index].removeRow(i);
+					}
+				}
+
 			} else if (e.getSource() == add) {
 				int index = tabpane.getSelectedIndex();
-				String nametemp = nametf.getText();
-				String gendertemp = gendercb.getSelectedItem().toString();
-				String phonetemp = phonetf.getText();
-				String positiontemp = positioncb.getSelectedItem().toString();
-				String datetemp = datetf.getText();
-				String orgtemp = orgcb.getSelectedItem().toString();
-				String idtemp = idtf.getText();
-				String[] values = { nametemp, gendertemp, phonetemp,
-						datetemp, positiontemp, orgtemp, idtemp };
-				tableModel[index].addRow(values);
+				if (index == 0) {
+					String nametemp = nametf.getText();
+					String gendertemp = gendercb.getSelectedItem().toString();
+					String phonetemp = phonetf.getText();
+					String positiontemp = positioncb.getSelectedItem()
+							.toString();
+					String datetemp = datetf.getText();
+					String orgtemp = orgcb.getSelectedItem().toString();
+					String idtemp = idtf.getText();
+					Object[] values = { false, nametemp, gendertemp, phonetemp,
+							datetemp, positiontemp, orgtemp, idtemp };
+					tableModel[index].addRow(values);
+				} else if (index == 1) {
+					String city = citycb.getSelectedItem().toString();
+					String orgname = orgnametf.getText();
+					String orgtype = butypecb.getSelectedItem().toString();
+					String orgid = orgidtf.getText();
+					Object[] values = { false, city, orgname, orgtype, orgid };
+					tableModel[index].addRow(values);
+				} else if (index == 2) {
+					String accountname = accountnametf.getText();
+					double income = Double.parseDouble(incometf.getText());
+					double expense = Double.parseDouble(expensetf.getText());
+					double total = income - expense;
+					Object[] values = { false, accountname, income, expense,
+							total };
+					tableModel[index].addRow(values);
+				}
 			}
 			updateUI();
 		}

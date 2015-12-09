@@ -84,6 +84,7 @@ public class managerMemberUI extends JPanel {
 				data[i][8] = changeunder;
 			}
 		}
+		
 //		 Object[] user1 = { true, "lhl", "man", "10001", "110", " ", " ", " ",
 //		 changeunder };
 //		 Object[] user2 = { false, "hmt", "woman", "10086", "120", " ", " ",
@@ -149,28 +150,33 @@ public class managerMemberUI extends JPanel {
 				for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 					if ((boolean) tableModel.getValueAt(i, 0)) {
 						tableModel.removeRow(i);
-						smb.removeUser((String) tableModel.getValueAt(i, 3));
-						smb.endManage();
+						smb.removeUser((String) tableModel.getValueAt(i, 3));						
 					}
 				}
+				smb.endManage();
 				JOptionPane.showMessageDialog(null, "删除成功", "提示",
 						JOptionPane.INFORMATION_MESSAGE);
+				
 			} else if (e.getSource() == add) {
+				
 				managerMemberAddUI mmaui = new managerMemberAddUI(tableModel);
 				mmaui.setVisible(true);
 
 			} else if (e.getSource() == change) {
+				
 				id = idtf.getText();
 				managerMemberChangeUI mmcui = new managerMemberChangeUI(
 						tableModel, id);
 				mmcui.setVisible(true);
 
 			} else if (e.getSource() == table) {
+				
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
+				
 				if (col == 8) {
 					if (tableModel.getValueAt(row, col).equals(changeunder)) {
-						tableModel.setrowedit(row);
+						tableModel.setrowedit();
 						tableModel.setValueAt(confirmunder, row, col);
 					} else if (tableModel.getValueAt(row, col).equals(
 							confirmunder)) {
@@ -185,15 +191,8 @@ public class managerMemberUI extends JPanel {
 						String city = (String) tableModel.getValueAt(row, 5);
 						String phone = (String) tableModel.getValueAt(row, 6);
 						String date = (String) tableModel.getValueAt(row, 7);
-
-						//System.out.println(positioncb.getSelectedIndex()+1);
 						UserRole posit = UserRole.values()[positioncb.getSelectedIndex()+1];
-						boolean sex;
-						if (gender.equals("男")) {
-							sex = true;
-						} else {
-							sex = false;
-						}
+						boolean sex = gender.equals("男");
 
 						vo = new UserInfoVO(name, sex, id, phone, posit, city,
 								date);

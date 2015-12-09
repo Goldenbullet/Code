@@ -2,7 +2,9 @@ package express.po;
 
 import java.io.Serializable;
 
-public class InDocPO implements Serializable{
+import express.dataService.organizationDataService.OrganizationDataService;
+
+public class InDocPO extends DocumentPO implements Serializable{
 	/**
 	 * 
 	 */
@@ -12,6 +14,9 @@ public class InDocPO implements Serializable{
 	private String arrival;
 	private RepoPosition repoPosition;
 	
+	private String orgid;
+	
+	
 	public InDocPO(String de,String d,String a,
 			RepoPosition repoPosition){
 		this.deliveryNumber=de;
@@ -19,6 +24,12 @@ public class InDocPO implements Serializable{
 		this.arrival=a;
 		this.repoPosition=repoPosition;
 	}
+	
+	public void setOrgID(String orgid){
+		this.orgid=orgid;
+	}
+	
+	
 	
 	public String getdeliveryNumber(){
 		return deliveryNumber;

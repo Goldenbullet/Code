@@ -2,7 +2,7 @@ package express.vo;
 
 import express.po.GoodsArrivalStatus;
 
-public class ArrivalDocTransCenterVO {
+public class ArrivalDocTransCenterVO extends DocumentVO{
 	private String arriveDate;
 	private String transCenterID;//中转中心ID
 	private String transferDocID;//中转单ID

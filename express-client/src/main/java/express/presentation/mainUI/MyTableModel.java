@@ -1,16 +1,15 @@
 package express.presentation.mainUI;
 
-import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
 public class MyTableModel extends DefaultTableModel {
 
-	private int rowedit;
 	private boolean edit = false;
-	private Class[] typeArray;
+	private Class[] typeArray; // 类型数组
 	private String[] head;
 	private Object[][] data;
 	private String changeunder = "<HTML><U>修改</U></HTML>";
+	private String confirmunder = "<HTML><U>确认</U></HTML>";
 
 	public MyTableModel(Object[][] data, String[] head, Class[] typeArray) {
 		super(data, head);
@@ -19,26 +18,22 @@ public class MyTableModel extends DefaultTableModel {
 		this.data = data;
 	}
 
-	// 创建类型数组
-	// Class[] typeArray = { Boolean.class, Object.class, JComboBox.class,
-	// Object.class, JComboBox.class, JComboBox.class, Object.class,
-	// Object.class, Object.class };
-
 	// 使表格具有可编辑性
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if(data[0][head.length-1].equals(changeunder)){
-			if(columnIndex==head.length-1){
+
+		if (data[0][head.length - 1].equals(changeunder)||data[0][head.length - 1].equals(confirmunder)) {
+			if (columnIndex == head.length - 1) {
 				return false;
 			}
 		}
 		
 		if (edit) {
-			if (rowIndex == rowedit) {
+			if (this.getValueAt(rowIndex, head.length - 1).equals(confirmunder)) {
 				return true;
 			}
 		}
-		
+
 		if (columnIndex == 0) {
 			return true;
 		} else {
@@ -46,13 +41,18 @@ public class MyTableModel extends DefaultTableModel {
 		}
 	}
 
-	public void setrowedit(int row) {
-		rowedit = row;
+	public void setrowedit() {
 		edit = true;
 	}
 
 	public void setrowunedit() {
 		edit = false;
+	}
+
+	public void selectAllOrNull(boolean value) {
+		for (int i = 0; i < getRowCount(); i++) {
+			this.setValueAt(value, i, 0);
+		}
 	}
 
 	@Override

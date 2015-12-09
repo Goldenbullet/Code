@@ -15,9 +15,11 @@ import express.data.documentData.ArrivalDocBusinessHallIO;
 import express.data.documentData.ArrivalDocTransCenterIO;
 import express.data.documentData.DeliverDocIO;
 import express.data.documentData.GoodTransStatusIO;
+import express.data.documentData.InDocIO;
 import express.data.documentData.OrderIO;
 import express.data.documentData.OutDocIO;
 import express.data.documentData.PaymentDocIO;
+import express.data.documentData.PredictTimeIO;
 import express.data.documentData.ReceiveDocIO;
 import express.data.documentData.ReceiveInfoIO;
 import express.data.documentData.TransferDocIO;
@@ -66,13 +68,15 @@ public class RMIServer {
 		NAMING_MAP.put("DeliverDoc-data", DeliverDocIO.class);
 		NAMING_MAP.put("ReceiveDoc-data", ReceiveDocIO.class);
 		NAMING_MAP.put("Order-data", OrderIO.class);
-		// NAMING_MAP.put("PredictTime-data", PredictTimeIO.class);
+		NAMING_MAP.put("PredictTime-data", PredictTimeIO.class);
 		NAMING_MAP.put("ReceiveInfo-data", ReceiveInfoIO.class);
 		NAMING_MAP.put("TransferDoc-data", TransferDocIO.class);
 		// NAMING_MAP.put("ArrivalDoc-data", ArrivalDocTransCenterIO.class);
 		NAMING_MAP.put("OutDoc-data", OutDocIO.class);
 		NAMING_MAP.put("BusinessHallArrivalDoc-data",
 				ArrivalDocBusinessHallIO.class);
+		NAMING_MAP.put("InDoc-data", InDocIO.class);
+		
 	}
 
 	public synchronized static void init() throws ServerException {

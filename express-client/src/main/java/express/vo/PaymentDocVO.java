@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import express.po.PaymentItem;
 
-public class PaymentDocVO {
+public class PaymentDocVO extends DocumentVO{
 
 	private ArrayList<PaymentItem> payment;
 	private double sum;

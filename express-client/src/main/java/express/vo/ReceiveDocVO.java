@@ -2,7 +2,7 @@ package express.vo;
 
 import java.util.ArrayList;
 
-public class ReceiveDocVO {
+public class ReceiveDocVO extends DocumentVO{
 	private String receiveDate;
 	private double receivePrice;
 	private String deliverManID;

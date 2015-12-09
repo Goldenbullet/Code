@@ -25,7 +25,7 @@ public class AdminChangeUI extends JDialog {
 //	private JComboBox positioncb;
 	private String name, position, id, key;
 	private UserRole posit;
-	private Object[] values;
+//	private Object[] values;
 	private DefaultTableModel tmodel;
 	private AdminBLService abs;
 	private UserInfoAdminVO vo;
@@ -43,8 +43,8 @@ public class AdminChangeUI extends JDialog {
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
-		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
-				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
+//		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
+//				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
 		JListener lis = new JListener();
 
 		JLabel namel = new JLabel("姓名");
@@ -122,12 +122,13 @@ public class AdminChangeUI extends JDialog {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getSource()==ok){
-				AdminBLService abs = new Admin();
+
 				key = keytf.getText();
 				for (int i = tmodel.getRowCount() - 1; i >= 0; i--) {
 					if(tmodel.getValueAt(i, 3).equals(id)){
 						tmodel.setValueAt(key, i, 4);
 						abs.changeUserPassword(id, key);
+						abs.endManage();
 						JOptionPane.showMessageDialog(null, "修改密码成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						break;
@@ -139,6 +140,7 @@ public class AdminChangeUI extends JDialog {
 					if(tmodel.getValueAt(i, 3).equals(id)){
 						tmodel.removeRow(i);
 						rub.removeUser(id);
+						abs.endManage();
 						JOptionPane.showMessageDialog(null, "删除成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						break;

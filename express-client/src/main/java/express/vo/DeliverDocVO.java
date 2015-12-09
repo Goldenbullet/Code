@@ -1,6 +1,6 @@
 package express.vo;
 
-public class DeliverDocVO {
+public class DeliverDocVO extends DocumentVO{
 	
 	private String arriveDate;
 	private String orderID;

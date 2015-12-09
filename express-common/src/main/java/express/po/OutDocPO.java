@@ -2,12 +2,12 @@ package express.po;
 
 import java.io.Serializable;
 
-public class OutDocPO implements Serializable{
+public class OutDocPO extends DocumentPO implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2093918775776937385L;
-	private String deliveryNumber;
+	private String orderid;
 	private String date;
 	private String arrival;
 	private String transKind;
@@ -15,19 +15,19 @@ public class OutDocPO implements Serializable{
 	
 	public OutDocPO(String de,String d,String a,
 			String tK,String tN){
-		this.deliveryNumber=de;
+		this.orderid=de;
 		this.date=d;
 		this.arrival=a;
 		this.transKind=tK;
 		this.transNumber=tN;
 	}
 	
-	public String getdeliveryNumber(){
-		return deliveryNumber;
+	public String getOrderID(){
+		return orderid;
 	}
 	
 	public void setdeliveryNumber(String deliveryNumber){
-		this.deliveryNumber=deliveryNumber;
+		this.orderid=deliveryNumber;
 	}
 	public String getdate(){
 		return date;

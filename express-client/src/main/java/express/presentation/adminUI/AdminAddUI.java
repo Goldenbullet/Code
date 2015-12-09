@@ -100,25 +100,30 @@ public class AdminAddUI extends JDialog {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == ok) {
+				
 				name = nametf.getText();
 				position = positioncb.getSelectedItem().toString();
 				id = idtf.getText();
 				key = keytf.getText();
 				Object[] temp = { false, name, position, id, key };
 				values = temp;
+				
 				if (name.isEmpty() || id.isEmpty() || key.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
 							JOptionPane.ERROR_MESSAGE);
-				} else {					
+				} else {	
+					
 					posit = UserRole.values()[positioncb.getSelectedIndex()];
 					UserInfoAdminVO vo = new UserInfoAdminVO(name, id, posit,
 							key);
 					AdminBLService abs = new Admin();
+					
 					if (abs.addUser(vo)) {
 						tmodel.addRow(values);
 						JOptionPane.showMessageDialog(null, "添加成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						abs.endManage();
+						
 					}else{
 						JOptionPane.showMessageDialog(null, "添加失败", "提示",
 								JOptionPane.WARNING_MESSAGE);

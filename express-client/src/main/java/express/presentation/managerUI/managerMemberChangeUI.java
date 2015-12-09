@@ -152,13 +152,13 @@ public class managerMemberChangeUI extends JDialog {
 		this.add(ok);
 		
 		detele = new JButton("删除");
-		detele.setBounds(120, 170,70, 30);
+		detele.setBounds(120, 305,70, 30);
 		detele.setFont(font);
 		detele.addMouseListener(lis);
 		this.add(detele);
 
 		exit = new JButton("取消");
-		exit.setBounds(210, 170, 70, 30);
+		exit.setBounds(210, 305, 70, 30);
 		exit.setFont(font);
 		exit.addMouseListener(lis);
 		this.add(exit);

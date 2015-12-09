@@ -3,7 +3,7 @@ package express.vo;
 import express.po.DeliveryType;
 import express.po.PackageType;
 
-public class OrderVO {
+public class OrderVO extends DocumentVO{
 	private String senderName;//寄件人信息
 	private String senderAddress;
 	private String senderWorkPlace;

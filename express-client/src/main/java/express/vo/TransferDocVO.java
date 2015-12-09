@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import express.po.TransWay;
 
-public class TransferDocVO {
+public class TransferDocVO extends DocumentVO{
 	private String date;
 	private String transDocID;
 	private String flightNumber;

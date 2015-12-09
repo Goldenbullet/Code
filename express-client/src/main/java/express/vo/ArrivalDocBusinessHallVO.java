@@ -2,7 +2,7 @@ package express.vo;
 
 import express.po.GoodsArrivalStatus;
 
-public class ArrivalDocBusinessHallVO {
+public class ArrivalDocBusinessHallVO extends DocumentVO{
 	private String arriveDate;
 	/**
 	 * 营业厅到达单分为两种   营业厅--->营业厅
