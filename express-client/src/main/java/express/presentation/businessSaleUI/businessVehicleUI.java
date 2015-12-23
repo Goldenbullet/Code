@@ -38,8 +38,6 @@ public class businessVehicleUI extends JPanel {
 	private VehicleBusinessSaleblService vbs;
 	private VehicleInfoVO vo;
 	
-	
-	private MainUIService m;
 	private JButton delete,change,add;
 	private JTextField idtf;
 	private MyTableModel tableModel;
@@ -56,13 +54,11 @@ public class businessVehicleUI extends JPanel {
 	private String id;
 	
 	
-	public businessVehicleUI(MainUIService main){
+	public businessVehicleUI(){
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 		

@@ -1,5 +1,7 @@
 package express.businesslogicService.businessSaleBLService;
 
+import java.util.ArrayList;
+
 import express.vo.ReceiveDocVO;
 
 public interface BusinessSaleReceiveDocumentblService {
@@ -12,4 +14,5 @@ public interface BusinessSaleReceiveDocumentblService {
 	
 	public void endReceiveDoc();
 	
+	public double getTotalPrice(ArrayList<String> orderlist);
 }

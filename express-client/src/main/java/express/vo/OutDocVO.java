@@ -6,6 +6,9 @@ public class OutDocVO extends DocumentVO implements Serializable{
 	/**
 	 * 
 	 */
+	
+	private String title="出库单";
+	
 	private static final long serialVersionUID = 2093918775776937385L;
 	private String orderid;
 	private String date;
@@ -57,4 +60,9 @@ public class OutDocVO extends DocumentVO implements Serializable{
 	public void settransNumber(String transNumber){
 		this.transNumber=transNumber;
 	}
+	
+	//add title
+		public String getTitle(){
+			return title;
+		}
 }

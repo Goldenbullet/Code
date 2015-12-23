@@ -20,8 +20,8 @@ public class MyCellRenderer extends DefaultTableCellRenderer {
 	private JTableHeader tableHeader;
 	private JCheckBox selectBox;
 
-	public MyCellRenderer(JTable table) {
-		this.tModel = (MyTableModel) table.getModel();
+	public MyCellRenderer(JTable table,MyTableModel tableModel) {
+		this.tModel = tableModel;
 		this.tableHeader = table.getTableHeader();
 		selectBox = new JCheckBox(tModel.getColumnName(0));
 		selectBox.setSelected(false);

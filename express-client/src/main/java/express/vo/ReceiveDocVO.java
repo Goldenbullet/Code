@@ -3,6 +3,7 @@ package express.vo;
 import java.util.ArrayList;
 
 public class ReceiveDocVO extends DocumentVO{
+	private String title="收款单";
 	private String receiveDate;
 	private double receivePrice;
 	private String deliverManID;
@@ -37,4 +38,9 @@ public class ReceiveDocVO extends DocumentVO{
 	public String getOrgID(){
 		return orgID;
 	}
+	
+	//add title
+		public String getTitle(){
+			return title;
+		}
 }

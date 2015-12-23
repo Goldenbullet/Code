@@ -1,10 +1,17 @@
 package express.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GoodTransStatusVO {
-	private String orderID;
-	ArrayList<String> time;
+public class GoodTransStatusVO implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6846101496473638199L;
+	private String orderID;// orderID=-1 表示没找到
+	ArrayList<String> time=new ArrayList<String>();  
+	ArrayList<String> statusString=new ArrayList<String>();
 	//最多经过2个营业厅，2个中转中心
 	private String firstBusinessHallID="-1";
 	private String firsttransCenterID="-1";
@@ -17,6 +24,7 @@ public class GoodTransStatusVO {
 	public String getOrderID(){
 		return orderID;
 	}
+	
 	public void setOrderID(String id){
 		orderID=id;
 	}
@@ -56,4 +64,23 @@ public class GoodTransStatusVO {
 	public void setDeliverManID(String s){
 		deliverManID=s;
 	}
+	
+	public ArrayList<String> getstatusList(){
+		return statusString;
+	}
+	
+	public void addStatus(String status){
+		statusString.add(status);
+	}
+	
+	public void addTime(String time){
+		this.time.add(time);
+	}
+	
+	
+	public void setStatus(ArrayList<String> statusString){
+		this.statusString=statusString;
+	}
+	
+	
 }

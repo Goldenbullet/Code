@@ -31,7 +31,6 @@ import express.vo.UserInfoVO;
 
 public class managerMemberUI extends JPanel {
 
-	private MainUIService m;
 	private JTable table;
 	private MyTableModel tableModel;
 	private TableColumnModel tcm;
@@ -39,7 +38,6 @@ public class managerMemberUI extends JPanel {
 	private JTextField idtf;
 	private JComboBox positioncb, gendercb, citycb;
 	private StaffManageBLService smb;
-	private UserInfoVO userinfo;
 	private UserInfoVO vo;
 	private ArrayList<UserInfoVO> userarr;
 	private String changeunder = "<HTML><U>修改</U></HTML>";
@@ -49,9 +47,8 @@ public class managerMemberUI extends JPanel {
 	private String[] header = { "选择", "姓名", "性别", "工号", "职位", "所在单位", "联系方式",
 			"入职日期", "修改" };
 
-	public managerMemberUI(MainUIService main) {
+	public managerMemberUI() {
 		setLayout(null);
-		m = main;
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
@@ -66,7 +63,7 @@ public class managerMemberUI extends JPanel {
 		String[] cities = { "南京", "北京", "上海" };
 		Class[] typeArray = { Boolean.class, Object.class, JComboBox.class,
 				Object.class, JComboBox.class, JComboBox.class, Object.class,
-				 Object.class, Object.class };
+				Object.class, Object.class };
 
 		userarr = smb.getAllUser();
 		if (userarr != null) {
@@ -77,25 +74,27 @@ public class managerMemberUI extends JPanel {
 				data[i][1] = temp.getName();
 				data[i][2] = temp.getGender() ? "男" : "女";
 				data[i][3] = temp.getID();
-				data[i][4] = temp.getPosition();
+				UserRole posit = temp.getPosition();
+				data[i][4] = temp.transposition(posit);
 				data[i][5] = temp.getCity();
 				data[i][6] = temp.getPhoneNum();
 				data[i][7] = temp.getDate();
 				data[i][8] = changeunder;
 			}
 		}
-		
-//		 Object[] user1 = { true, "lhl", "man", "10001", "110", " ", " ", " ",
-//		 changeunder };
-//		 Object[] user2 = { false, "hmt", "woman", "10086", "120", " ", " ",
-//		 " ", changeunder };
-//		 Object user[][] = { user1, user2 };
-//		 data = user;
 
-		tableModel = new MyTableModel(data, header,typeArray);
+		// Object[] user1 = { true, "lhl", "man", "10001", "110", " ", " ", " ",
+		// changeunder };
+		// Object[] user2 = { false, "hmt", "woman", "10086", "120", " ", " ",
+		// " ", changeunder };
+		// Object user[][] = { user1, user2 };
+		// data = user;
+
+		tableModel = new MyTableModel(data, header, typeArray);
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
 		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setFont(font);
 		table.setBounds(50, 60, 750, 600);
 		table.setFont(f);
 		table.addMouseListener(listener);
@@ -149,31 +148,36 @@ public class managerMemberUI extends JPanel {
 				// m.jumpTomanagerMenuUI();
 				for (int i = tableModel.getRowCount() - 1; i >= 0; i--) {
 					if ((boolean) tableModel.getValueAt(i, 0)) {
+						smb.removeUser((String) tableModel.getValueAt(i, 3));
 						tableModel.removeRow(i);
-						smb.removeUser((String) tableModel.getValueAt(i, 3));						
 					}
 				}
 				smb.endManage();
 				JOptionPane.showMessageDialog(null, "删除成功", "提示",
 						JOptionPane.INFORMATION_MESSAGE);
-				
+
 			} else if (e.getSource() == add) {
-				
+
 				managerMemberAddUI mmaui = new managerMemberAddUI(tableModel);
 				mmaui.setVisible(true);
 
 			} else if (e.getSource() == change) {
-				
+
 				id = idtf.getText();
-				managerMemberChangeUI mmcui = new managerMemberChangeUI(
-						tableModel, id);
-				mmcui.setVisible(true);
+				if (!smb.isUserIDAvailable(id)) {
+					managerMemberChangeUI mmcui = new managerMemberChangeUI(
+							tableModel, id);
+					mmcui.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "工号不存在", "提示",
+							JOptionPane.ERROR_MESSAGE);
+				}
 
 			} else if (e.getSource() == table) {
-				
+
 				int row = table.getSelectedRow();
 				int col = table.getSelectedColumn();
-				
+
 				if (col == 8) {
 					if (tableModel.getValueAt(row, col).equals(changeunder)) {
 						tableModel.setrowedit();
@@ -191,7 +195,8 @@ public class managerMemberUI extends JPanel {
 						String city = (String) tableModel.getValueAt(row, 5);
 						String phone = (String) tableModel.getValueAt(row, 6);
 						String date = (String) tableModel.getValueAt(row, 7);
-						UserRole posit = UserRole.values()[positioncb.getSelectedIndex()+1];
+						UserRole posit = UserRole.values()[positioncb
+								.getSelectedIndex() + 1];
 						boolean sex = gender.equals("男");
 
 						vo = new UserInfoVO(name, sex, id, phone, posit, city,

@@ -6,6 +6,7 @@ import express.po.PaymentItem;
 
 public class PaymentDocVO extends DocumentVO{
 
+	private String title="付款单";
 	private ArrayList<PaymentItem> payment;
 	private double sum;
 	private String paymentID;
@@ -45,5 +46,8 @@ public class PaymentDocVO extends DocumentVO{
 	public void setSum(double s){
 		sum=s;
 	}
-
+	//add title
+		public String getTitle(){
+			return title;
+		}
 }

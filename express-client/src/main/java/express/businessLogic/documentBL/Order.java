@@ -7,11 +7,13 @@ import java.util.Calendar;
 import express.businessLogic.IDKeeper;
 import express.businessLogic.infoManageBL.DistanceManager;
 import express.businessLogic.infoManageBL.PriceManager;
+import express.businessLogic.searchBL.Search;
 import express.businessLogic.syslogBL.SysLog;
 import express.businesslogicService.managerBLService.SysLogBLService;
 import express.dataService.documentDataService.DeliverCreateOrderDataService;
 import express.dataService.documentDataService.GoodsStatusDataService;
 import express.dataService.documentDataService.PredictTimeDataService;
+import express.po.DeliveryType;
 import express.po.GoodTransStatusPO;
 import express.po.HistoryTimePO;
 import express.po.OrderPO;
@@ -19,7 +21,11 @@ import express.po.PackageType;
 import express.po.PredictTimePO;
 import express.vo.ArrivalTimeVO;
 import express.vo.DeliverDocVO;
+import express.vo.GoodTransStatusVO;
 import express.vo.OrderVO;
+import express.vo.SalaryStrategyVO;
+import express.vo.ShipmentDocBusinessHallVO;
+import express.rmi.ClientException;
 import express.rmi.RMIClient;
 
 public class Order {
@@ -35,7 +41,7 @@ public class Order {
 	
 	public String addOrder(OrderVO vo){  //返回订单号
 		if(!isCellPhoneAvailable(vo.getReceiverCellPhoneNum())||!isCellPhoneAvailable(vo.getSenderCellPhoneNum())){
-			return "cellPhone error";
+			return "手机号码错误";
 		}
 		
 		OrderPO po=new OrderPO();
@@ -58,7 +64,7 @@ public class Order {
 			
 			Calendar c = Calendar.getInstance();
 			int year=c.get(Calendar.YEAR);
-			int month=-c.get(Calendar.MONTH+1)-1;
+			int month=-c.get(Calendar.MONTH)-1;
 			int day=-c.get(Calendar.DATE);
 			String date="";
 			date+=year;
@@ -69,6 +75,8 @@ public class Order {
 			
 			GoodsStatusDataService changeStatusObj=RMIClient.getGoodStatusObject();
 			changeStatusObj.changeGoodtransstatus(statuspo);
+			changeStatusObj.writeAllGoodTransStatus();
+			
 			
 			return ID;
 		}catch(Exception e){
@@ -83,7 +91,7 @@ public class Order {
 		if(cellphonenumber.length()==11){
 			for(int i=0;i<11;i++){
 				char c=cellphonenumber.charAt(i);
-				if(c>=0&&c<=9){
+				if(c>='0'&&c<='9'){
 					
 				}
 				else {
@@ -183,7 +191,7 @@ public class Order {
 			Calendar c = Calendar.getInstance();
 			c.add(Calendar.DATE, x);
 			int year=c.get(Calendar.YEAR);
-			int month=-c.get(Calendar.MONTH+1)-1;
+			int month=-c.get(Calendar.MONTH)-1;
 			int day=-c.get(Calendar.DATE);
 			String predictdate="";
 			predictdate+=year;
@@ -280,6 +288,50 @@ public class Order {
 		}
 		
 	}
+	
+	
+	// Test
+	
+	public static void main(String[] args){
+		try {
+			RMIClient.init();
+		} catch (ClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+//		12-22   2 6  4 12-24
+		OrderVO vo=new OrderVO();
+		vo.setSenderInfo("海龙", "南京市栖霞区仙林大道", "南京大学", "13139089552", "025-1212", "NanJing");
+		vo.setReceiverInfo("John Locke", "北京市颐和园路", "PKU", "15651705115", "025-909090", "BeiJing");
+		vo.setGoodsInfo(1, 1, 10, "Model", DeliveryType.Fast, PackageType.WoodBox);
+		vo.setGoodsInfo(1, 2.4, 0.2, "Notebook", DeliveryType.Slow, PackageType.WoodBox);
+		Order order=new Order();
+		System.out.println(order.getPredictArrivalTime("南京", "北京").getTime());
+		
+		
+		//order.end();
+		
+		
+//		Search search=new Search();
+//		GoodTransStatusVO vo=search.getOrderIDStatus("0000000000");
+//		
+//		int size=vo.getTime().size();
+//		System.out.println(size);
+//		for(int i=0;i<size;i++){
+//			System.out.println(vo.getTime().get(i));
+//		}
+//		System.out.println(vo.getstatusList().get(0));
+//		
+		
+		//System.out.println(order.getPredictArrivalTime(vo.getEndCity(), vo.getStartCity()));
+		
+		
+		
+	}
+	
+	
 	
 	
 	

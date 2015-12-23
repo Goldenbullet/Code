@@ -11,6 +11,7 @@ import express.dataService.documentDataService.TransCenterArrivalDocumentDataSer
 import express.dataService.documentDataService.GoodsStatusDataService;
 import express.po.ArrivalDocTransCenterPO;
 import express.po.GoodTransStatusPO;
+import express.po.GoodsArrivalStatus;
 import express.vo.ArrivalDocTransCenterVO;
 import express.rmi.RMIClient;
 
@@ -19,7 +20,7 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 	public ArrivalDocTransCenter(){
 		rmiobj=RMIClient.getTransCenterArrivalDocObject();
 	}
-	//
+	
 	
 	public boolean addArrivalDoc(ArrivalDocTransCenterVO vo) {
 		ArrivalDocTransCenterPO po=new ArrivalDocTransCenterPO(vo.getOrderID(),vo.getArriveDate(),vo.getTransCenterID(),vo.getTransferDocID()
@@ -27,6 +28,11 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 		if(isOrderIDavailable(vo.getOrderID())){
 		
 		try{
+			OrderController oct=new OrderController();
+			if(null==oct.getOrder(vo.getOrderID())){
+				return false;
+			}
+				
 			rmiobj.createArrivalDoc(po);
 			String orderId=vo.getOrderID();
 			
@@ -34,9 +40,9 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 			GoodTransStatusPO statuspo=changeStatusObj.search(orderId);
 			
 			
-			if(po.getTransferDocID().equals("-1")){
-			statuspo.setFirsttransCenterID(IDKeeper.getOrgID());
-			statuspo.addStatus("到达寄件人中转中心");
+			if(po.getTransferDocID().equals("-1")){  //-1 表示没有
+				statuspo.setFirsttransCenterID(IDKeeper.getOrgID());
+				statuspo.addStatus("到达寄件人中转中心");
 			}
 			else{
 				statuspo.setSecondtransCenterID(IDKeeper.getOrgID());
@@ -44,13 +50,13 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 			}
 			Calendar c = Calendar.getInstance();
 			int year=c.get(Calendar.YEAR);
-			int month=-c.get(Calendar.MONTH+1)-1;
+			int month=-c.get(Calendar.MONTH)-1;
 			int day=-c.get(Calendar.DATE);
 			String date="";
 			date+=year;
 			date+=month;
 			date+=day;
-			statuspo.addTime(date);
+			statuspo.addTime(vo.getArriveDate());
 			
 			changeStatusObj.changeGoodtransstatus(statuspo);
 			
@@ -153,6 +159,22 @@ public class ArrivalDocTransCenter implements TransCenterArrivalDocblService{
 				return false;
 			}
 	}
+	
+//	public static void main(String[] args){
+//		try{
+//			RMIClient.init();
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		
+//		ArrivalDocTransCenterVO vo=new ArrivalDocTransCenterVO("0000000001", "2015-12-29", "0250201512290000000", "-1", "南京", GoodsArrivalStatus.Complete);
+//		ArrivalDocTransCenter adtc=new ArrivalDocTransCenter();
+//		
+//		System.out.println(adtc.addArrivalDoc(vo));
+//		
+//		adtc.endArrivalDoc();
+//		
+//	}
 	
 	
 

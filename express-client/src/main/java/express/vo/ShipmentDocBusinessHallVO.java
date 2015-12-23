@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 
 public class ShipmentDocBusinessHallVO extends DocumentVO{
+	
+	private String title="营业厅装车单";
+	
 	private String date;
 	private String transID;//汽运编号 （营业厅编号+20150921日期+00000编码 、五位数字）
 	private String businessHallNumber;  //本营业厅编号（025城市编码+000鼓楼营业厅）
@@ -18,9 +21,9 @@ public class ShipmentDocBusinessHallVO extends DocumentVO{
 	
 	public ShipmentDocBusinessHallVO(String date,String transID,String bussinessHallnumber,
 			String arrivalplace,String vanID,String checkman,String transman,
-			ArrayList<String> order ,double money,String shipment,String startPlace){
+			ArrayList<String> order ,double money,String shipmentid,String startPlace){
 		this.date=date;
-		this.transID=transID;
+		this.transID=transID;  //汽运编号
 		this.businessHallNumber=bussinessHallnumber;
 		this.arrivalplace=arrivalplace;
 		this.vanID=vanID;
@@ -28,7 +31,7 @@ public class ShipmentDocBusinessHallVO extends DocumentVO{
 		this.transMan=transman;
 		this.orderID=order;
 		this.money=money;
-		this.shipmentID=shipment;
+		this.shipmentID=shipmentid;
 		this.startPlace=startPlace;
 	}
 	
@@ -81,4 +84,9 @@ public class ShipmentDocBusinessHallVO extends DocumentVO{
 		this.money=money;
 	}
 
+	//add title
+		public String getTitle(){
+			return title;
+		}
+	
 }

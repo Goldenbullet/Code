@@ -2,6 +2,8 @@ package express.presentation.businessSaleUI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -15,18 +17,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 
 import express.businessLogic.IDKeeper;
 import express.businessLogic.documentBL.ReceiveDoc;
 import express.businesslogicService.businessSaleBLService.BusinessSaleReceiveDocumentblService;
 import express.presentation.mainUI.DateChooser;
-import express.presentation.mainUI.MainUIService;
 import express.vo.ReceiveDocVO;
 
 public class businessReceiveUI extends JPanel {
 
-	private MainUIService m;
 	private JTextField textArea0;
 	private JTextField textArea1;
 	private JTextField textArea2;
@@ -35,11 +37,13 @@ public class businessReceiveUI extends JPanel {
 	private DateChooser datechooser;
 	private JButton button_confirm;
 	private JButton button_cancel;
-	private String orgID,receiveDate,deliverManID;
+	private String orgID, receiveDate, deliverManID;
 	private ArrayList<String> allOrderIDs;
 	private double receivePrice;
+	private Border border,border1;
+	private boolean complete = true;
 
-	public businessReceiveUI(MainUIService main) {
+	public businessReceiveUI() {
 		int textlength = 200;
 		int textwidth = 40;
 
@@ -51,12 +55,11 @@ public class businessReceiveUI extends JPanel {
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
 		JListener listener = new JListener();
+		Foclistener foclis = new Foclistener();
 
 		orgID = IDKeeper.getOrgID();
 		textArea0 = new JTextField();
@@ -71,9 +74,6 @@ public class businessReceiveUI extends JPanel {
 		textArea1.setBounds(300, base + labelwidth * 2, textlength, textwidth);
 		textArea1.setFont(f);
 		textArea1.setEditable(false);
-		// textAreaOutput.setSelectedTextColor(Color.RED);
-		// textArea1.setLineWrap(true); // 激活自动换行功能
-		// textArea1.setWrapStyleWord(true);// 激活断行不断字功能
 		this.add(textArea1);
 
 		datechooser = new DateChooser("yyyy-MM-dd", textArea1);
@@ -84,20 +84,26 @@ public class businessReceiveUI extends JPanel {
 		textArea2 = new JTextField();
 		textArea2.setBounds(300, base + labelwidth * 4, textlength, textwidth);
 		textArea2.setFont(f);
+		textArea2.addFocusListener(foclis);
 		this.add(textArea2);
 
 		textArea3 = new JTextField();
 		textArea3.setBounds(300, base + labelwidth * 6, textlength, textwidth);
 		textArea3.setFont(f);
+		textArea3.addFocusListener(foclis);
 		this.add(textArea3);
+		border = textArea3.getBorder();
 
 		textArea4 = new JTextArea();
 		textArea4.setBounds(300, base + labelwidth * 8, textlength + 100,
 				textwidth * 3);
 		textArea4.setFont(f);
+		textArea4.setColumns(10);
 		textArea4.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		textArea4.setLineWrap(true);
-		textArea4.setWrapStyleWord(true);
+		textArea4.setLineWrap(true);// 激活自动换行功能
+		textArea4.setWrapStyleWord(true);// 激活断行不断字功能
+		textArea4.addFocusListener(foclis);
+		border1 = textArea4.getBorder();
 
 		JScrollPane scrollPane = new JScrollPane(textArea4);
 		scrollPane.setFont(font);
@@ -144,42 +150,91 @@ public class businessReceiveUI extends JPanel {
 
 	}
 
+	private class Foclistener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource() == textArea2) {
+				textArea2.setBorder(border);
+			}else if (e.getSource() == textArea3) {
+				textArea3.setBorder(border);
+			}else if (e.getSource() == textArea4) {
+				textArea4.setBorder(border1);
+			}
+			updateUI();
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+	
 	private class JListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
+			requestFocus();
 			if (e.getSource() == button_cancel) {
+				
 				textArea1.setText(new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date()));
 				textArea2.setText("");
 				textArea3.setText("");
 				textArea4.setText("");
+				textArea2.setBorder(border);
+				textArea3.setBorder(border);
+				textArea4.setBorder(border1);
+				
 			} else if (e.getSource() == button_confirm) {
+				
 				receiveDate = textArea1.getText();
-				receivePrice = Double.parseDouble(textArea2.getText());
+				if (textArea2.getText().isEmpty()) {
+					textArea2.setBorder(new LineBorder(Color.RED));
+					complete = false;
+				} else {
+					receivePrice = Double.parseDouble(textArea2.getText());
+				}
+				
 				deliverManID = textArea3.getText();
 				String[] temp = textArea4.getText().split("\n");
 				allOrderIDs = new ArrayList<String>();
-				for(int i = 0;i<temp.length;i++){
+				for (int i = 0; i < temp.length; i++) {
 					allOrderIDs.add(temp[i]);
 				}
-				if(textArea2.getText().isEmpty()|| deliverManID.isEmpty() || allOrderIDs.isEmpty()){
+
+				if (deliverManID.isEmpty()) {
+					textArea3.setBorder(new LineBorder(Color.RED));
+					complete = false;
+				} 
+				
+				if (textArea4.getText().isEmpty()) {
+					textArea4.setBorder(new LineBorder(Color.RED));
+					complete = false;
+				} 
+				
+				if (!complete) {
 					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
 							JOptionPane.ERROR_MESSAGE);
-				}else{
-					ReceiveDocVO vo = new ReceiveDocVO(receiveDate, receivePrice, deliverManID, allOrderIDs, orgID);
+				} else {
+					ReceiveDocVO vo = new ReceiveDocVO(receiveDate,
+							receivePrice, deliverManID, allOrderIDs, orgID);
 					BusinessSaleReceiveDocumentblService bsrd = new ReceiveDoc();
-					if(bsrd.addReceiveDoc(vo)){
+					if (bsrd.addReceiveDoc(vo)) {
 						JOptionPane.showMessageDialog(null, "生成收款单成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						bsrd.endReceiveDoc();
-					}else{
-						JOptionPane.showMessageDialog(null, "今天该快递员已经建立收款单", "提示",
-								JOptionPane.WARNING_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, "今天该快递员已经建立收款单",
+								"提示", JOptionPane.WARNING_MESSAGE);
 					}
 				}
+				complete = true;
 			}
-			repaint();
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent arg0) {

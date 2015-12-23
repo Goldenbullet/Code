@@ -12,16 +12,20 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import express.businessLogic.userBL.User;
+import express.businesslogicService.signBLService.LogInBLService;
 import express.presentation.mainUI.MainUIService;
+import express.vo.UserInfoSignVO;
 
 public class TranscenterRepoMenuUI extends JPanel{
 	private CardLayout card=new CardLayout();
     private MainUIService main;
-	
+    private LogInBLService login;
+	private String id;
     private JPanel repoPanel;
 	
 	//组件：
-    private JLabel userinfo;
+    private JLabel username, userid;
 	private JButton button_in = new JButton("入库");
 	private JButton button_out = new JButton("出库");
 	private JButton button_view = new JButton("库存查看");
@@ -31,7 +35,7 @@ public class TranscenterRepoMenuUI extends JPanel{
 	
 	
 	
-	public TranscenterRepoMenuUI(MainUIService m){
+	public TranscenterRepoMenuUI(MainUIService m,String id){
 		
 		int base = 150;
 		int width = 50;
@@ -49,13 +53,25 @@ public class TranscenterRepoMenuUI extends JPanel{
 		main.setcard1(card);
 		main.setpane1(repoPanel);
 		
-		JListener listener=new JListener();
+		JListener listener=new JListener();	
+		login = new User();
+		this.id = id;		
+		UserInfoSignVO vo = login.getUserInfo(id);
+		String name = vo.getName();
 		
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, base);
-		userinfo.setText("      userinfo");
-		userinfo.setForeground(Color.gray);
-		userinfo.setFont(new Font("隶书",Font.PLAIN,14));	
+		username = new JLabel();
+		username.setBounds(50, 50, 70, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(username);
+		
+		userid = new JLabel();
+		userid.setBounds(40, 75, 100, 20);
+		userid.setText(id);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(userid);
 		
 		button_in.setBounds(0, base, 150, width);
 		button_in.setFont(font);
@@ -87,7 +103,6 @@ public class TranscenterRepoMenuUI extends JPanel{
 		add(button_inventory);
 		add(button_adjust);
 		add(button_exit);
-		add(userinfo);
 		
 		this.setBounds(0,0,1000,700);
 	}
@@ -122,7 +137,8 @@ public class TranscenterRepoMenuUI extends JPanel{
 				
 			 }
 			 else if (arg0.getSource()==button_exit){
-				 main.jumpToSignInUI();
+				 login.SignOut(id);
+				 main.jumpToLogInUI();
 				 System.out.println("应该回到登陆界面的");
 				
 			 }

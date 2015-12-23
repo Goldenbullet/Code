@@ -49,10 +49,14 @@ public class OrderIO extends UnicastRemoteObject implements DeliverCreateOrderDa
 	public OrderPO getOrder(String orderid) throws RemoteException{
 		int len=orderlist.size();
 		for(int i=0;i<len;i++){
+			System.out.println("in?");
+			
+			
 			if(orderlist.get(i).getOrderID().equals(orderid)){
 				return orderlist.get(i);
 			}
 		}
+		System.out.println("not found");
 		return null;
 	}
 	
@@ -94,6 +98,8 @@ public class OrderIO extends UnicastRemoteObject implements DeliverCreateOrderDa
 		}
 		return false;
 	}
+	
+	
 	
 	
 	

@@ -54,13 +54,13 @@ public class User implements LogInBLService{
 							sign.logInRegister(u);
 							//标记为登录
 							IDKeeper.setID(id);
-							UserInfoVO userInfo=staffManager.getUser(id);
-							String orgID=userInfo.getCity();
-							IDKeeper.setOrgID(orgID);
-							
-							OrganizationVO org=orgManager.getOrgInfo(orgID);
-							String city=org.getCity();
-							IDKeeper.setCity(city);
+//							UserInfoVO userInfo=staffManager.getUser(id);
+//							String orgID=userInfo.getCity();
+//							IDKeeper.setOrgID(orgID);
+//							
+//							OrganizationVO org=orgManager.getOrgInfo(orgID);
+//							String city=org.getCity();
+//							IDKeeper.setCity(city);
 							//保存id
 							return SignInVO.PERMIT;
 						}

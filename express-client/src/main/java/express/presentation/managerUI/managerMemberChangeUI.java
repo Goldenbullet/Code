@@ -210,11 +210,12 @@ public class managerMemberChangeUI extends JDialog {
 					}
 				}
 			}else if(e.getSource()==detele){
-				smb.removeUser(id);
-				smb.endManage();
+				
 				for (int i = tmodel.getRowCount() - 1; i >= 0; i--) {
 					if(tmodel.getValueAt(i, 3).equals(id)){
 						tmodel.removeRow(i);
+						smb.removeUser(id);
+						smb.endManage();
 						JOptionPane.showMessageDialog(null, "删除成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						break;

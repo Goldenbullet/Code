@@ -204,5 +204,18 @@ public class TransferDoc implements TransCenterTransferDocblService{
 			return false;
 		}
 	}
+//public static void main(String[] args){
+//	try{
+//		RMIClient.init();
+//	}catch(Exception e){
+//		e.printStackTrace();
+//	}
+//	
+//	TransferDocVO vo=new TransferDocVO(d, transnumber, f, b, ar, c, che, m, transway, orderlist);
+		
+	
+//}
+	
+	
 	
 }

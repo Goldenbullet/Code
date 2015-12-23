@@ -49,7 +49,7 @@ public class InitAccountController implements InnerAccountBLService{
 		return org.addOrgInfo(organization);
 	}
 
-	public boolean initRepoInfo(InDocVO inDoc) {
+	public boolean initRepoInfo(RepoInfoVO repo) {
 		return false;
 	}
 

@@ -31,6 +31,7 @@ import express.presentation.mainUI.MyTableModel;
 import express.vo.ArrivalDocBusinessHallVO;
 import express.vo.ArrivalDocTransCenterVO;
 import express.vo.DeliverDocVO;
+import express.vo.DocumentVO;
 import express.vo.InDocVO;
 import express.vo.OrderVO;
 import express.vo.OutDocVO;
@@ -43,10 +44,10 @@ import express.vo.TransferDocVO;
 public class managerExamDocUI extends JPanel {
 
 	private JButton exam;
-	private MainUIService m;
-	private JTable table;
-	private MyTableModel tableModel;
-	private MyCellRenderer headerren;
+	private JPanel panel;
+	private JTable[] table;
+	private MyTableModel[] tableModel;
+	private MyCellRenderer[] headerren;
 	private ExamDocumentBLService examdoc;
 	private ArrayList<OrderVO> orderarr;
 	private ArrayList<ShipmentDocBusinessHallVO> shipbusarr;
@@ -60,237 +61,186 @@ public class managerExamDocUI extends JPanel {
 	private ArrayList<ReceiveDocVO> receivearr;
 	private ArrayList<PaymentDocVO> paymentarr;
 	private String changeunder = "<HTML><U>修改</U></HTML>";
-	private String confirmunder = "<HTML><U>确认</U></HTML>";
+	// private String confirmunder = "<HTML><U>确认</U></HTML>";
 	// private String yesunder = "<HTML><U>已审批</U></HTML>";
 	// private String nounder = "<HTML><U>未审批</U></HTML>";
-	private Object[][] data;
-	private String[] header = { "选择", "单据类型", "单据名称", "单据信息类型", "单据信息", "修改" };
+	private Object[][] data1, data2, data3, data4, data5, data6, data7, data8,
+			data9, data10, data11;
+	private String[] header = { "选择", "单据类型", "单据名称", "修改" };
 
-	public managerExamDocUI(MainUIService main) {
+	public managerExamDocUI() {
 		setLayout(null);
-		m = main;
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
+
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBounds(50, 60, 750, 600);
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setBounds(50, 60, 750, 600);
+		this.add(scrollPane);
 
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 		Listener listener = new Listener();
-
-		// data = { { false, "到达单", "12345" },{ false, "到达单", "127845" }, {
-		// false, "到达单", "12722845" } };
-
 		examdoc = new ExamDocument();
-		orderarr = examdoc.getUEOrderlist();
-		int ordernum = orderarr.size();
-		shipbusarr = examdoc.getUEBusinessHallShipmentDoclist();
-		int shipbunum = shipbusarr.size();
-		arrivaltransarr = examdoc.getUETransCenterArrivalDoclist();
-		int arritrannum = arrivaltransarr.size();
-		indocarr = examdoc.getUEInDoclist();
-		int indocnum = indocarr.size();
-		transdocarr = examdoc.getUETransferDoclist();
-		int trannum = transdocarr.size();
-		outdocarr = examdoc.getUEOutDoclist();
-		int outnum = outdocarr.size();
-		shiptransarr = examdoc.getUETransCenterShipmentDoclist();
-		int shiptrannum = shiptransarr.size();
-		arrivalbusarr = examdoc.getUEBusinessHallArrivalDoclist();
-		int arribunum = arrivalbusarr.size();
-		deliverdocarr = examdoc.getUEDeliverDoclist();
-		int delivernum = deliverdocarr.size();
-		receivearr = examdoc.getUEReceiveDoclist();
-		int receivenum = receivearr.size();
-		paymentarr = examdoc.getUEPaymentDoclist();
-		int paynum = paymentarr.size();
+		table = new JTable[11];
+		tableModel = new MyTableModel[11];
+		headerren = new MyCellRenderer[11];
+		JScrollPane[] sp = new JScrollPane[11];
 
 		Class[] typeArray = { Boolean.class, Object.class, Object.class,
-				Object.class, Object.class, Object.class };
+				Object.class, };
 		// table数据初始化
-		data = new Object[ordernum + arribunum + arritrannum + delivernum
-				+ indocnum + outnum + paynum + receivenum + shipbunum
-				+ shiptrannum + trannum][6];
-
-		for (int i0 = 0; i0 < ordernum; i0++) {
-			data[i0][0] = false;
-			data[i0][1] = "订单";
-			data[i0][2] = orderarr.get(i0).getOrderID();
-			data[i0][3] = "运费";
-			data[i0][4] = orderarr.get(i0).getFee();
-			data[i0][5] = changeunder;
-		}
-
-		for (int i1 = 0; i1 < arribunum; i1++) {
-			data[i1 + ordernum][0] = false;
-			data[i1 + ordernum][1] = "营业厅到达单";
-			data[i1 + ordernum][2] = arrivalbusarr.get(i1).getOrderID();
-			data[i1 + ordernum][3] = "货物状态";
-			GoodsArrivalStatus status = arrivalbusarr.get(i1)
-					.getArrivalStatus();
-			if (status.equals(GoodsArrivalStatus.Complete)) {
-				data[i1 + ordernum][4] = "完好";
-			} else if (status.equals(GoodsArrivalStatus.Damage)) {
-				data[i1 + ordernum][4] = "损坏";
-			} else {
-				data[i1 + ordernum][4] = "丢失";
+		orderarr = examdoc.getUEOrderlist();
+		if (orderarr != null) {
+			data1 = new Object[orderarr.size()][4];
+			for (int i = 0; i < orderarr.size(); i++) {
+				data1[i][0] = false;
+				data1[i][1] = "订单";
+				data1[i][2] = orderarr.get(i).getOrderID();
+				data1[i][3] = changeunder;
 			}
-			data[i1 + ordernum][5] = changeunder;
+			tableModel[0] = new MyTableModel(data1, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < arritrannum; i1++) {
-			data[i1 + ordernum + arribunum][0] = false;
-			data[i1 + ordernum + arribunum][1] = "中转中心到达单";
-			data[i1 + ordernum + arribunum][2] = arrivaltransarr.get(i1)
-					.getOrderID();
-			data[i1 + ordernum + arribunum][3] = "货物状态";
-			GoodsArrivalStatus status = arrivaltransarr.get(i1)
-					.getArrivalStatus();
-			if (status.equals(GoodsArrivalStatus.Complete)) {
-				data[i1 + ordernum + arribunum][4] = "完好";
-			} else if (status.equals(GoodsArrivalStatus.Damage)) {
-				data[i1 + ordernum + arribunum][4] = "损坏";
-			} else {
-				data[i1 + ordernum + arribunum][4] = "丢失";
+		arrivalbusarr = examdoc.getUEBusinessHallArrivalDoclist();
+		if (arrivalbusarr != null) {
+			data2 = new Object[arrivalbusarr.size()][4];
+			for (int i = 0; i < arrivalbusarr.size(); i++) {
+				data2[i][0] = false;
+				data2[i][1] = "营业厅到达单";
+				data2[i][2] = arrivalbusarr.get(i).getOrderID();
+				data2[i][3] = changeunder;
 			}
-			data[i1 + ordernum + arribunum][5] = changeunder;
+			tableModel[1] = new MyTableModel(data2, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < delivernum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum][1] = "派件单";
-			data[i1 + ordernum + arribunum + arritrannum][2] = deliverdocarr
-					.get(i1).getOrderID();
-			data[i1 + ordernum + arribunum + arritrannum][3] = "快递员工号";
-			data[i1 + ordernum + arribunum + arritrannum][4] = deliverdocarr
-					.get(i1).getDeliverManID();
-			data[i1 + ordernum + arribunum + arritrannum][5] = changeunder;
+		arrivaltransarr = examdoc.getUETransCenterArrivalDoclist();
+		if (arrivaltransarr != null) {
+			data3 = new Object[arrivaltransarr.size()][4];
+			for (int i = 0; i < arrivaltransarr.size(); i++) {
+				data3[i][0] = false;
+				data3[i][1] = "中转中心到达单";
+				data3[i][2] = arrivaltransarr.get(i).getOrderID();
+				data3[i][3] = changeunder;
+			}
+			tableModel[2] = new MyTableModel(data3, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < indocnum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][1] = "入库单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][2] = indocarr
-					.get(i1).getdeliveryNumber();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][3] = "仓库位置";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][4] = "";// 信息太多，写JDialog
-			data[i1 + ordernum + arribunum + arritrannum + delivernum][5] = changeunder;
+		deliverdocarr = examdoc.getUEDeliverDoclist();
+		if (deliverdocarr != null) {
+			data4 = new Object[deliverdocarr.size()][4];
+			for (int i = 0; i < deliverdocarr.size(); i++) {
+				data4[i][0] = false;
+				data4[i][1] = "派件单";
+				data4[i][2] = deliverdocarr.get(i).getOrderID();
+				data4[i][3] = changeunder;
+			}
+			tableModel[3] = new MyTableModel(data4, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < outnum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][1] = "出库单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][2] = outdocarr.get(i1).getOrderID();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][3] = "装运形式";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][4] = outdocarr.get(i1).gettransKind();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum][5] = changeunder;
+		indocarr = examdoc.getUEInDoclist();
+		if (indocarr != null) {
+			data5 = new Object[indocarr.size()][4];
+			for (int i = 0; i < indocarr.size(); i++) {
+				data5[i][0] = false;
+				data5[i][1] = "入库单";
+				data5[i][2] = indocarr.get(i).getarrival() + "  "
+						+ indocarr.get(i).getdeliveryNumber();
+				data5[i][3] = changeunder;
+			}
+			tableModel[4] = new MyTableModel(data5, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < paynum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][1] = "付款单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][2] = paymentarr.get(i1).getPaymentID();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][3] = "";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][4] = "";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum][5] = changeunder;
+		outdocarr = examdoc.getUEOutDoclist();
+		if (outdocarr != null) {
+			data6 = new Object[outdocarr.size()][4];
+			for (int i = 0; i < outdocarr.size(); i++) {
+				data6[i][0] = false;
+				data6[i][1] = "出库单";
+				data6[i][2] = outdocarr.get(i).getOrderID();
+				data6[i][3] = changeunder;
+			}
+			tableModel[5] = new MyTableModel(data6, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < receivenum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][1] = "收款单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][2] = receivearr.get(i1)
-					.getReceiveDate();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][3] = "收款金额";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][4] = receivearr.get(i1)
-					.getReceivePrice();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum][5] = changeunder;
+		paymentarr = examdoc.getUEPaymentDoclist();
+		if (paymentarr != null) {
+			data7 = new Object[paymentarr.size()][4];
+			for (int i = 0; i < paymentarr.size(); i++) {
+				data7[i][0] = false;
+				data7[i][1] = "付款单";
+				data7[i][2] = paymentarr.get(i).getPaymentID();
+				data7[i][3] = changeunder;
+			}
+			tableModel[6] = new MyTableModel(data7, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < shipbunum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][1] = "营业厅装车单单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][2] = shipbusarr
-					.get(i1).getShipmentID();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][3] = "运费";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][4] = shipbusarr
-					.get(i1).getMoney();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum][5] = changeunder;
+		receivearr = examdoc.getUEReceiveDoclist();
+		if (receivearr != null) {
+			data8 = new Object[receivearr.size()][4];
+			for (int i = 0; i < receivearr.size(); i++) {
+				data8[i][0] = false;
+				data8[i][1] = "收款单";
+				data8[i][2] = receivearr.get(i).getOrgID() + "  "
+						+ receivearr.get(i).getReceiveDate();
+				data8[i][3] = changeunder;
+			}
+			tableModel[7] = new MyTableModel(data8, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < shiptrannum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][1] = "中转中心装车单单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][2] = shiptransarr
-					.get(i1).getShipmentID();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][3] = "运费";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][4] = shiptransarr
-					.get(i1).getMoney();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum][5] = changeunder;
+		shipbusarr = examdoc.getUEBusinessHallShipmentDoclist();
+		if (shipbusarr != null) {
+			data9 = new Object[shipbusarr.size()][4];
+			for (int i = 0; i < shipbusarr.size(); i++) {
+				data9[i][0] = false;
+				data9[i][1] = "营业厅装车单";
+				data9[i][2] = shipbusarr.get(i).getShipmentID();
+				data9[i][3] = changeunder;
+			}
+			tableModel[8] = new MyTableModel(data9, header, typeArray);
 		}
 
-		for (int i1 = 0; i1 < trannum; i1++) {
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][0] = false;
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][1] = "中转单";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][2] = transdocarr.get(i1)
-					.getcontainerNumber();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][3] = "运费";
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][4] = transdocarr.get(i1).getmoney();
-			data[i1 + ordernum + arribunum + arritrannum + delivernum
-					+ indocnum + outnum + paynum + receivenum + shipbunum
-					+ shiptrannum][5] = changeunder;
+		shiptransarr = examdoc.getUETransCenterShipmentDoclist();
+		if (shiptransarr != null) {
+			data10 = new Object[shiptransarr.size()][4];
+			for (int i = 0; i < shiptransarr.size(); i++) {
+				data10[i][0] = false;
+				data10[i][1] = "中转中心装车单";
+				data10[i][2] = shiptransarr.get(i).getShipmentID();
+				data10[i][3] = changeunder;
+			}
+			tableModel[9] = new MyTableModel(data10, header, typeArray);
 		}
 
-		tableModel = new MyTableModel(data, header, typeArray);
-		table = new JTable(tableModel);
-		table.setRowHeight(40);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setBounds(50, 60, 750, 600);
-		table.setFont(f);
-		table.addMouseListener(listener);
-		headerren = new MyCellRenderer(table);
-		table.getTableHeader().setDefaultRenderer(headerren);
+		transdocarr = examdoc.getUETransferDoclist();
+		if (transdocarr != null) {
+			data11 = new Object[transdocarr.size()][4];
+			for (int i = 0; i < transdocarr.size(); i++) {
+				data11[i][0] = false;
+				data11[i][1] = "中转单";
+				data11[i][2] = transdocarr.get(i).gettranscenterNumber() + "  "
+						+ transdocarr.get(i).getdate();
+				data11[i][3] = changeunder;
+			}
+			tableModel[10] = new MyTableModel(data11, header, typeArray);
+		}
 
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(50, 60, 750, 600);
-		this.add(scrollPane);
+		for (int i = 0; i < 11; i++) {
+			table[i] = new JTable(tableModel[i]);
+			table[i].setRowHeight(40);
+			table[i].getTableHeader().setReorderingAllowed(false);
+			table[i].setBounds(0, 0, 750, 600);
+			table[i].setFont(f);
+			table[i].addMouseListener(listener);
+			headerren[i] = new MyCellRenderer(table[i],tableModel[i]);
+			table[i].getTableHeader().setDefaultRenderer(headerren[i]);
+			sp[i] = new JScrollPane(table[i]);
+			sp[i].setBounds(0, 0, 750, 600);
+			panel.add(sp[i]);
+		}
 
 		exam = new JButton("审批");
 		exam.setBounds(340, 10, 100, 30);
@@ -305,44 +255,134 @@ public class managerExamDocUI extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == exam) {
-				for (int i = 0; i < tableModel.getRowCount(); i++) {
-					if ((boolean) tableModel.getValueAt(i, 0)) {
-						//通过审批，设置单据审批状态
-						if(tableModel.getValueAt(i, 1).equals("订单")){
-							OrderVO vo = orderarr.get(i);
-							orderarr.remove(vo);
-							vo.setState(true);
-							examdoc.changeOrder(vo);							
-						}else if(tableModel.getValueAt(i, 1).equals("营业厅装车单")){
-							ShipmentDocBusinessHallVO vo = shipbusarr.get(i-orderarr.size());
-							shipbusarr.remove(vo);
-							vo.setState(true);
-							examdoc.changeBusinessHallShipmentDoc(vo);							
-						}else if(tableModel.getValueAt(i, 1).equals("中转中心到达单")){
-							ArrivalDocTransCenterVO vo = arrivaltransarr.get(i-orderarr.size()-shipbusarr.size());
-							arrivaltransarr.remove(vo);
-							vo.setState(true);
-							examdoc.changeTransCenterArrivalDoc(vo);							
-						} 
-						tableModel.removeRow(i);
-					}
-				}
-			}else if(e.getSource() == table){
-				int row = table.getSelectedRow();
-				int col = table.getSelectedColumn();
-				
-				if (col == 5) {
-					if(tableModel.getValueAt(row, col).equals(changeunder)){
-						//tableModel.setrowedit(row);
-						tableModel.setValueAt(confirmunder, row, col);
-					}else if (tableModel.getValueAt(row, col).equals(
-							confirmunder)) {
-						tableModel.setrowunedit();
-						tableModel.setValueAt(changeunder, row, col);
-						
+				// 通过审批，设置单据审批状态
+				for (int i = 0; i < tableModel[0].getRowCount(); i++) {
+					if ((boolean) tableModel[0].getValueAt(i, 0)) {
+						OrderVO vo = orderarr.get(i);
+						vo.setState(true);
+						examdoc.changeOrder(vo);
+						orderarr.remove(i);
+						tableModel[0].removeRow(i);
 					}
 				}
 				
+				for (int i = 0; i < tableModel[1].getRowCount(); i++) {
+					if ((boolean) tableModel[1].getValueAt(i, 0)) {
+						ArrivalDocBusinessHallVO vo = arrivalbusarr.get(i);
+						vo.setState(true);
+						examdoc.changeBusinessHallArrivalDoc(vo);
+						arrivalbusarr.remove(i);
+						tableModel[1].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[2].getRowCount(); i++) {
+					if ((boolean) tableModel[2].getValueAt(i, 0)) {
+						ArrivalDocTransCenterVO vo = arrivaltransarr.get(i);
+						vo.setState(true);
+						examdoc.changeTransCenterArrivalDoc(vo);
+						arrivaltransarr.remove(i);
+						tableModel[2].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[3].getRowCount(); i++) {
+					if ((boolean) tableModel[3].getValueAt(i, 0)) {
+						DeliverDocVO vo = deliverdocarr.get(i);
+						vo.setState(true);
+						examdoc.changeDeliverDoc(vo);
+						deliverdocarr.remove(i);
+						tableModel[3].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[4].getRowCount(); i++) {
+					if ((boolean) tableModel[4].getValueAt(i, 0)) {
+						InDocVO vo = indocarr.get(i);
+						vo.setState(true);
+						examdoc.changeInDoc(vo);
+						indocarr.remove(i);
+						tableModel[4].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[5].getRowCount(); i++) {
+					if ((boolean) tableModel[5].getValueAt(i, 0)) {
+						OutDocVO vo = outdocarr.get(i);
+						vo.setState(true);
+						examdoc.changeOutDoc(vo);
+						outdocarr.remove(i);
+						tableModel[5].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[6].getRowCount(); i++) {
+					if ((boolean) tableModel[6].getValueAt(i, 0)) {
+						PaymentDocVO vo = paymentarr.get(i);
+						vo.setState(true);
+						examdoc.changePaymentDoc(vo);
+						paymentarr.remove(i);
+						tableModel[6].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[7].getRowCount(); i++) {
+					if ((boolean) tableModel[7].getValueAt(i, 0)) {
+						ReceiveDocVO vo = receivearr.get(i);
+						vo.setState(true);
+						examdoc.changeReceiveDoc(vo);
+						receivearr.remove(i);
+						tableModel[7].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[8].getRowCount(); i++) {
+					if ((boolean) tableModel[8].getValueAt(i, 0)) {
+						ShipmentDocBusinessHallVO vo = shipbusarr.get(i);
+						vo.setState(true);
+						examdoc.changeBusinessHallShipmentDoc(vo);
+						shipbusarr.remove(i);
+						tableModel[8].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[9].getRowCount(); i++) {
+					if ((boolean) tableModel[9].getValueAt(i, 0)) {
+						ShipmentDocTransCenterVO vo = shiptransarr.get(i);
+						vo.setState(true);
+						examdoc.changeTransCenterShipmentDoc(vo);
+						shiptransarr.remove(i);
+						tableModel[9].removeRow(i);
+					}
+				}
+				
+				for (int i = 0; i < tableModel[10].getRowCount(); i++) {
+					if ((boolean) tableModel[10].getValueAt(i, 0)) {
+						TransferDocVO vo = transdocarr.get(i);
+						vo.setState(true);
+						examdoc.changeTransferDoc(vo);
+						transdocarr.remove(i);
+						tableModel[10].removeRow(i);
+					}
+				}
+			}
+			
+			for (int i = 0; i < 11; i++) {
+				if (e.getSource() == table[i]) {
+					int row = table[i].getSelectedRow();
+					int col = table[i].getSelectedColumn();
+
+					if (col == 5) {
+						if (tableModel[i].getValueAt(row, col).equals(
+								changeunder)) {
+							if(i==1){
+								OrderChangeUI orui = new OrderChangeUI(tableModel[i],orderarr.get(row));
+								orui.setVisible(true);
+							}
+						}
+					}
+				}
+
 			}
 			updateUI();
 		}

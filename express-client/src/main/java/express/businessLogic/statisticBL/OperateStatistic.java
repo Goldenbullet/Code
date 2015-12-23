@@ -217,7 +217,7 @@ public class OperateStatistic implements OperateFinanceBLService {
 		
 		try {
 			InputStreamReader read = new InputStreamReader(new FileInputStream(
-					"config/filePath.txt"));
+					"config-client/filePath.txt"));
 			BufferedReader br = new BufferedReader(read);
 			String filePath = br.readLine();
 			br.close();

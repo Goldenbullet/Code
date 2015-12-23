@@ -9,7 +9,7 @@ public class PredictTimePO implements Serializable{//把同一出发地和到达
 	private static final long serialVersionUID = -568026301802158904L;
 	private String setOutCity;
 	private String arrivalCity;
-	private ArrayList<HistoryTimePO> predictlist;
+	private ArrayList<HistoryTimePO> predictlist =new ArrayList<HistoryTimePO>();
 
 	public ArrayList<HistoryTimePO> getList(){
 		return predictlist;
@@ -27,5 +27,12 @@ public class PredictTimePO implements Serializable{//把同一出发地和到达
 		return arrivalCity;
 	}
 	
+	public void setSetOutCity(String setout){
+		this.setOutCity=setout;
+	}
+	
+	public void setArrivalCity(String arrival){
+		this.arrivalCity=arrival;
+	}
 	
 }

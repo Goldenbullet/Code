@@ -76,5 +76,8 @@ public class GoodTransStatusPO implements Serializable{
 	public void addTime(String time){
 		this.time.add(time);
 	}
+	public void setStatus(ArrayList<String> statusString){
+		this.statusString=statusString;
+	}
 	
 }

@@ -53,7 +53,7 @@ public class ReceiveInfo implements ReceiveInfoBLService{
 				
 				Calendar c = Calendar.getInstance();
 				int year=c.get(Calendar.YEAR);
-				int month=-c.get(Calendar.MONTH+1)-1;
+				int month=-c.get(Calendar.MONTH)-1;
 				int day=-c.get(Calendar.DATE);
 				String date="";
 				date+=year;
@@ -61,7 +61,7 @@ public class ReceiveInfo implements ReceiveInfoBLService{
 				date+=day;
 				
 				GoodTransStatusPO statuspo=changeStatusObj.search(vo.getOrderID());
-				statuspo.addTime(date);
+				statuspo.addTime(vo.getReceiveTime());
 				String str="快件已签收 收件人：";
 				str+=vo.getReceiverName();
 				statuspo.addStatus(str);
@@ -86,9 +86,12 @@ public class ReceiveInfo implements ReceiveInfoBLService{
 				
 				PredictTimeDataService pretimeObj=RMIClient.getPredictTimeObject();
 				pretimeObj.addToHistory(hpo);	
-			} catch (RemoteException e) {
+				pretimeObj.writeAllPredictTime();
+				return true;
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return false;
 			}
 			
 			
@@ -108,4 +111,29 @@ public class ReceiveInfo implements ReceiveInfoBLService{
 			e.printStackTrace();
 		}
 	}
+	
+	
+//	public static void main(String[] args){
+//		try {
+//			RMIClient.init();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		ReceiveInfoVO infovo=new ReceiveInfoVO("JACK ", "2015-12-28", "0000000001");//4 5
+//		ReceiveInfo info=new ReceiveInfo();//12-25√
+//		boolean res=info.addReceiveInfo(infovo);
+//		System.out.println(res);
+//		if(res)
+//		info.endReceiveInfo();
+//		
+//	}
+	
 }
+
+
+
+
+
+
+

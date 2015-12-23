@@ -11,6 +11,7 @@ import express.dataService.documentDataService.BusinessSaleReceiveDocumentDataSe
 import express.po.DeliverDocPO;
 import express.po.ReceiveDocPO;
 import express.po.TransferDocPO;
+import express.vo.OrderVO;
 import express.vo.ReceiveDocVO;
 import express.vo.TransferDocVO;
 import express.rmi.RMIClient;
@@ -26,14 +27,14 @@ public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
 		String date=vo.getReceiveDate();
 		String delivermanID=vo.getDeliverManID();
 		if(getReceiveDoc(date, delivermanID)==null){
-		ReceiveDocPO po=new ReceiveDocPO(vo.getReceiveDate(), vo.getReceivePrice(),
+			ReceiveDocPO po=new ReceiveDocPO(vo.getReceiveDate(), vo.getReceivePrice(),
 				vo.getDeliverManID(), vo.getAllOrderIDs(),vo.getOrgID());
-		try{
-			rmiObj.createReceiveDoc(po);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return true;
+			try{
+				rmiObj.createReceiveDoc(po);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return true;
 		}
 		else {
 			return false;// 今天该快递员已经建立收款单
@@ -125,5 +126,53 @@ public class ReceiveDoc implements BusinessSaleReceiveDocumentblService{
 			return false;
 		}
 	}
+	
+	
+	public double getTotalPrice(ArrayList<String> orderlist){
+		OrderController octr=new OrderController();
+		double sum=0;
+		
+		try{
+		for(String id:orderlist){
+			OrderVO vo=octr.getOrder(id);
+			sum+=vo.getFee();
+		}
+		}catch(Exception e){
+			return -1;
+		}
+		return sum;
+	}
+	
+	
+	
+	
+	
+//	public static void main(String[] args){
+//		
+//		
+//		try{
+//			RMIClient.init();
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		
+//		ArrayList<String> idlist=new ArrayList<String>();
+//		idlist.add("0000000001");
+//		idlist.add("0000000000");
+//		
+//		ReceiveDoc rdc=new ReceiveDoc();
+//		
+//		System.out.println(rdc.getTotalPrice(idlist));
+//		
+//		ReceiveDocVO vo=new ReceiveDocVO("2015-12-20", 0, "12345", idlist, "001");
+//		
+//		System.out.println(rdc.addReceiveDoc(vo));
+//		
+//		rdc.endReceiveDoc();
+//		
+//		
+//		
+//	}
+	
 	
 }

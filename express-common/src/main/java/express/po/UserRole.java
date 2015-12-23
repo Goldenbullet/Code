@@ -5,6 +5,6 @@ public enum UserRole {
       Admin,Manager,
       Financial,Financial_highest,
       TransCenterRepo,
-      TransCenterSale,BusinessSale
+      TransCenterSale,BusinessSale,Driver
       
 }

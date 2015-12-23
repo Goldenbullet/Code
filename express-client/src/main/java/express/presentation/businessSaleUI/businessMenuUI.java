@@ -12,15 +12,19 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import express.businessLogic.userBL.User;
+import express.businesslogicService.signBLService.LogInBLService;
 import express.presentation.mainUI.MainUIService;
+import express.vo.UserInfoSignVO;
 
 public class businessMenuUI extends JPanel{
+	
 	private MainUIService main;
-	private CardLayout card=new CardLayout();
-	
-	private JPanel businessPanel;
-	
-	private JLabel userinfo;
+	private LogInBLService login;
+	private String id;
+	private CardLayout card=new CardLayout();	
+	private JPanel businessPanel;	
+	private JLabel username, userid;
 
 	private JButton button_shipment = new JButton("车辆装车管理");
 	private JButton button_vehicle = new JButton("车辆信息管理");
@@ -30,7 +34,7 @@ public class businessMenuUI extends JPanel{
 	private JButton button_arrival = new JButton("生成到达单");
 	private JButton button_exit=new JButton("退出");
 	
-	public businessMenuUI(MainUIService m){
+	public businessMenuUI(MainUIService m,String id){
 		int base = 150;
 		int width = 50;
 		Font font = new Font("隶书",Font.PLAIN,19);
@@ -48,15 +52,26 @@ public class businessMenuUI extends JPanel{
 		main.setpane1(businessPanel);
 		
 		JListener listener=new JListener();
+		login = new User();
+		this.id = id;
 		
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, base);
-		userinfo.setText("      userinfo");
-		userinfo.setForeground(Color.gray);
-		userinfo.setFont(new Font("隶书",Font.PLAIN,14));	
-		this.add(userinfo);
+		UserInfoSignVO vo = login.getUserInfo(id);
+		String name = vo.getName();
 		
+		username = new JLabel();
+		username.setBounds(50, 50, 70, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(username);
 		
+		userid = new JLabel();
+		userid.setBounds(40, 75, 100, 20);
+		userid.setText(id);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(userid);
+			
 		button_shipment.setBounds(0, base, 150, width);
 		button_shipment.setFont(font);
         button_shipment.addMouseListener(listener);//加监听
@@ -131,7 +146,8 @@ public class businessMenuUI extends JPanel{
 
 			}
 			else if (arg0.getSource()==button_exit){
-				main.jumpToSignInUI();
+				login.SignOut(id);
+				main.jumpToLogInUI();
 				 System.out.println("应该回到登陆界面的");
 				
 			}

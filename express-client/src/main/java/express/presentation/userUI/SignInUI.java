@@ -2,131 +2,67 @@ package express.presentation.userUI;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
+import express.businessLogic.infoManageBL.Admin;
+import express.businessLogic.infoManageBL.StaffForManager;
+import express.businesslogicService.adminBLService.AdminBLService;
+import express.businesslogicService.managerBLService.StaffManageBLService;
+import express.po.UserRole;
 import express.presentation.mainUI.MainUI;
 import express.presentation.mainUI.MainUIService;
 import express.presentation.managerUI.managerMenuUI;
 
-public class SignInUI extends JPanel{
+public class SignInUI extends JFrame{
 	
-	private MainUIService m;
-	private JButton manager_login;
-	private JButton repo_login;
-	private JButton admin_login;
-	private JButton deliver_login; 
-	private JButton transsale_login; 
-	private JButton businesssale_login; 
-	private JButton finance_login; 
+	private CardLayout card;
+	private JPanel container;
+	private MainUIService main;
 	
-	public SignInUI(MainUIService main){
-		setLayout(null);
-		this.setBounds(0, 0, 1000, 700);
-		m = main;
+	public SignInUI(String id){
 		
-		JListener listener=new JListener();
+		this.setLayout(null);
+		container = new JPanel();
+		container.setBounds(0,0,1000,700);
+		card= new CardLayout();		
+		container.setLayout(card);
+		this.add(container);
 		
+		main = new MainUI(card,container);
+		main.setframe(this);
 		
-		manager_login = new JButton(" manager log in");
-		manager_login.setBounds(100, 100, 150, 50);
-		manager_login.addMouseListener(listener);
-		this.add(manager_login);
+		AdminBLService adb = new Admin();
+		UserRole role = adb.getUser(id).getPosition();
 		
-		finance_login = new JButton(" finance log in");
-		finance_login.setBounds(400, 100, 150, 50);
-		finance_login.addMouseListener(listener);
-		this.add(finance_login);
-		
-		repo_login=new JButton("repo log in");
-		repo_login.setBounds(100,200,150,50);
-		repo_login.addMouseListener(listener);
-		this.add(repo_login);
-		
-		admin_login=new JButton("admin log in");
-		admin_login.setBounds(100,300,150,50);
-		admin_login.addMouseListener(listener);
-		this.add(admin_login);
-		
-		deliver_login=new JButton("deliver log in");
-		deliver_login.setBounds(100, 400, 150, 50);
-		deliver_login.addMouseListener(listener);
-		this.add(deliver_login);
-		
-		
-		transsale_login=new JButton("transsale log in");
-		transsale_login.setBounds(100, 500, 150, 50);
-		transsale_login.addMouseListener(listener);
-		this.add(transsale_login);
-		
-		businesssale_login=new JButton("businesssale log in");
-		businesssale_login.setBounds(100, 600, 150, 50);
-		businesssale_login.addMouseListener(listener);
-		this.add(businesssale_login);
-		
-		
-	}
-	class JListener implements MouseListener{
-
-		public void mouseClicked(MouseEvent e) {
-			 if (e.getSource()==manager_login){
-				 m.jumpTomanagerMenuUI();
-				 System.out.println("总经理登录");
-			 }
-			 
-			 else if (e.getSource()==repo_login){
-				 m.jumpTotranscenterRepoMenuUI();
-				 System.out.println("仓库管理员登录");
-			 }
-			 else if (e.getSource()==admin_login){
-				 m.jumpToadminStartUI();
-				 System.out.println("管理员登录");
-				 
-			 }
-			 else if (e.getSource()==deliver_login){
-				 m.jumpTodeliverMenuUI();
-				 System.out.println("快递员登录");
-				 
-			 }
-			 else if (e.getSource()==transsale_login){
-				 m.jumpTotransSaleMenuUI();
-				 System.out.println("中转中心业务员登录");
-				 
-			 }
-			 else if (e.getSource()==businesssale_login){
-				 m.jumpTobusinessMenuUI();
-				 System.out.println("营业厅业务员登录"); 
-			 } else if (e.getSource()==finance_login){
-				 m.jumpToFinanceMenuUI();
-				 System.out.println("财务人员登录"); 
-			 }
-			 updateUI();
-		}
-
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
+		if(role.equals(UserRole.DeliverMan)){
+			main.jumpTodeliverMenuUI(id);
+		}else if(role.equals(UserRole.Admin)){
+			main.jumpToadminStartUI(id);
+		}else if(role.equals(UserRole.BusinessSale)){
+			main.jumpTobusinessMenuUI(id);
+		}else if(role.equals(UserRole.Financial)||role.equals(UserRole.Financial_highest)){
+			main.jumpToFinanceMenuUI(id);
+		}else if(role.equals(UserRole.Manager)){
+			main.jumpTomanagerMenuUI(id);
+		}else if(role.equals(UserRole.TransCenterRepo)){
+			main.jumpTotranscenterRepoMenuUI(id);
+		}else if(role.equals(UserRole.TransCenterSale)){
+			main.jumpTotransSaleMenuUI(id);
 		}
 		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setUndecorated(true);
+//		this.setLocation(screenSize.width/2-1200/2,screenSize.height/2-900/2);
+		this.setSize(1000,700);
+		 this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 	 
 }

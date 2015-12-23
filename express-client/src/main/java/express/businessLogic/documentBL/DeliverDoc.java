@@ -30,11 +30,17 @@ public class DeliverDoc implements BusinessSaleDeliverDocumentblService{
 		DeliverDocPO po=new DeliverDocPO(vo.getArriveDate(), vo.getOrderID(), vo.getDeliverManID());
 		try{
 		rmiObj.createDeliverDoc(po);
+		OrderController oct=new OrderController();
+		if(null==oct.getOrder(vo.getOrderID())){
+			return false;
+		}
+		
+		
 		GoodsStatusDataService changeStatusObj=RMIClient.getGoodStatusObject();
 		
 		Calendar c = Calendar.getInstance();
 		int year=c.get(Calendar.YEAR);
-		int month=-c.get(Calendar.MONTH+1)-1;
+		int month=-c.get(Calendar.MONTH)-1;
 		int day=-c.get(Calendar.DATE);
 		String date="";
 		date+=year;
@@ -50,6 +56,7 @@ public class DeliverDoc implements BusinessSaleDeliverDocumentblService{
 		
 		}catch(Exception e){
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}

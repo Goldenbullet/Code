@@ -3,6 +3,7 @@ package express.vo;
 import express.po.GoodsArrivalStatus;
 
 public class ArrivalDocBusinessHallVO extends DocumentVO{
+	private String title="营业厅到达单";
 	private String arriveDate;
 	/**
 	 * 营业厅到达单分为两种   营业厅--->营业厅
@@ -49,5 +50,8 @@ public class ArrivalDocBusinessHallVO extends DocumentVO{
 	public GoodsArrivalStatus getArrivalStatus(){
 		return arrivalStatus;
 	}
-	
+	//add title
+	public String getTitle(){
+		return title;
+	}
 }

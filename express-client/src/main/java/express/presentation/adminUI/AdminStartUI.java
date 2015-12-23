@@ -1,17 +1,12 @@
 package express.presentation.adminUI;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -32,16 +27,21 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import express.businessLogic.infoManageBL.Admin;
+import express.businessLogic.userBL.User;
 import express.businesslogicService.adminBLService.AdminBLService;
 import express.businesslogicService.adminBLService.RemoveUserBLService;
+import express.businesslogicService.signBLService.LogInBLService;
+import express.po.UserRole;
 import express.presentation.mainUI.MainUIService;
 import express.presentation.mainUI.MyTableModel;
+import express.vo.UserInfoSignVO;
 import express.vo.UserInfoVO;
 
 public class AdminStartUI extends JPanel {
 
 	private MainUIService main;
-	private JLabel userinfo, idl;
+	private LogInBLService login;
+	private JLabel username, userid, idl;
 	private JTextField idtf;
 	private JButton detele, add, search;
 	private JLabel exit;
@@ -49,22 +49,22 @@ public class AdminStartUI extends JPanel {
 	private MyTableModel tmodel;
 	// private DefaultTableModel tableModel;
 	// private TableColumnModel tcm;
+	private String id, userID;
 	private AdminBLService abs;
 	private ArrayList<UserInfoVO> userarr;
-	private String id;
 	private Object[][] data;
 	private String[] header = { "选择", "姓名", "职位", "工号", "密码" };
 
-	public AdminStartUI(MainUIService m) {
+	public AdminStartUI(MainUIService m, String userID) {
 		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
 				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
 		Class[] typeArray = { Boolean.class, Object.class, JComboBox.class,
 				Object.class, Object.class };
-//		 Object[] user1 = { true, "lhl", "man", "10001", "110" };
-//		 Object[] user2 = { new Boolean(false), "hmt", "woman", "10086", "120"
-//		 };
-//		 Object user[][] = { user1, user2 };
-//		 data = user;
+		// Object[] user1 = { true, "lhl", "man", "10001", "110" };
+		// Object[] user2 = { new Boolean(false), "hmt", "woman", "10086", "120"
+		// };
+		// Object user[][] = { user1, user2 };
+		// data = user;
 
 		this.setLayout(null);
 		this.main = m;
@@ -76,29 +76,41 @@ public class AdminStartUI extends JPanel {
 
 		JListener listener = new JListener();
 		abs = new Admin();
+		login = new User();
+		this.userID = userID;
 
 		userarr = abs.getUnregistered();
-		if (userarr!=null) {
+		if (userarr != null) {
 			data = new Object[userarr.size()][5];
 			for (int i = 0; i < userarr.size(); i++) {
 				UserInfoVO temp = userarr.get(i);
 				data[i][0] = false;
 				data[i][1] = temp.getName();
 				data[i][3] = temp.getID();
-				data[i][2] = temp.getPosition();
+				UserRole posit = temp.getPosition();
+				data[i][2] = transposition(posit);
 				data[i][4] = "";
 			}
 		}
 
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, 30);
-		userinfo.setText("      姓名");
-		userinfo.setForeground(Color.BLACK);
-		userinfo.setFont(new Font("隶书", Font.PLAIN, 16));
-		this.add(userinfo);
+		UserInfoSignVO vo = login.getUserInfo(userID);
+		String name = vo.getName();
+		username = new JLabel();
+		username.setBounds(10, 5, 50, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,16));
+		this.add(username);
+		
+		userid = new JLabel();
+		userid.setBounds(10, 25, 50, 20);
+		userid.setText(userID);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,16));
+		this.add(userid);
 
 		exit = new JLabel("<HTML><U>退出</U></HTML>");
-		exit.setBounds(120, 0, 50, 20);
+		exit.setBounds(80, 0, 50, 20);
 		exit.setFont(new Font("幼圆", Font.BOLD, 16));
 		exit.setForeground(Color.BLACK);
 		exit.addMouseListener(listener);
@@ -106,11 +118,13 @@ public class AdminStartUI extends JPanel {
 
 		JComboBox poscb = new JComboBox(pos);
 
-		tmodel = new MyTableModel(data, header,typeArray);
+		tmodel = new MyTableModel(data, header, typeArray);
 		table = new JTable(tmodel);
 		table.setRowHeight(40);
 		table.setBounds(50, 60, 900, 600);
 		table.setFont(f);
+		table.getTableHeader().setFont(font);
+		table.getTableHeader().setReorderingAllowed(false);
 		// tcm = table.getColumnModel();
 		// // tcm.getColumn(0).setCellEditor(new DefaultCellEditor(cb));
 		// tcm.getColumn(2).setCellEditor(new DefaultCellEditor(poscb));
@@ -148,34 +162,56 @@ public class AdminStartUI extends JPanel {
 		idtf.setFont(f);
 		this.add(idtf);
 	}
+	
+	private String transposition(UserRole posit){
+		String position = "";
+		if(posit.equals(UserRole.Admin))
+    		position = "管理员";
+    	else if(posit.equals(UserRole.BusinessSale))
+    		position = "营业厅业务员";
+    	else if(posit.equals(UserRole.DeliverMan))
+    		position = "快递员";
+    	else if(posit.equals(UserRole.Financial))
+    		position = "普通财务人员";
+    	else if(posit.equals(UserRole.Financial_highest))
+    		position = "最高权限财务人员";
+    	else if(posit.equals(UserRole.Manager))
+    		position = "总经理";
+    	else if(posit.equals(UserRole.TransCenterRepo))
+    		position = "中转中心仓库管理人员";
+    	else if(posit.equals(UserRole.TransCenterSale))
+    		position = "中转中心业务员";
+		return position;
+	}
 
 	private class JListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == exit) {
-				
+
 				exit.setForeground(Color.RED);
-				main.jumpToSignInUI();
+				login.SignOut(userID);
+				main.jumpToLogInUI();
 
 			} else if (e.getSource() == detele) {
-				
+
 				RemoveUserBLService rub = new Admin();
 				for (int i = tmodel.getRowCount() - 1; i >= 0; i--) {
 					if ((boolean) tmodel.getValueAt(i, 0)) {
-						tmodel.removeRow(i);
 						rub.removeUser((String) tmodel.getValueAt(i, 3));
+						tmodel.removeRow(i);
 					}
 				}
 				JOptionPane.showMessageDialog(null, "删除成功", "提示",
 						JOptionPane.INFORMATION_MESSAGE);
-				
+
 			} else if (e.getSource() == add) {
-				
+
 				AdminAddUI addui = new AdminAddUI(tmodel);
 				addui.setVisible(true);
-				
+
 			} else if (e.getSource() == search) {
-				
+
 				id = idtf.getText();
 				if (abs.checkUserID(id)) {
 					AdminChangeUI acui = new AdminChangeUI(tmodel, id);

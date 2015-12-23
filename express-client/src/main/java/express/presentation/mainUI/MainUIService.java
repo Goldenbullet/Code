@@ -7,17 +7,17 @@ import javax.swing.JPanel;
 
 public interface MainUIService {
 	
+	public void setframe(JFrame f);
+	
 	public void setcard1(CardLayout card1);
 	
 	public void setpane1(JPanel pane1);
 	
-	public boolean jumpToSignInUI();
+	public boolean jumpToLogInUI();
 
-	public boolean jumpToadminStartUI();
-	
-	public boolean jumpToadminAddUI ();
-	
-	public boolean jumpTomanagerMenuUI();
+	public boolean jumpToadminStartUI(String id);
+		
+	public boolean jumpTomanagerMenuUI(String id);
 	
 	public boolean jumpTomanagerMemberUI ();
 	
@@ -27,10 +27,13 @@ public interface MainUIService {
 	
     public boolean jumpTomanagerExamDocUI ();
 	
+    public boolean jumpTomanagerSalaryUI ();
+    
+    public boolean jumpTomanagerCityPriceUI ();
 	
 	public boolean jumpToStatisticDataUI (String s,int index,String date);
 	
-	public boolean jumpToFinanceMenuUI ();
+	public boolean jumpToFinanceMenuUI (String id);
 	
 	public boolean jumpToFinanceCreateProfitUI ();
 	
@@ -64,7 +67,7 @@ public interface MainUIService {
 	
 	public boolean jumpTooutUI ();
 	
-	public boolean jumpTotranscenterRepoMenuUI ();
+	public boolean jumpTotranscenterRepoMenuUI (String id);
 	
 	public boolean jumpToadjustUI ();
 	
@@ -74,7 +77,7 @@ public interface MainUIService {
 	
 	public boolean jumpToinventoryUI ();
 	
-	public boolean jumpTobusinessMenuUI ();
+	public boolean jumpTobusinessMenuUI (String id);
 	
 	public boolean jumpTobusinessArrivalUI ();
 	
@@ -92,9 +95,9 @@ public interface MainUIService {
 	
 	public boolean jumpTodeliverReceiveUI ();
 	
-	public boolean jumpTodeliverMenuUI ();
+	public boolean jumpTodeliverMenuUI (String id);
 	
-	public boolean jumpTotransSaleMenuUI ();
+	public boolean jumpTotransSaleMenuUI (String id);
 	
 	public boolean jumpTotransSaleTransterDocUI ();
 	

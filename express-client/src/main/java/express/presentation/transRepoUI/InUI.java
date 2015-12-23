@@ -25,12 +25,11 @@ public class InUI extends JPanel{
 //	private JButton button_return;
 	private JButton button_confirm;
 	private JButton button_cancel;
-    private MainUIService m;
     private JTextField textArea1,textArea2,textArea4,textArea5,textArea6,textArea7,datetf;
     private String number,date,arrival,district,row,shelf,position;
 	private DateChooser datechooser;
     private JComboBox combobox;
-	public InUI(MainUIService main){
+	public InUI(){
 		
         int textlength=150;
         int textwidth=30;
@@ -42,8 +41,6 @@ public class InUI extends JPanel{
 		Font f = new Font("仿宋",Font.PLAIN,16);
 		
 		setLayout(null);
-		this.m=main;
-		
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 		

@@ -15,6 +15,7 @@ import express.dataService.documentDataService.TransCenterTransferDocDataService
 import express.po.ArrivalDocBusinessHallPO;
 import express.po.ArrivalDocTransCenterPO;
 import express.po.GoodTransStatusPO;
+import express.po.GoodsArrivalStatus;
 import express.po.TransferDocPO;
 import express.vo.ArrivalDocBusinessHallVO;
 import express.vo.ArrivalDocTransCenterVO;
@@ -31,8 +32,18 @@ public class ArrivalDocBusinessHall implements BusinessSaleArrivalDocumentblServ
 	
 	public boolean addArrivalDoc(ArrivalDocBusinessHallVO vo) {
 		ArrivalDocBusinessHallPO po=new ArrivalDocBusinessHallPO(vo.getArriveTime(), vo.getTransferDocID(), vo.getDeparture(),
-																vo.getArrivalStatus(), vo.getOrderID());
+				vo.getArrivalStatus(), vo.getOrderID());
+		
+		if(isOrderIDavailable(vo.getOrderID())){
+		
+		
+		
 		try{
+			OrderController oct=new OrderController();
+			if(null==oct.getOrder(vo.getOrderID())){
+				return false;
+			}
+
 			rmiObj.createArrivalDoc(po);
 			String orderId=vo.getOrderID();
 			
@@ -44,13 +55,13 @@ public class ArrivalDocBusinessHall implements BusinessSaleArrivalDocumentblServ
 			
 			Calendar c = Calendar.getInstance();
 			int year=c.get(Calendar.YEAR);
-			int month=-c.get(Calendar.MONTH+1)-1;
+			int month=-c.get(Calendar.MONTH)-1;
 			int day=-c.get(Calendar.DATE);
 			String date="";
 			date+=year;
 			date+=month;
 			date+=day;
-			statuspo.addTime(date);
+			statuspo.addTime(vo.getArriveTime());
 			
 			changeStatusObj.changeGoodtransstatus(statuspo);
 			
@@ -62,6 +73,10 @@ public class ArrivalDocBusinessHall implements BusinessSaleArrivalDocumentblServ
 			return false;
 		}
 	}
+	else{
+		return false;
+	}
+}
 	
 	
 	public String getTransferDocID(String orderID){
@@ -173,5 +188,19 @@ public class ArrivalDocBusinessHall implements BusinessSaleArrivalDocumentblServ
 		
 		
 	}
-
+	
+//	public static void main(String[] args){
+//		try{
+//		RMIClient.init();
+//	}catch(Exception e){
+//		e.printStackTrace();
+//	}
+//		
+//		ArrivalDocBusinessHallVO vo=new ArrivalDocBusinessHallVO("2015-12-31", "12344", "南京", GoodsArrivalStatus.Complete,"0000000001");		
+//		ArrivalDocBusinessHall adbh=new ArrivalDocBusinessHall();
+//		System.out.println(adbh.addArrivalDoc(vo));
+//		adbh.endArrivalDoc();
+//		
+//	}
+	
 }

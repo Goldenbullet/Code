@@ -24,10 +24,12 @@ import express.presentation.financialUI.FinanceManageBankAccountUI;
 import express.presentation.financialUI.FinanceMenuUI;
 import express.presentation.financialUI.FinancePaymentUI;
 import express.presentation.financialUI.FinanceSumReceiveDocUI;
+import express.presentation.managerUI.managerCityPriceUI;
 import express.presentation.managerUI.managerExamDocUI;
 import express.presentation.managerUI.managerMemberUI;
 import express.presentation.managerUI.managerMenuUI;
 import express.presentation.managerUI.managerOrgUI;
+import express.presentation.managerUI.managerSalaryUI;
 import express.presentation.transRepoUI.AdjustUI;
 import express.presentation.transRepoUI.InUI;
 import express.presentation.transRepoUI.InventoryUI;
@@ -38,10 +40,12 @@ import express.presentation.transSaleUI.transSaleArrivalDocUI;
 import express.presentation.transSaleUI.transSaleMenuUI;
 import express.presentation.transSaleUI.transSaleShipmentDocUI;
 import express.presentation.transSaleUI.transSaleTransferDocUI;
+import express.presentation.userUI.LoginUI;
 import express.presentation.userUI.SignInUI;
 
 public class MainUI implements MainUIService {
 
+	private JFrame frame;
 	private CardLayout card;
 	private JPanel pane;
 	private CardLayout card1;
@@ -52,6 +56,10 @@ public class MainUI implements MainUIService {
 		this.card = card;
 	}
 
+	public void setframe(JFrame f) {
+		this.frame = f;
+	}
+
 	public void setcard1(CardLayout card1) {
 		this.card1 = card1;
 	}
@@ -60,76 +68,73 @@ public class MainUI implements MainUIService {
 		this.pane1 = pane1;
 	}
 
-	public boolean jumpToSignInUI() {
+	public boolean jumpToLogInUI() {
 		// TODO Auto-generated method stub
-		SignInUI signin = new SignInUI(this);
-		pane.add("signin", signin);
-		card.show(pane, "signin");
+		frame.dispose();
+		LoginUI login = new LoginUI();
 		return true;
 	}
 
-	public boolean jumpToadminStartUI() {
-		AdminStartUI adminStartPanel = new AdminStartUI(this);
+	public boolean jumpToadminStartUI(String id) {
+		AdminStartUI adminStartPanel = new AdminStartUI(this, id);
 		pane.add("adminStartPanel", adminStartPanel);
 		card.show(pane, "adminStartPanel");
 		return true;
 	}
 
-	public boolean jumpToadminAddUI() {
-		return true;
-	}
-
-	public boolean jumpTomanagerMenuUI() {
-		managerMenuUI manmenu = new managerMenuUI(this);
+	public boolean jumpTomanagerMenuUI(String id) {
+		managerMenuUI manmenu = new managerMenuUI(this, id);
 		pane.add("manmenu", manmenu);
 		card.show(pane, "manmenu");
 		return true;
 	}
 
 	public boolean jumpToViewSysLogUI() {
-		ViewSysLogUI viewsyslog = new ViewSysLogUI(this);
+		ViewSysLogUI viewsyslog = new ViewSysLogUI();
 		pane1.add("viewsyslog", viewsyslog);
 		card1.show(pane1, "viewsyslog");
 		return true;
 	}
 
 	public boolean jumpTomanagerMemberUI() {
-		managerMemberUI manstaff = new managerMemberUI(this);
+		managerMemberUI manstaff = new managerMemberUI();
 		pane1.add("manstaff", manstaff);
 		card1.show(pane1, "manstaff");
 		return true;
 	}
 
 	public boolean jumpTomanagerOrgUI() {
-		managerOrgUI manorg = new managerOrgUI(this);
+		managerOrgUI manorg = new managerOrgUI();
 		pane1.add("manorg", manorg);
 		card1.show(pane1, "manorg");
 		return true;
 	}
 
 	public boolean jumpTomanagerExamDocUI() {
-		managerExamDocUI manexam = new managerExamDocUI(this);
+		managerExamDocUI manexam = new managerExamDocUI();
 		pane1.add("manexam", manexam);
 		card1.show(pane1, "manexam");
 		return true;
 	}
-	
-	public boolean jumpToStatisticDataUI (String s,int index,String date){
-		StatisticDataUI statisticdata = new StatisticDataUI(this, index,s,date);
+
+	public boolean jumpToStatisticDataUI(String s, int index, String date) {
+		StatisticDataUI statisticdata = new StatisticDataUI(this, index, s,
+				date);
 		pane1.add("statisticdata", statisticdata);
 		card1.show(pane1, "statisticdata");
 		return true;
 	};
 
-	public boolean jumpToFinanceMenuUI() {
-		FinanceMenuUI fianacemenu = new FinanceMenuUI(this);
+	public boolean jumpToFinanceMenuUI(String id) {
+		FinanceMenuUI fianacemenu = new FinanceMenuUI(this, id);
 		pane.add("fianacemenu", fianacemenu);
 		card.show(pane, "fianacemenu");
 		return true;
 	}
 
 	public boolean jumpToFinanceCreateProfitUI() {
-		FinanceCreateProfitUI financecreateprofit = new FinanceCreateProfitUI(this);
+		FinanceCreateProfitUI financecreateprofit = new FinanceCreateProfitUI(
+				this);
 		pane1.add("financecreateprofit", financecreateprofit);
 		card1.show(pane1, "financecreateprofit");
 		return true;
@@ -144,14 +149,15 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpToFinanceInitAccountUI() {
-		FinanceInitAccountUI financeinitaccount = new FinanceInitAccountUI(this);
+		FinanceInitAccountUI financeinitaccount = new FinanceInitAccountUI();
 		pane1.add("financeinitaccount", financeinitaccount);
 		card1.show(pane1, "financeinitaccount");
 		return true;
 	}
 
 	public boolean jumpToFinanceManageBankAccountUI() {
-		FinanceManageBankAccountUI financeManageBankAccount = new FinanceManageBankAccountUI(this);
+		FinanceManageBankAccountUI financeManageBankAccount = new FinanceManageBankAccountUI(
+				this);
 		pane1.add("financeManageBankAccount", financeManageBankAccount);
 		card1.show(pane1, "financeManageBankAccount");
 
@@ -228,7 +234,7 @@ public class MainUI implements MainUIService {
 
 	public boolean jumpToinUI() {
 		// TODO Auto-generated method stub
-		InUI inPanel = new InUI(this);
+		InUI inPanel = new InUI();
 		pane1.add("inPanel", inPanel);
 		card1.show(pane1, "inPanel");
 
@@ -236,29 +242,29 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpTooutUI() {
-		OutUI outPanel = new OutUI(this);
+		OutUI outPanel = new OutUI();
 		pane1.add("outPanel", outPanel);
 		card1.show(pane1, "outPanel");
 		return true;
 	}
 
-	public boolean jumpTotranscenterRepoMenuUI() {
+	public boolean jumpTotranscenterRepoMenuUI(String id) {
 		TranscenterRepoMenuUI transcenterRepoMenuUI = new TranscenterRepoMenuUI(
-				this);
+				this, id);
 		pane.add("repomenu", transcenterRepoMenuUI);
 		card.show(pane, "repomenu");
 		return true;
 	}
 
 	public boolean jumpToadjustUI() {
-		AdjustUI adjustPanel = new AdjustUI(this);
+		AdjustUI adjustPanel = new AdjustUI();
 		pane1.add("adjustPanel", adjustPanel);
 		card1.show(pane1, "adjustPanel");
 		return true;
 	}
 
 	public boolean jumpToviewUI() {
-		ViewUI viewPanel = new ViewUI(this);
+		ViewUI viewPanel = new ViewUI();
 		pane1.add("viewPanel", viewPanel);
 		card1.show(pane1, "viewPanel");
 		return true;
@@ -269,93 +275,92 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpToinventoryUI() {
-		InventoryUI inventoryPanel = new InventoryUI(this);
+		InventoryUI inventoryPanel = new InventoryUI();
 		pane1.add("inventoryPanel", inventoryPanel);
 		card1.show(pane1, "inventoryPanel");
 		return true;
 	}
 
-	public boolean jumpTobusinessMenuUI() {
-		businessMenuUI businessmenu=new businessMenuUI(this);
-		pane.add("businessmenu",businessmenu);
+	public boolean jumpTobusinessMenuUI(String id) {
+		businessMenuUI businessmenu = new businessMenuUI(this, id);
+		pane.add("businessmenu", businessmenu);
 		card.show(pane, "businessmenu");
 		return true;
 	}
 
-	public boolean jumpTobusinessArrivalUI (){
-		businessArrivalUI businessArrivalPanel=new businessArrivalUI(this);
-		pane1.add("businessArrivalPanel",businessArrivalPanel);
+	public boolean jumpTobusinessArrivalUI() {
+		businessArrivalUI businessArrivalPanel = new businessArrivalUI();
+		pane1.add("businessArrivalPanel", businessArrivalPanel);
 		card1.show(pane1, "businessArrivalPanel");
 		return true;
 	}
-	
-	public boolean jumpTobusinessDriverUI (){
-		businessDriverUI businessDriverpanel=new businessDriverUI(this);
-		pane1.add("businessDriverpanel",businessDriverpanel);
+
+	public boolean jumpTobusinessDriverUI() {
+		businessDriverUI businessDriverpanel = new businessDriverUI();
+		pane1.add("businessDriverpanel", businessDriverpanel);
 		card1.show(pane1, "businessDriverpanel");
 		return true;
 	}
-	
-	public boolean jumpTobusinessDeliverUI (){
-		businessDeliverUI businessDeliverPanel = new businessDeliverUI(this);		
-		pane1.add("businessDeliverPanel",businessDeliverPanel);
+
+	public boolean jumpTobusinessDeliverUI() {
+		businessDeliverUI businessDeliverPanel = new businessDeliverUI();
+		pane1.add("businessDeliverPanel", businessDeliverPanel);
 		card1.show(pane1, "businessDeliverPanel");
-		
+
 		return true;
 	}
 
 	public boolean jumpTobusinessVehicleUI() {
-		businessVehicleUI businessVehiclepanel=new businessVehicleUI(this);
-		pane1.add("businessVehiclepanel",businessVehiclepanel);
+		businessVehicleUI businessVehiclepanel = new businessVehicleUI();
+		pane1.add("businessVehiclepanel", businessVehiclepanel);
 		card1.show(pane1, "businessVehiclepanel");
 		return true;
 	}
 
-	public boolean jumpTobusinessReceiveUI (){
-		businessReceiveUI businessReceivePanel = new businessReceiveUI(this);		
-		pane1.add("businessReceivePanel",businessReceivePanel);
+	public boolean jumpTobusinessReceiveUI() {
+		businessReceiveUI businessReceivePanel = new businessReceiveUI();
+		pane1.add("businessReceivePanel", businessReceivePanel);
 		card1.show(pane1, "businessReceivePanel");
 		return true;
 	}
-	
-	public boolean jumpTobusinessShipmentUI (){
-		businessShipmentUI businessShipmentPanel = new businessShipmentUI(this);		
-		pane1.add("businessShipmentPanel",businessShipmentPanel);
+
+	public boolean jumpTobusinessShipmentUI() {
+		businessShipmentUI businessShipmentPanel = new businessShipmentUI();
+		pane1.add("businessShipmentPanel", businessShipmentPanel);
 		card1.show(pane1, "businessShipmentPanel");
 		return true;
 	}
 
 	public boolean jumpTodeliverOrderUI() {
-		deliverOrderUI deliverOrderPanel = new deliverOrderUI(this);
+		deliverOrderUI deliverOrderPanel = new deliverOrderUI();
 		pane1.add("deliverOrderPanel", deliverOrderPanel);
 		card1.show(pane1, "deliverOrderPanel");
 		return true;
 	}
 
 	public boolean jumpTodeliverReceiveUI() {
-		deliverReceiveUI deliverReceivePanel = new deliverReceiveUI(this);
+		deliverReceiveUI deliverReceivePanel = new deliverReceiveUI();
 		pane1.add("deliverReceivePanel", deliverReceivePanel);
 		card1.show(pane1, "deliverReceivePanel");
 		return true;
 	}
 
-	public boolean jumpTodeliverMenuUI() {
-		deliverMenuUI deliverMenuPanel = new deliverMenuUI(this);
+	public boolean jumpTodeliverMenuUI(String id) {
+		deliverMenuUI deliverMenuPanel = new deliverMenuUI(this, id);
 		pane.add("deliverMenuPanel", deliverMenuPanel);
 		card.show(pane, "deliverMenuPanel");
 		return true;
 	}
 
-	public boolean jumpTotransSaleMenuUI() {
-		transSaleMenuUI transSaleMenuPanel = new transSaleMenuUI(this);
+	public boolean jumpTotransSaleMenuUI(String id) {
+		transSaleMenuUI transSaleMenuPanel = new transSaleMenuUI(this, id);
 		pane.add("transSaleMenuPanel", transSaleMenuPanel);
 		card.show(pane, "transSaleMenuPanel");
 		return true;
 	}
 
 	public boolean jumpTotransSaleTransterDocUI() {
-		transSaleTransferDocUI transSaleTransterDocPanel = new transSaleTransferDocUI(
-				this);
+		transSaleTransferDocUI transSaleTransterDocPanel = new transSaleTransferDocUI();
 		pane1.add("transSaleTransterDocPanel", transSaleTransterDocPanel);
 		card1.show(pane1, "transSaleTransterDocPanel");
 
@@ -363,8 +368,7 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpTotransSaleShipmentDocUI() {
-		transSaleShipmentDocUI transSaleShipmentDocPanel = new transSaleShipmentDocUI(
-				this);
+		transSaleShipmentDocUI transSaleShipmentDocPanel = new transSaleShipmentDocUI();
 		pane1.add("transSaleShipmentDocPanel", transSaleShipmentDocPanel);
 		card1.show(pane1, "transSaleShipmentDocPanel");
 
@@ -372,8 +376,7 @@ public class MainUI implements MainUIService {
 	}
 
 	public boolean jumpTotransSaleArrivalDocUI() {
-		transSaleArrivalDocUI transSaleArrivalDocPanel = new transSaleArrivalDocUI(
-				this);
+		transSaleArrivalDocUI transSaleArrivalDocPanel = new transSaleArrivalDocUI();
 		pane1.add("transSaleArrivalDocPanel", transSaleArrivalDocPanel);
 		card1.show(pane1, "transSaleArrivalDocPanel");
 
@@ -391,6 +394,24 @@ public class MainUI implements MainUIService {
 		ViewOperateUI viewOperatePanel = new ViewOperateUI(this);
 		pane1.add("viewOperatePanel", viewOperatePanel);
 		card1.show(pane1, "viewOperatePanel");
+		return true;
+	}
+
+	@Override
+	public boolean jumpTomanagerSalaryUI() {
+		// TODO Auto-generated method stub
+		managerSalaryUI managersalary = new managerSalaryUI();
+		pane1.add("managersalary", managersalary );
+		card1.show(pane1, "managersalary");
+		return true;
+	}
+
+	@Override
+	public boolean jumpTomanagerCityPriceUI() {
+		// TODO Auto-generated method stub
+		managerCityPriceUI managercityprice = new managerCityPriceUI();
+		pane1.add("managercityprice", managercityprice);
+		card1.show(pane1, "managercityprice");
 		return true;
 	}
 

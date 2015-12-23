@@ -18,7 +18,7 @@ public class BankAccountIOTester extends TestCase {
 	public void test() {
 		try{
 		BankAccountIO bank=new BankAccountIO();
-		/*assertEquals(null,bank.getAllBankAccount());
+		assertEquals(null,bank.getAllBankAccount());
 		BankAccountPO account1=new BankAccountPO("S快递公司",300000,100000,200000);
 		BankAccountPO account2=new BankAccountPO("S快递公司南京分公司",100000,50000,50000);
 		BankAccountPO account3=new BankAccountPO("S快递公司北京分公司",150000,80000,70000);
@@ -29,9 +29,9 @@ public class BankAccountIOTester extends TestCase {
 		assertEquals(account2,bank.getAllBankAccount().get(1));
 		assertEquals(account3,bank.getAllBankAccount().get(2));
 		bank.writeAllBankAccount();
-		BankAccountPO account4=new BankAccountPO("S快递公司南京分公司",150000,80000,70000);
-		bank.changeBankAccount(account4, "S快递公司南京分公司");
-		bank.writeAllBankAccount();*/
+		//BankAccountPO account4=new BankAccountPO("S快递公司南京分公司",150000,80000,70000);
+		//bank.changeBankAccount(account4, "S快递公司南京分公司");
+		//bank.writeAllBankAccount();
 		assertEquals("S快递公司",bank.getAllBankAccount().get(0).getName());
 		}catch(RemoteException e){
 			

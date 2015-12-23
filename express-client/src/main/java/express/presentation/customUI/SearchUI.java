@@ -1,5 +1,6 @@
 package express.presentation.customUI;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -8,10 +9,15 @@ import java.nio.channels.NonWritableChannelException;
 import java.security.SecureRandom;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
+import express.rmi.RMIClient;
 
 public class SearchUI extends JPanel{
 		
 	public void init(){
+		
+		Font f=new Font("苹方",Font.PLAIN, 35);
 		JButton exitbutton= new JButton(new ImageIcon("picture/x.png"));
 		final JFrame searchframe =new JFrame();
 		JButton confirm=new JButton(new ImageIcon("picture/search1.png"));
@@ -31,12 +37,6 @@ public class SearchUI extends JPanel{
 		buttonPanel.setSize(820,550);
 		pane.add(buttonPanel);
 		
-		JLabel title= new JLabel("这里放LOGO");
-		
-		title.setLayout(null);
-		title.setSize(270,127);
-		title.setLocation(250+100, 120);
-		pane.add(title);
 		
 		orderid.setSize(583,48);
 		orderid.setLocation(130,249);
@@ -60,8 +60,8 @@ public class SearchUI extends JPanel{
 		
 		final JLabel errortip=new JLabel("这里显示输入错误信息");
 		errortip.setSize(300,100);
-		errortip.setForeground(Color.RED);
-		errortip.setLocation(330, 270);
+		errortip.setForeground(Color.white);
+		errortip.setLocation(360, 270);
 		pane.add(errortip);
 		
 		
@@ -84,11 +84,12 @@ public class SearchUI extends JPanel{
 				else{
 					ResultUI result=new ResultUI();
 					if(result.checkOrder(orderid.getText())){
+						errortip.setText("");
 						pane.setVisible(false);
 						searchframe.setContentPane(result.getResult());
 					}
 					else{
-						errortip.setText("订单号格式不正确");
+						errortip.setText("订单不存在");
 					}
 				}
 			}
@@ -100,10 +101,23 @@ public class SearchUI extends JPanel{
 	
 	
 	public static void main(String[] args){
+		try{
+			RMIClient.init();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 		SearchUI ui=new SearchUI();
 		ui.init();
 	}
 	
+	
+	
+	public void paintComponent(Graphics g){
+		Image image=new ImageIcon("picture/abc.png").getImage();
+		g.drawImage(image,0,0,this);
+}
 	
 	
 }

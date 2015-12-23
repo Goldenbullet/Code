@@ -22,6 +22,7 @@ import express.data.documentData.PaymentDocIO;
 import express.data.documentData.PredictTimeIO;
 import express.data.documentData.ReceiveDocIO;
 import express.data.documentData.ReceiveInfoIO;
+import express.data.documentData.ShipmentDocBusinessHallIO;
 import express.data.documentData.TransferDocIO;
 import express.data.innerAccountData.InnerAccountIO;
 import express.data.logData.LogIO;
@@ -41,7 +42,7 @@ import express.data.vehicleAndDriverData.VehicleIO;
 public class RMIServer {
 	private static Map<String, Class<? extends UnicastRemoteObject>> NAMING_MAP = new HashMap<String, Class<? extends UnicastRemoteObject>>();
 
-	private static String file = "config/config.txt";
+	private static String file = "config-server/config.txt";
 	private static String IP; // read from config file
 	private static final int PORT = 1099;
 
@@ -76,7 +77,12 @@ public class RMIServer {
 		NAMING_MAP.put("BusinessHallArrivalDoc-data",
 				ArrivalDocBusinessHallIO.class);
 		NAMING_MAP.put("InDoc-data", InDocIO.class);
+		NAMING_MAP.put("Status-data",GoodTransStatusIO.class);
 		
+		NAMING_MAP.put("Predicttime-data",PredictTimeIO.class);
+		
+		NAMING_MAP.put("BusinessShipment-data", ShipmentDocBusinessHallIO.class);
+		NAMING_MAP.put("TransArrivalDoc-data",ArrivalDocTransCenterIO.class);
 	}
 
 	public synchronized static void init() throws ServerException {

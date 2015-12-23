@@ -10,7 +10,7 @@ import express.rmi.RMIClient;
 public class Search implements SearchBLService{
 	GoodsStatusDataService search;
 	public Search () {
-		search=RMIClient.getSearchObject();
+		search=RMIClient.getGoodStatusObject();
 	}
 	
 	public GoodTransStatusVO getOrderIDStatus(String orderID){
@@ -18,12 +18,13 @@ public class Search implements SearchBLService{
 			GoodTransStatusPO po=new GoodTransStatusPO();
 			try{
 			
-			po=search.search(orderID);
+				po=search.search(orderID);
 			}catch(Exception e){
 				e.printStackTrace();
+				
 			}
 			
-			System.out.print(po.getDeliverManID());
+			//System.out.print(po.getDeliverManID());
 			
 			GoodTransStatusVO vo= new GoodTransStatusVO();
 			vo.setDeliverManID(po.getDeliverManID());
@@ -33,6 +34,7 @@ public class Search implements SearchBLService{
 			vo.setSecondBusinessHallID(po.getSecondBusinessHallID());
 			vo.setSecondtransCenterID(po.getSecondtransCenterID());
 			vo.setTime(po.getTime());
+			vo.setStatus(po.getstatusList());
 			return vo;
 			
 		}

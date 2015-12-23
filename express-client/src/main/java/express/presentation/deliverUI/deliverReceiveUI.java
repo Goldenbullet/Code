@@ -2,6 +2,8 @@ package express.presentation.deliverUI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import express.businessLogic.receiveInfoBL.ReceiveInfo;
@@ -24,11 +27,11 @@ public class deliverReceiveUI extends JPanel {
 	private JButton button_return, button_cancel;
 	private JTextField textArea1, textArea2, textArea3;
 	private DateChooser datechooser;
-	private MainUIService m;
-	private String receiverName,receiveTime,OrderID;
+	private String receiverName, receiveTime, OrderID;
 	private boolean complete = true;
+	private Border border;
 
-	public deliverReceiveUI(MainUIService main) {
+	public deliverReceiveUI() {
 
 		int textlength = 200;
 		int textwidth = 40;
@@ -37,13 +40,12 @@ public class deliverReceiveUI extends JPanel {
 		int labelwidth = 40;
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
 		Font font = new Font("楷体", Font.PLAIN, 18);
-		Font f = new Font("仿宋", Font.PLAIN, 14);
+		Font f = new Font("仿宋", Font.PLAIN, 16);
+		Foclistener foc = new Foclistener();
 
 		JLabel label1 = new JLabel("收件人姓名");
 		label1.setBounds(200, 100, labellength, labelwidth);
@@ -63,9 +65,12 @@ public class deliverReceiveUI extends JPanel {
 		textArea1 = new JTextField();
 		textArea1.setBounds(300, 100, textlength, textwidth);
 		textArea1.setFont(f);
+		textArea1.addFocusListener(foc);
 		this.add(textArea1);
+		border = textArea1.getBorder();
 
-		textArea2 = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		textArea2 = new JTextField(
+				new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		textArea2.setBounds(300, 100 + textwidth * 2, textlength, textwidth);
 		textArea2.setFont(f);
 		textArea2.setEditable(false);
@@ -74,10 +79,11 @@ public class deliverReceiveUI extends JPanel {
 		datechooser = new DateChooser("yyyy-MM-dd", textArea2);
 		datechooser.setBounds(510, 100 + textwidth * 2, 40, 40);
 		this.add(datechooser);
-		
+
 		textArea3 = new JTextField();
 		textArea3.setBounds(300, 100 + textwidth * 4, textlength, textwidth);
 		textArea3.setFont(f);
+		textArea3.addFocusListener(foc);
 		this.add(textArea3);
 
 		Listener lis = new Listener();
@@ -89,57 +95,77 @@ public class deliverReceiveUI extends JPanel {
 		this.add(button_return);
 
 		button_cancel = new JButton("取消");
-		button_cancel.setBounds(350, 520, 100, 30);
+		button_cancel.setBounds(400, 520, 100, 30);
 		button_cancel.setFont(font);
 		button_cancel.addMouseListener(lis);
 		this.add(button_cancel);
 
 	}
 
+	private class Foclistener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource() ==textArea1){
+				textArea1.setBorder(border);
+			}else if (e.getSource() ==textArea3){
+				textArea3.setBorder(border);
+			}
+		}
+
+		@Override
+		public void focusLost(FocusEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
 	private class Listener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == button_cancel) {
+				
 				textArea1.setText("");
-				textArea2.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				textArea1.setBorder(border);
+				textArea2.setText(new SimpleDateFormat("yyyy-MM-dd")
+						.format(new Date()));
 				textArea3.setText("");
+				textArea3.setBorder(border);
+				
 			} else if (e.getSource() == button_return) {
+				
 				receiverName = textArea1.getText();
 				if (receiverName.isEmpty()) {
 					complete = false;
-					textArea1.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
+					textArea1.setBorder(new LineBorder(Color.RED));
 				}
-				
+
 				receiveTime = textArea2.getText();
-				if (receiveTime.isEmpty()) {
-					complete = false;
-					textArea2.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				}
-				
+
 				OrderID = textArea3.getText();
 				if (OrderID.isEmpty()) {
 					complete = false;
-					textArea3.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
+					textArea3.setBorder(new LineBorder(Color.RED));
 				}
-				
+
 				if (complete) {
-					ReceiveInfoVO vo = new ReceiveInfoVO(receiverName, receiveTime, OrderID);
+					ReceiveInfoVO vo = new ReceiveInfoVO(receiverName,
+							receiveTime, OrderID);
 					ReceiveInfoBLService rbs = new ReceiveInfo();
-					if(rbs.addReceiveInfo(vo)){
+					if (rbs.addReceiveInfo(vo)) {
 						JOptionPane.showMessageDialog(null, "生成收件信息成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						rbs.endReceiveInfo();
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "订单号错误", "提示",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
-			repaint();
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent e) {

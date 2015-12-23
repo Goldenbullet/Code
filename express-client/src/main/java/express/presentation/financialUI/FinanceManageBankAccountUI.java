@@ -327,7 +327,7 @@ public class FinanceManageBankAccountUI extends JPanel {
 					outcome.setBackground(Color.WHITE);
 				}
 			} else if (e.getSource() == exit) {
-				m.jumpToFinanceMenuUI();
+				
 			}
 			repaint();
 		}

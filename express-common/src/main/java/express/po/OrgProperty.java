@@ -2,5 +2,5 @@ package express.po;
 
 public enum OrgProperty {
 
-	SALE,TRANSCENTER,REPO,OTHER
+	SALE,TRANSCENTER,OTHER,REPO
 }

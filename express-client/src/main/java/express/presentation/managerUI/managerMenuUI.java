@@ -16,27 +16,32 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import express.businessLogic.userBL.User;
+import express.businesslogicService.signBLService.LogInBLService;
 import express.presentation.mainUI.MainUIService;
+import express.vo.UserInfoSignVO;
 
 public class managerMenuUI extends JPanel{
 
 	private MainUIService m;
+	private LogInBLService login;
+	private String id;
 	private CardLayout card;
 //	private JFrame frame;
 	private JPanel mainPanel,pane;
-	private JLabel userinfo;
+	private JLabel username, userid;
 	private JButton log;
 	private JButton statistic;
 	private JButton staff;
 	private JButton org;
-	private JButton examdoc;
+	private JButton examdoc,salary,cityprice;
 	private JButton exit;
 	private JMenuItem viewprofits, viewoperate;
 	private JPopupMenu viewstatisticpop;
 
 	private boolean isclicked = false;
 	
-	public managerMenuUI(MainUIService main){
+	public managerMenuUI(MainUIService main,String id){
 
 		setLayout(null);
 		this.m = main;
@@ -57,12 +62,24 @@ public class managerMenuUI extends JPanel{
 		m.setcard1(card);
 		m.setpane1(mainPanel);
 		
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, base);
-		userinfo.setText("      userinfo");
-		userinfo.setForeground(Color.gray);
-		userinfo.setFont(new Font("隶书",Font.PLAIN,14));
-		this.add(userinfo);
+		login = new User();
+		this.id = id;		
+		UserInfoSignVO vo = login.getUserInfo(id);
+		String name = vo.getName();
+		
+		username = new JLabel();
+		username.setBounds(50, 50, 70, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(username);
+		
+		userid = new JLabel();
+		userid.setBounds(40, 75, 100, 20);
+		userid.setText(id);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(userid);
 		
 		log = new JButton("查询日志");
 		log.setBounds(0, base, height, width);
@@ -89,6 +106,16 @@ public class managerMenuUI extends JPanel{
 		statistic.setFont( new Font("隶书",Font.PLAIN,18));
 		this.add(statistic);
 		
+		salary = new JButton("制定薪水策略");
+		salary.setBounds(0, base+5*width, height, width);
+		salary.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(salary);
+		
+		cityprice = new JButton("制定距离价格");
+		cityprice.setBounds(0, base+6*width, height, width);
+		cityprice.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(cityprice);
+		
 		viewstatisticpop = new JPopupMenu();
 		viewstatisticpop.setFont(font);
 		viewprofits = new JMenuItem("查看成本收益表");
@@ -103,7 +130,7 @@ public class managerMenuUI extends JPanel{
 		exit.setFont(font);
 		this.add(exit);
 		
-		this.setBounds(0, 0, 1200, 900);
+		this.setBounds(0, 30, 1200, 900);
 		
 		Listener listener = new Listener();
 		ActListener actlis = new ActListener();
@@ -114,6 +141,8 @@ public class managerMenuUI extends JPanel{
 		examdoc.addMouseListener(listener);	
 		statistic.addMouseListener(listener);	
         exit.addMouseListener(listener);
+        salary.addMouseListener(listener);
+        cityprice.addMouseListener(listener);
         viewprofits.addActionListener(actlis);
         viewoperate.addActionListener(actlis);
 	}
@@ -123,7 +152,8 @@ public class managerMenuUI extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getSource()==exit){
-				m.jumpToSignInUI();						
+				login.SignOut(id);
+				m.jumpToLogInUI();		
 			}else if(e.getSource()==log){
 				m.jumpToViewSysLogUI();	
 			}else if(e.getSource()==staff){
@@ -140,7 +170,11 @@ public class managerMenuUI extends JPanel{
 					isclicked = false;
 					viewstatisticpop.setVisible(false);
 				}
-			} 
+			}else if(e.getSource()==salary){
+				m.jumpTomanagerSalaryUI();
+			}else if(e.getSource()==cityprice){
+				m.jumpTomanagerCityPriceUI();
+			}
 			updateUI();
 		}
 

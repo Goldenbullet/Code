@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import express.po.TransWay;
 
 public class TransferDocVO extends DocumentVO{
+	private String title="中转单";
 	private String date;
 	private String transDocID;
 	private String flightNumber;
@@ -102,4 +103,9 @@ public class TransferDocVO extends DocumentVO{
 	public void  setmoney(double money){
 		this.money=money;
 	}
+	
+	//add title
+		public String getTitle(){
+			return title;
+		}
 }

@@ -3,6 +3,7 @@ package express.vo;
 import express.po.GoodsArrivalStatus;
 
 public class ArrivalDocTransCenterVO extends DocumentVO{
+	private String title="中转中心到达单";
 	private String arriveDate;
 	private String transCenterID;//中转中心ID
 	private String transferDocID;//中转单ID
@@ -43,4 +44,9 @@ public class ArrivalDocTransCenterVO extends DocumentVO{
 	public GoodsArrivalStatus getArrivalStatus(){
 		return arrivalStatus;
 	}
+	
+	//add title
+		public String getTitle(){
+			return title;
+		}
 }

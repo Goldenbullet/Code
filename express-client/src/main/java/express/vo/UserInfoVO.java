@@ -88,4 +88,25 @@ public class UserInfoVO {
 	public void setDate(String date){
 		this.date = date;
 	}
+	
+	public String transposition(UserRole posit) {
+		String position = "";
+		if (posit.equals(UserRole.Admin))
+			position = "管理员";
+		else if (posit.equals(UserRole.BusinessSale))
+			position = "营业厅业务员";
+		else if (posit.equals(UserRole.DeliverMan))
+			position = "快递员";
+		else if (posit.equals(UserRole.Financial))
+			position = "普通财务人员";
+		else if (posit.equals(UserRole.Financial_highest))
+			position = "最高权限财务人员";
+		else if (posit.equals(UserRole.Manager))
+			position = "总经理";
+		else if (posit.equals(UserRole.TransCenterRepo))
+			position = "中转中心仓库管理人员";
+		else if (posit.equals(UserRole.TransCenterSale))
+			position = "中转中心业务员";
+		return position;
+	}
 }

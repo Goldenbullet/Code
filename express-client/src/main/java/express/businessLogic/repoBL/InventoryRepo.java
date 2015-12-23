@@ -49,17 +49,7 @@ public class InventoryRepo {
 		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 		
 
-		for (int i = 0; i < list.size(); i++) {
-			row = sheet.createRow((int) i + 1);
-			Student stu = (Student) list.get(i);
-			// 第四步，创建单元格，并设置值
-			row.createCell((short) 0).setCellValue((double) stu.getId());
-			row.createCell((short) 1).setCellValue(stu.getName());
-			row.createCell((short) 2).setCellValue((double) stu.getAge());
-			cell = row.createCell((short) 3);
-			cell.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(stu
-					.getBirth()));
-		}
+		
 		// 第六步，将文件存到指定位置
 		try {
 			FileOutputStream fout = new FileOutputStream("E:/students.xls");

@@ -20,15 +20,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import express.businessLogic.userBL.User;
+import express.businesslogicService.signBLService.LogInBLService;
 import express.presentation.mainUI.MainUIService;
+import express.vo.UserInfoSignVO;
 
 public class FinanceMenuUI extends JPanel {
 
 	private MainUIService m;
+	private LogInBLService login;
+	private String id;
 	private CardLayout card;
 	// private JFrame frame;
 	private JPanel mainPanel, pane;
-	private JLabel userinfo;
+	private JLabel username, userid;
 //	private JMenuBar viewstatisticbar, createstatisticbar;
 //	private JMenu viewstatisticm, createstatisticm;
 	private JMenuItem viewprofits, viewoperate, createprofits, createoperate;
@@ -41,7 +46,7 @@ public class FinanceMenuUI extends JPanel {
 	private boolean isclickedv = false;
 	private boolean isclickedc = false;
 
-	public FinanceMenuUI(MainUIService main) {
+	public FinanceMenuUI(MainUIService main,String id) {
 		setLayout(null);
 		this.m = main;
 		pane = this;
@@ -61,12 +66,24 @@ public class FinanceMenuUI extends JPanel {
 		m.setcard1(card);
 		m.setpane1(mainPanel);
 		
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, base);
-		userinfo.setText("      userinfo");
-		userinfo.setForeground(Color.gray);
-		userinfo.setFont(new Font("隶书", Font.PLAIN, 14));
-		this.add(userinfo);
+		login = new User();
+		this.id = id;		
+		UserInfoSignVO vo = login.getUserInfo(id);
+		String name = vo.getName();
+		
+		username = new JLabel();
+		username.setBounds(50, 50, 70, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(username);
+		
+		userid = new JLabel();
+		userid.setBounds(40, 75, 100, 20);
+		userid.setText(id);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,18));
+		this.add(userid);
 
 		log = new JButton("查询日志");
 		log.setBounds(0, base, height, width);
@@ -168,7 +185,8 @@ public class FinanceMenuUI extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getSource() == exit) {
-				m.jumpToSignInUI();
+				login.SignOut(id);
+				m.jumpToLogInUI();
 
 			} else if (e.getSource() == log) {
 				m.jumpToViewSysLogUI();

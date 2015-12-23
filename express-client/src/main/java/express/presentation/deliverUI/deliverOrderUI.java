@@ -1,18 +1,27 @@
 package express.presentation.deliverUI;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -25,29 +34,10 @@ import express.vo.OrderVO;
 
 public class deliverOrderUI extends JPanel {
 
-	private MainUIService m;
-
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_7;
-	private JTextField textField_9;
-	private JTextField textField_8;
-	private JTextField textField_6;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15, textField_16, textField_17;
-	private JLabel tip1, tip2;
+	private JTextField[] tf;
+	private JPanel[] p;
+	private JComboBox deliverytype, packtype;
 	private JButton button_cancel, button_confirm;
-	private ButtonGroup bg1, bg2;
-	private JRadioButton radioButton, radioButton_1, radioButton_2,
-			radioButton_3, radioButton_4, radioButton_5, radioButton_6;
 	private String sendername, senderaddress, senderworkplace, sendertelpnum,
 			sendermobilepnm;
 	private String recipientname, recipientaddress, recipientworkplace,
@@ -60,9 +50,8 @@ public class deliverOrderUI extends JPanel {
 	private Border border;
 	private boolean complete = true;
 
-	public deliverOrderUI(MainUIService main) {
+	public deliverOrderUI() {
 		setLayout(null);
-		this.m = main;
 
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
@@ -70,483 +59,227 @@ public class deliverOrderUI extends JPanel {
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font font0 = new Font("楷体", Font.BOLD, 20);
 		Font f = new Font("仿宋", Font.PLAIN, 14);
+		int width = 100;
+		int height = 30;
+		int width2 = 120;
+		int upside = 60;
+		int leftside1 = 5;
+		int leftside2 = 250;
+		int leftside3 = 500;
 
-		JLabel label = new JLabel("寄件人信息：");
-		label.setBounds(5, 10, 150, 30);
-		label.setFont(font0);
-		this.add(label);
+		JPanel linep = new JPanel();
+		linep.setLocation(30, 30);
+		linep.setPreferredSize(new Dimension(790, 950));
 
-		JLabel label_1 = new JLabel("寄件人姓名");
-		label_1.setBounds(20, 55, 100, 30);
-		label_1.setFont(font);
-		this.add(label_1);
+		Foclistener foc = new Foclistener();
+		p = new JPanel[5];
+		JLabel[] label = new JLabel[21];
+		tf = new JTextField[19];
+		String[] labelname = { "寄件人姓名", "住址", "单位", "电话", "手机号", "收件人姓名", "住址",
+				"单位", "电话", "手机号", "出发地", "到达地", "原件数", "实际重量", "体积", "内件品名",
+				"快递种类", "包装类型", "订单条形码号", "费用合计", "预计送达时间" };
+		String[] type1 = { "经济快递", "标准快递", "特快快递" };
+		String[] type2 = { "纸箱", "木箱", "快递袋" };
 
-		textField = new JTextField();
-		textField.setBounds(120, 55, 100, 30);
-		textField.setFont(f);
-		this.add(textField);
-		textField.setColumns(10);
+		for (int i = 0; i < 5; i++) {
+			p[i] = new JPanel();
+			p[i].setBorder(BorderFactory.createMatteBorder(0, 0, 4, 0,
+					Color.GRAY));
+			p[i].setLayout(null);
+			if (i < 2)
+				p[i].setPreferredSize(new Dimension(790, 200));
+			if (i == 2)
+				p[i].setPreferredSize(new Dimension(790, 110));
+			if (i == 3)
+				p[i].setPreferredSize(new Dimension(790, 250));
+			if (i == 4)
+				p[i].setPreferredSize(new Dimension(790, 140));
+			linep.add(p[i]);
+		}
 
-		border = textField.getBorder();
+		JLabel label0 = new JLabel("寄件人信息：");
+		label0.setBounds(0, 5, 150, 30);
+		label0.setFont(font0);
+		p[0].add(label0);
 
-		JLabel label_2 = new JLabel("住址");
-		label_2.setBounds(300, 55, 100, 30);
-		label_2.setFont(font);
-		this.add(label_2);
+		JLabel label_1 = new JLabel("收件人信息：");
+		label_1.setBounds(0, 5, 150, 30);
+		label_1.setFont(font0);
+		p[1].add(label_1);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(375, 56, 150, 30);
-		textField_1.setFont(f);
-		this.add(textField_1);
-		textField_1.setColumns(10);
-
-		JLabel lblNewLabel = new JLabel("单位");
-		lblNewLabel.setBounds(20, 110, 100, 30);
-		lblNewLabel.setFont(font);
-		this.add(lblNewLabel);
-
-		textField_2 = new JTextField();
-		textField_2.setBounds(100, 115, 150, 30);
-		textField_2.setFont(f);
-		this.add(textField_2);
-		textField_2.setColumns(10);
-
-		JLabel label_3 = new JLabel("电话");
-		label_3.setBounds(300, 110, 100, 30);
-		label_3.setFont(font);
-		this.add(label_3);
-
-		textField_3 = new JTextField();
-		textField_3.setBounds(375, 115, 150, 30);
-		textField_3.setFont(f);
-		this.add(textField_3);
-		textField_3.setColumns(10);
-
-		JLabel lblNewLabel_1 = new JLabel("手机号");
-		lblNewLabel_1.setBounds(550, 115, 100, 30);
-		lblNewLabel_1.setFont(font);
-		this.add(lblNewLabel_1);
-
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(610, 111, 150, 30);
-		textField_4.setFont(f);
-		this.add(textField_4);
-
-		JLabel label_4 = new JLabel("收件人信息：");
-		label_4.setBounds(5, 160, 160, 30);
-		label_4.setFont(font0);
-		this.add(label_4);
-
-		JLabel label_5 = new JLabel("收件人姓名");
-		label_5.setBounds(20, 205, 100, 30);
-		label_5.setFont(font);
-		this.add(label_5);
-
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(120, 205, 100, 30);
-		textField_5.setFont(f);
-		this.add(textField_5);
-
-		JLabel label_6 = new JLabel("住址");
-		label_6.setBounds(300, 205, 100, 30);
-		label_6.setFont(font);
-		this.add(label_6);
-
-		JLabel label_7 = new JLabel("单位");
-		label_7.setBounds(20, 255, 100, 30);
-		label_7.setFont(font);
-		this.add(label_7);
-
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(100, 255, 150, 30);
-		textField_7.setFont(f);
-		this.add(textField_7);
-
-		JLabel label_8 = new JLabel("电话");
-		label_8.setBounds(300, 255, 100, 30);
-		label_8.setFont(font);
-		this.add(label_8);
-
-		JLabel label_9 = new JLabel("手机号");
-		label_9.setBounds(550, 255, 100, 30);
-		label_9.setFont(font);
-		this.add(label_9);
-
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(610, 255, 150, 30);
-		textField_9.setFont(f);
-		this.add(textField_9);
-
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(375, 255, 150, 30);
-		textField_8.setFont(f);
-		this.add(textField_8);
-
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(375, 205, 150, 30);
-		textField_6.setFont(f);
-		this.add(textField_6);
-
-		JLabel label_20 = new JLabel("地址信息:");
-		label_20.setBounds(5, 305, 100, 30);
-		label_20.setFont(font0);
-		this.add(label_20);
-
-		JLabel label_18 = new JLabel("出发地");
-		label_18.setBounds(125, 305, 100, 30);
-		label_18.setFont(font);
-		this.add(label_18);
-
-		textField_16 = new JTextField();
-		textField_16.setColumns(10);
-		textField_16.setBounds(220, 305, 150, 30);
-		textField_16.setFont(f);
-		this.add(textField_16);
-
-		JLabel label_19 = new JLabel("到达地");
-		label_19.setBounds(410, 305, 100, 30);
-		label_19.setFont(font);
-		this.add(label_19);
-
-		textField_17 = new JTextField();
-		textField_17.setColumns(10);
-		textField_17.setBounds(510, 305, 150, 30);
-		textField_17.setFont(f);
-		this.add(textField_17);
+		JLabel label_2 = new JLabel("地址信息:");
+		label_2.setBounds(5, 5, 100, 30);
+		label_2.setFont(font0);
+		p[2].add(label_2);
 
 		JLabel lblNewLabel_2 = new JLabel("托运货物信息：");
-		lblNewLabel_2.setBounds(5, 355, 160, 30);
+		lblNewLabel_2.setBounds(5, 5, 160, 30);
 		lblNewLabel_2.setFont(font0);
-		this.add(lblNewLabel_2);
+		p[3].add(lblNewLabel_2);
 
-		JLabel label_10 = new JLabel("原件数");
-		label_10.setBounds(20, 395, 100, 30);
-		label_10.setFont(font);
-		this.add(label_10);
+		for (int i = 0; i < 21; i++) {
+			label[i] = new JLabel(labelname[i]);
+			label[i].setFont(font);
+			label[i].setSize(width, height);
+			if (i < 12) {
+				if (i % 5 == 0)
+					label[i].setLocation(leftside1, upside);
+				if (i % 5 == 1)
+					label[i].setLocation(leftside2, upside);
+				if (i % 5 == 2)
+					label[i].setLocation(leftside1, upside + 2 * height);
+				if (i % 5 == 3)
+					label[i].setLocation(leftside2, upside + 2 * height);
+				if (i % 5 == 4)
+					label[i].setLocation(leftside3, upside + 2 * height);
+				p[i / 5].add(label[i]);
+			} else if (i > 11 && i < 18) {
+				if (i % 2 == 0)
+					label[i].setLocation(leftside1, upside + 2 * ((i - 12) / 2)
+							* height);
+				if (i % 2 == 1)
+					label[i].setLocation(leftside2, upside + 2 * ((i - 12) / 2)
+							* height);
+				p[3].add(label[i]);
+			} else {
+				if (i == 18 || i == 19)
+					label[i].setBounds(leftside1, 20 + 2 * (i - 18) * height,
+							width2, height);
+				if (i == 20)
+					label[i].setBounds(leftside2 + 20, 20 + 2 * height, width2,
+							height);
+				p[4].add(label[i]);
+			}
+		}
 
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(100, 395, 70, 30);
-		textField_10.setFont(f);
-		this.add(textField_10);
+		for (int i = 0; i < 19; i++) {
+			tf[i] = new JTextField();
+			tf[i].setFont(f);
+			tf[i].setSize(width2, height);
+			tf[i].addFocusListener(foc);
+			if (i < 12) {
+				if (i % 5 == 0)
+					tf[i].setLocation(leftside1 + width, upside);
+				else if (i % 5 == 1)
+					tf[i].setLocation(leftside2 + width, upside);
+				else if (i % 5 == 2)
+					tf[i].setLocation(leftside1 + width, upside + 2 * height);
+				else if (i % 5 == 3)
+					tf[i].setLocation(leftside2 + width, upside + 2 * height);
+				else if (i % 5 == 4)
+					tf[i].setLocation(leftside3 + width, upside + 2 * height);
+				p[i / 5].add(tf[i]);
+			} else if (i > 11 && i < 16) {
+				if (i % 2 == 0)
+					tf[i].setLocation(leftside1 + width, upside + 2
+							* ((i - 12) / 2) * height);
+				if (i % 2 == 1)
+					tf[i].setLocation(leftside2 + width, upside + 2
+							* ((i - 12) / 2) * height);
+				p[3].add(tf[i]);
+			} else {
+				if (i == 16 || i == 17)
+					tf[i].setLocation(leftside1 + width2, 20 + 2 * (i - 16)
+							* height);
+				if (i == 18)
+					tf[i].setLocation(leftside2 + 20 + width2, 20 + 2 * height);
+				tf[i].setEditable(false);
+				p[4].add(tf[i]);
+			}
+		}
 
-		JLabel label_11 = new JLabel("实际重量");
-		label_11.setBounds(224, 395, 100, 30);
-		label_11.setFont(font);
-		this.add(label_11);
+		border = tf[1].getBorder();
+		deliverytype = new JComboBox(type1);
+		deliverytype.setBounds(leftside1 + width, upside + 2 * 2 * height,
+				width, height);
+		deliverytype.setFont(f);
+		p[3].add(deliverytype);
 
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(300, 395, 70, 30);
-		textField_11.setFont(f);
-		this.add(textField_11);
+		packtype = new JComboBox(type2);
+		packtype.setBounds(leftside2 + width, upside + 2 * 2 * height, width,
+				height);
+		packtype.setFont(f);
+		p[3].add(packtype);
 
-		JLabel label_12 = new JLabel("体积");
-		label_12.setBounds(425, 395, 100, 30);
-		label_12.setFont(font);
-		this.add(label_12);
-
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(497, 395, 70, 30);
-		textField_12.setFont(f);
-		this.add(textField_12);
-
-		JLabel label_13 = new JLabel("内件品名");
-		label_13.setBounds(605, 395, 100, 30);
-		label_13.setFont(font);
-		this.add(label_13);
-
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		textField_13.setBounds(680, 395, 150, 30);
-		textField_13.setFont(f);
-		this.add(textField_13);
-
-		JLabel label_14 = new JLabel("快递种类");
-		label_14.setBounds(5, 450, 100, 30);
-		label_14.setFont(font);
-		this.add(label_14);
-
-		bg1 = new ButtonGroup();
-
-		radioButton = new JRadioButton("经济快递");
-		radioButton.setBounds(100, 450, 100, 30);
-		radioButton.setFont(font);
-		bg1.add(radioButton);
-		this.add(radioButton);
-
-		radioButton_1 = new JRadioButton("标准快递");
-		radioButton_1.setBounds(270, 450, 100, 30);
-		radioButton_1.setFont(font);
-		bg1.add(radioButton_1);
-		this.add(radioButton_1);
-
-		radioButton_2 = new JRadioButton("特快快递");
-		radioButton_2.setBounds(440, 450, 100, 30);
-		radioButton_2.setFont(font);
-		bg1.add(radioButton_2);
-		this.add(radioButton_2);
-
-		tip1 = new JLabel(" * 未选择");
-		tip1.setBounds(550, 450, 100, 30);
-		tip1.setForeground(Color.RED);
-		tip1.setFont(font);
-
-		JLabel label_15 = new JLabel("包装类型");
-		label_15.setBounds(5, 500, 100, 30);
-		label_15.setFont(font);
-		this.add(label_15);
-
-		bg2 = new ButtonGroup();
-
-		radioButton_3 = new JRadioButton("纸箱");
-		radioButton_3.setBounds(100, 500, 100, 30);
-		radioButton_3.setFont(font);
-		bg2.add(radioButton_3);
-		this.add(radioButton_3);
-
-		radioButton_4 = new JRadioButton("木箱");
-		radioButton_4.setBounds(270, 500, 100, 30);
-		radioButton_4.setFont(font);
-		bg2.add(radioButton_4);
-		this.add(radioButton_4);
-
-		radioButton_5 = new JRadioButton("快递袋");
-		radioButton_5.setBounds(440, 500, 100, 30);
-		radioButton_5.setFont(font);
-		bg2.add(radioButton_5);
-		this.add(radioButton_5);
-
-		// radioButton_6 = new JRadioButton("其它");
-		// radioButton_6.setBounds(610, 500, 100, 30);
-		// radioButton_6.setFont(font);
-		// bg2.add(radioButton_6);
-		// this.add(radioButton_6);
-
-		tip2 = new JLabel(" * 未选择");
-		tip2.setBounds(550, 500, 100, 30);
-		tip2.setForeground(Color.RED);
-		tip2.setFont(font);
-
-		JLabel label_16 = new JLabel("订单条形码");
-		label_16.setBounds(5, 566, 100, 30);
-		label_16.setFont(font);
-		this.add(label_16);
-
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		textField_14.setBounds(100, 566, 150, 30);
-		textField_14.setFont(f);
-		this.add(textField_14);
-
-		JLabel label_17 = new JLabel("费用合计");
-		label_17.setBounds(300, 566, 100, 30);
-		label_17.setFont(font);
-		this.add(label_17);
-
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
-		textField_15.setBounds(375, 566, 100, 30);
-		textField_15.setEditable(false);
-		textField_15.setFont(f);
-		this.add(textField_15);
+		JScrollPane scrollPane = new JScrollPane(
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setViewportView(linep);
+		scrollPane.setBounds(30, 30, 790, 600);
+		this.add(scrollPane);
 
 		Listener lis = new Listener();
 
 		button_confirm = new JButton("确定");
-		button_confirm.setBounds(250, 615, 100, 30);
+		button_confirm.setBounds(250, 650, 100, 30);
 		button_confirm.setFont(font);
 		button_confirm.addMouseListener(lis);
 		this.add(button_confirm);
 
 		button_cancel = new JButton("取消");
-		button_cancel.setBounds(380, 615, 100, 30);
+		button_cancel.setBounds(400, 650, 100, 30);
 		button_cancel.setFont(font);
 		button_cancel.addMouseListener(lis);
 		this.add(button_cancel);
+	}
+	
+	private class Foclistener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			for(int i = 0;i<19;i++){
+				if(e.getSource()==tf[i])
+					tf[i].setBorder(border);
+			}
+		}
+
+		@Override
+		public void focusLost(FocusEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	private class Listener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
+			requestFocus();
 			if (e.getSource() == button_cancel) {
-				textField.setText("");
-				textField.setBorder(border);
-				textField_1.setText("");
-				textField_1.setBorder(border);
-				textField_2.setText("");
-				textField_2.setBorder(border);
-				textField_3.setText("");
-				textField_3.setBorder(border);
-				textField_4.setText("");
-				textField_4.setBorder(border);
-				textField_5.setText("");
-				textField_5.setBorder(border);
-				textField_6.setText("");
-				textField_6.setBorder(border);
-				textField_7.setText("");
-				textField_7.setBorder(border);
-				textField_8.setText("");
-				textField_8.setBorder(border);
-				textField_9.setText("");
-				textField_9.setBorder(border);
-				textField_10.setText("");
-				textField_10.setBorder(border);
-				textField_11.setText("");
-				textField_11.setBorder(border);
-				textField_12.setText("");
-				textField_12.setBorder(border);
-				textField_13.setText("");
-				textField_13.setBorder(border);
-				textField_14.setText("");
-				textField_14.setBorder(border);
-				textField_15.setText("");
-				textField_16.setText("");
-				textField_16.setBorder(border);
-				textField_17.setText("");
-				textField_17.setBorder(border);
-				tip1.setVisible(false);
-				tip2.setVisible(false);
-				bg1.clearSelection();
-				bg2.clearSelection();
+				for (int i = 0; i < 19; i++) {
+					tf[i].setText("");
+					tf[i].setBorder(border);
+				}
 			} else if (e.getSource() == button_confirm) {
-				sendername = textField.getText();
-				if (sendername.isEmpty()) {
-					complete = false;
-					textField.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				senderaddress = textField_1.getText();
-				if (senderaddress.isEmpty()) {
-					complete = false;
-					textField_1
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				senderworkplace = textField_2.getText();
-				if (senderworkplace.isEmpty()) {
-					complete = false;
-					textField_2
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				sendertelpnum = textField_3.getText();
-				if (sendertelpnum.isEmpty()) {
-					complete = false;
-					textField_3
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				sendermobilepnm = textField_4.getText();
-				if (sendermobilepnm.isEmpty()) {
-					complete = false;
-					textField_4
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-
-				recipientname = textField_5.getText();
-				if (recipientname.isEmpty()) {
-					complete = false;
-					textField_5
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				recipientaddress = textField_6.getText();
-				if (recipientaddress.isEmpty()) {
-					complete = false;
-					textField_6
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				recipientworkplace = textField_7.getText();
-				if (recipientworkplace.isEmpty()) {
-					complete = false;
-					textField_7
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				recipienttelpnum = textField_8.getText();
-				if (recipienttelpnum.isEmpty()) {
-					complete = false;
-					textField_8
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-				recipientmobilepnm = textField_9.getText();
-				if (recipientmobilepnm.isEmpty()) {
-					complete = false;
-					textField_9
-							.setBorder(new LineBorder(new Color(200, 80, 80)));
-				}
-
-				if (textField_10.getText().isEmpty()) {
-					complete = false;
-					textField_10.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				} else {
-					count = Integer.parseInt(textField_10.getText());
-				}
-				if (textField_11.getText().isEmpty()) {
-					complete = false;
-					textField_11.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				} else {
-					weight = Double.parseDouble(textField_11.getText());
-				}
-				if (textField_12.getText().isEmpty()) {
-					complete = false;
-					textField_12.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				} else {
-					volume = Double.parseDouble(textField_12.getText());
-				}
-
-				nameOfGoods = textField_13.getText();
-				if (nameOfGoods.isEmpty()) {
-					complete = false;
-					textField_13.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				}
-				orderID = textField_14.getText();
-				if (orderID.isEmpty()) {
-					complete = false;
-					textField_14.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				}
-				startCity = textField_16.getText();
-				if (startCity.isEmpty()) {
-					complete = false;
-					textField_16.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				}
-				endCity = textField_17.getText();
-				if (endCity.isEmpty()) {
-					complete = false;
-					textField_17.setBorder(new LineBorder(
-							new Color(200, 80, 80)));
-				}
-
-				if (radioButton.isSelected()) {
-					type = DeliveryType.Slow;
-				} else if (radioButton_1.isSelected()) {
-					type = DeliveryType.Standard;
-				} else if (radioButton_2.isSelected()) {
-					type = DeliveryType.Fast;
-				} else {
-					add(tip1);
-				}
-
-				if (radioButton_3.isSelected()) {
-					packagetype = packagetype.CardBox;
-				} else if (radioButton_4.isSelected()) {
-					packagetype = packagetype.WoodBox;
-				} else if (radioButton_5.isSelected()) {
-					packagetype = packagetype.DeliverBag;
-				} else {
-					add(tip2);
-				}
-
+				for (int i = 0; i < 19; i++) {
+					if (tf[i].getText().isEmpty()) {
+						complete = false;
+						tf[i].setBorder(new LineBorder(Color.RED));
+					}
+				}		
+				
 				if (complete) {
+					sendername = tf[0].getText();
+					senderaddress = tf[1].getText();
+					senderworkplace = tf[2].getText();
+					sendertelpnum = tf[2].getText();
+					sendermobilepnm = tf[4].getText();
+					recipientname = tf[5].getText();
+					recipientaddress = tf[6].getText();
+					recipientworkplace = tf[7].getText();
+					recipienttelpnum = tf[8].getText();
+					recipientmobilepnm = tf[9].getText();
+					count = Integer.parseInt(tf[12].getText());
+					weight = Double.parseDouble(tf[13].getText());
+					volume = Double.parseDouble(tf[14].getText());
+					nameOfGoods = tf[15].getText();
+					startCity = tf[10].getText();
+					endCity = tf[11].getText();
+					type = DeliveryType.values()[deliverytype.getSelectedIndex()];
+					packagetype = packagetype.values()[packtype.getSelectedIndex()];
+					
 					OrderVO vo = new OrderVO();
 					vo.setSenderInfo(sendername, senderaddress,
 							senderworkplace, sendermobilepnm, sendertelpnum,
@@ -556,19 +289,28 @@ public class deliverOrderUI extends JPanel {
 							recipienttelpnum, endCity);
 					vo.setGoodsInfo(count, weight, volume, nameOfGoods, type,
 							packagetype);
-					vo.setOrderID(orderID);
+					
 					DeliverCreateOrderBLService dcob = new OrderController();
 					money = dcob.getTotal(vo);
-					predictTime = dcob
-							.getPredictArrivalTime(startCity, endCity)
-							.getTime();
+					predictTime = dcob.getPredictArrivalTime(startCity, endCity).getTime();
 					vo.setFee(money);
 					vo.setPredictTime(predictTime);
-					textField_15.setText(money + "");
+					tf[17].setText(predictTime);
+					tf[18].setText(money + "");
+					
 					String result = dcob.addOrder(vo);
-					if (result.equals(orderID)) {
-						JOptionPane.showMessageDialog(null, "生成订单成功" + "\n"
-								+ "预计到达时间：" + predictTime, "提示",
+					boolean success = true;
+					for (int i = 0; i < result.length(); i++) {
+						if (!(result.charAt(i) >= '0' && result.charAt(i) <= '9')) {
+							success = false;
+							break;
+						}
+					}
+					
+					if (success) {
+						orderID = result;
+						tf[16].setText(orderID);
+						JOptionPane.showMessageDialog(null, "生成订单成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						dcob.endOrder();
 					} else {

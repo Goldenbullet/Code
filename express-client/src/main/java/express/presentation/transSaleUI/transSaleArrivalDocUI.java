@@ -2,6 +2,8 @@ package express.presentation.transSaleUI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -14,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import express.businessLogic.IDKeeper;
 import express.businesslogicService.transcenterSaleBLService.TransCenterArrivalDocblService;
@@ -25,15 +29,17 @@ import express.vo.ArrivalDocTransCenterVO;
 
 public class transSaleArrivalDocUI extends JPanel {
 	private JButton button_confirm, button_cancel;
-	private ButtonGroup bg1;
-	private JRadioButton radioButton, radioButton_1, radioButton_2;
+	private ButtonGroup bg1, bg2;
+	private JRadioButton radioButton, radioButton_1, radioButton_2,
+			radioButton_3, radioButton_4;
+	private JLabel tip;
 	private JTextField ordertf, startplacetf, datetf, tranNumtf, transDocNumtf;
 	private DateChooser datechooser;
-	private MainUIService m;
 	private String date, transDocNum, tranNum, order, startplace;
 	private GoodsArrivalStatus arrivalStatus;
+	private Border border;
 
-	public transSaleArrivalDocUI(MainUIService main) {
+	public transSaleArrivalDocUI() {
 
 		int textlength = 150;
 		int textwidth = 30;
@@ -45,10 +51,9 @@ public class transSaleArrivalDocUI extends JPanel {
 
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
+		Foclistener foclis = new Foclistener();
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
@@ -78,6 +83,7 @@ public class transSaleArrivalDocUI extends JPanel {
 		ordertf.setBounds(300, base + textwidth * 2, textlength, textwidth);
 		ordertf.setFont(f);
 		this.add(ordertf);
+		border = ordertf.getBorder();
 
 		JLabel label3 = new JLabel("中转中心编号");
 		label3.setBounds(200 - 30, base + labelwidth * 4, labellength + 50,
@@ -104,6 +110,23 @@ public class transSaleArrivalDocUI extends JPanel {
 				textwidth);
 		transDocNumtf.setFont(f);
 		this.add(transDocNumtf);
+
+		bg2 = new ButtonGroup();
+
+		radioButton_3 = new JRadioButton("寄件人中转中心");
+		radioButton_3.setBounds(300 + textlength + 10, base + labelwidth * 6,
+				textlength, labelwidth);
+		radioButton_3.setFont(font);
+		bg2.add(radioButton_3);
+		radioButton_3.addFocusListener(foclis);
+		this.add(radioButton_3);
+
+		radioButton_4 = new JRadioButton("收件人中转中心");
+		radioButton_4.setBounds(300 + 2 * textlength + 10, base + labelwidth
+				* 6, textlength, labelwidth);
+		radioButton_4.setFont(font);
+		bg2.add(radioButton_4);
+		this.add(radioButton_4);
 
 		JLabel label5 = new JLabel("出发地");
 		label5.setBounds(200 + 10, base + labelwidth * 8, labellength,
@@ -146,6 +169,11 @@ public class transSaleArrivalDocUI extends JPanel {
 		bg1.add(radioButton_2);
 		this.add(radioButton_2);
 
+		tip = new JLabel("*未选择");
+		tip.setBounds(420, base + labelwidth * 12, 100, 30);
+		tip.setFont(font);
+		tip.setForeground(Color.RED);
+		
 		JListener listener = new JListener();
 
 		button_confirm = new JButton("确定");
@@ -160,24 +188,71 @@ public class transSaleArrivalDocUI extends JPanel {
 
 	}
 
-	// private String[] getstartcity() {
-	// String[] city = { "北京", "南京", "上海" };
-	// return city;
-	// }
-	//
-	// private String[] gettransNum() {
-	// String[] s1 = { "110", "119", "120" };
-	// return s1;
-	// }
+	private class Foclistener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource() == radioButton_3) {
+				if (radioButton_3.isSelected()) {
+					transDocNum = "-1";
+					transDocNumtf.setEditable(false);
+				}
+			}else if(e.getSource() == ordertf){
+				ordertf.setBorder(border);
+			}else if(e.getSource() == transDocNumtf){
+				transDocNumtf.setBorder(border);
+			}else if(e.getSource() == startplacetf){
+				startplacetf.setBorder(border);
+			}
+			if (radioButton.isSelected()||radioButton_1.isSelected()||radioButton_2.isSelected()) {
+				tip.setVisible(false);
+			}
+			updateUI();
+		}
+
+		@Override
+		public void focusLost(FocusEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
 
 	private class JListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
+			requestFocus();
 			if (e.getSource() == button_confirm) {
+				boolean complete = true;
+
 				date = datetf.getText();
 				startplace = startplacetf.getText();
 				order = ordertf.getText();
-				transDocNum = transDocNumtf.getText();
+				
+				if (!transDocNum.equals("-1")) {
+					transDocNum = transDocNumtf.getText();
+					if (transDocNum.isEmpty()) {
+						complete = false;
+						transDocNumtf.setBorder(new LineBorder(Color.RED));
+					}
+				}
+
+				if (startplace.isEmpty()) {
+					complete = false;
+					startplacetf.setBorder(new LineBorder(Color.RED));
+				}
+				
+				if (order.isEmpty()) {
+					complete = false;
+					ordertf.setBorder(new LineBorder(Color.RED));
+				}
+				
+				if(bg1.getSelection() == null){
+					complete = false;
+					add(tip);
+				}
+				
 				if (radioButton.isSelected()) {
 					arrivalStatus = GoodsArrivalStatus.Complete;
 				} else if (radioButton_1.isSelected()) {
@@ -185,7 +260,7 @@ public class transSaleArrivalDocUI extends JPanel {
 				} else if (radioButton_2.isSelected()) {
 					arrivalStatus = GoodsArrivalStatus.Missing;
 				}
-				if (bg1.getSelection() == null || order.isEmpty()) {
+				if (!complete) {
 					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
@@ -193,22 +268,31 @@ public class transSaleArrivalDocUI extends JPanel {
 							order, date, tranNum, transDocNum, startplace,
 							arrivalStatus);
 					TransCenterArrivalDocblService tadb = new ArrivalDocTransCenter();
-					if(tadb.addArrivalDoc(vo)){
+					if (tadb.addArrivalDoc(vo)) {
 						JOptionPane.showMessageDialog(null, "生成到达单成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						tadb.endArrivalDoc();
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "生成到达单失败", "提示",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 
 			} else if (e.getSource() == button_cancel) {
+				tip.setVisible(false);
 				ordertf.setText("");
+				ordertf.setBorder(border);
 				datetf.setText(new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date()));
+				startplacetf.setText("");
+				startplacetf.setBorder(border);
 				bg1.clearSelection();
+				bg2.clearSelection();
+				transDocNumtf.setText("");
+				transDocNumtf.setBorder(border);
+				transDocNumtf.setEditable(true);
 			}
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent arg0) {

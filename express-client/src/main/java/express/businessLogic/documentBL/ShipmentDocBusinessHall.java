@@ -19,6 +19,7 @@ import express.po.ShipmentDocTransCenterPO;
 import express.vo.OrderVO;
 import express.vo.ShipmentDocBusinessHallVO;
 import express.vo.ShipmentDocTransCenterVO;
+import javafx.scene.media.VideoTrack;
 import express.rmi.RMIClient;
 
 public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblService {
@@ -35,6 +36,7 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 
 		ShipmentDocCheck transidchecker = new ShipmentDocCheck();
 		if (!transidchecker.isTransIDavailable(vo.getTransId())) {
+			System.out.println("transID FAlse"+vo.getTransId());
 			return false;
 		}
 
@@ -52,7 +54,7 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 
 			Calendar c = Calendar.getInstance();
 			int year = c.get(Calendar.YEAR);
-			int month = -c.get(Calendar.MONTH + 1) - 1;
+			int month = -c.get(Calendar.MONTH) - 1;
 			int day = -c.get(Calendar.DATE);
 			String date = "";
 			date += year;
@@ -66,11 +68,11 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 				statuspo.setFirstBusinessHallID(IDKeeper.getOrgID());
 				changeStatusObj.changeGoodtransstatus(statuspo);
 			}
-
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 
 	public ShipmentDocBusinessHallVO getShipmentDoc(String shipmentID) {
@@ -145,12 +147,12 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 		}
 	}
 	
-	public String getShipmentDocID(){
+	public String getShipmentDocID(){  //汽运编号
 		String ID="";
 		String orgID=IDKeeper.getOrgID();
 		Calendar c = Calendar.getInstance();
 		int year=c.get(Calendar.YEAR);
-		int month=c.get(Calendar.MONTH+1)+1;
+		int month=c.get(Calendar.MONTH)+1;
 		int day=c.get(Calendar.DATE);
 		
 		ID+=orgID+year+month+day;
@@ -198,6 +200,37 @@ public class ShipmentDocBusinessHall implements BusinessSaleShipmentDocumentblSe
 		}
 	}
 	
+//	public static void main(String[] args){
+//		try {
+//			RMIClient.init();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		ShipmentDocBusinessHall spdb=new ShipmentDocBusinessHall();
+//		//String transid=spdb.getShipmentDocID();
+//		//System.out.println(transid);
+//		ArrayList<String> order=new ArrayList<String>();
+//		order.add("0000000000");
+//		order.add("000000001");
+//		
+//		ShipmentDocBusinessHallVO vo=new 
+//				ShipmentDocBusinessHallVO("2015-12-20", "0250002015122092669", "025000", "北京", "van1", "checker1", "transman1", order, 0, "2015122092669", "南京");
+//		double cost=spdb.getShipmentfee(vo);
+//		
+//		System.out.println(cost);
+//		
+//		if(cost<0){
+//			return;
+//		}
+//		
+//		
+//		vo.setMoney(cost);
+//		
+//		System.out.println(spdb.addShipmentDoc(vo));
+//		spdb.endShipmentDoc();
+//	}
 	
 	
 	

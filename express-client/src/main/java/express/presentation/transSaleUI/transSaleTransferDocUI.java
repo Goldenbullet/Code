@@ -29,7 +29,6 @@ import express.presentation.mainUI.MainUIService;
 import express.vo.TransferDocVO;
 
 public class transSaleTransferDocUI extends JPanel {
-	private MainUIService m;
 	private JButton button_confirm, button_cancel;
 	private JTextField textArea1, textArea2, textArea3, textArea4, textArea5,
 			textArea6, textArea8, textArea9;
@@ -43,7 +42,7 @@ public class transSaleTransferDocUI extends JPanel {
 	private ArrayList<String> orderlist;
 	private double money;
 
-	public transSaleTransferDocUI(MainUIService main) {
+	public transSaleTransferDocUI() {
 
 		int base = 40;
 		int textlength = 200;
@@ -56,8 +55,6 @@ public class transSaleTransferDocUI extends JPanel {
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 

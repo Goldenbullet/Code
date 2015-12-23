@@ -10,5 +10,5 @@ public interface PredictTimeDataService extends Remote{
 	public boolean addToHistory(HistoryTimePO po) throws RemoteException;
 	public PredictTimePO getPredictlist(String startCity,String endCity) throws RemoteException;
 	
-	
+	public boolean writeAllPredictTime() throws RemoteException;
 }

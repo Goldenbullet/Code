@@ -41,7 +41,7 @@ import express.dataService.vehicleAndDriverDataService.VehicleDataService;
 
 public class RMIClient {
 
-	private static String file = "config/config.txt";
+	private static String file = "config-client/config.txt";
 	private static String IP; // read from config file
 	private static boolean inited = false;
 	private static BankAccountDataService bankAccount;
@@ -140,7 +140,16 @@ public class RMIClient {
 		outDoc = (OutDocDataService)  Naming.lookup(urlPrefix + "OutDoc-data");
 		
 		inDoc=(InDocDataService) Naming.lookup(urlPrefix+"InDoc-data");
+		
+		goodstatus=(GoodsStatusDataService)Naming.lookup(urlPrefix+"Status-data");
+		
+		predicttime=(PredictTimeDataService)Naming.lookup(urlPrefix+"Predicttime-data");
+		
+		transcenterarrivaldoc=(TransCenterArrivalDocumentDataService)Naming.lookup(urlPrefix+"TransArrivalDoc-data");
+		
+		businessShipmentdoc=(BusinessSaleShipmentDocDataService)Naming.lookup(urlPrefix+"BusinessShipment-data");
 	}
+	
 
 	public static BankAccountDataService getBankAccountObject() {
 		return bankAccount;

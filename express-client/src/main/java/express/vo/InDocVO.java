@@ -5,10 +5,12 @@ import java.io.Serializable;
 import express.dataService.organizationDataService.OrganizationDataService;
 import express.po.RepoPosition;
 
-public class InDocVO implements Serializable{
+public class InDocVO extends DocumentVO implements Serializable{
 	/**
 	 * 
 	 */
+	
+	private String title="入库单";
 	private static final long serialVersionUID = 8769532078588459715L;
 	private String deliveryNumber;
 	private String date;
@@ -60,5 +62,13 @@ public class InDocVO implements Serializable{
 	public void setRepoPosition(RepoPosition repoPosition){
 		this.repoPosition=repoPosition;
 	}
+
+	//add title
+		public String getTitle(){
+			return title;
+		}
+	
 	
 }
+
+

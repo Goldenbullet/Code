@@ -20,10 +20,7 @@ import express.presentation.mainUI.MainUIService;
 
 public class ViewUI extends JPanel{
 	private JButton button_view;
-	private JButton button_return;
-    private MainUIService m;
-
-    
+  
     private JTextField datetf;
     private JTextField datetf2;
     private DateChooser datechooser;     
@@ -33,7 +30,7 @@ public class ViewUI extends JPanel{
     private JTable table;
     private JScrollPane scrollPane;
     
-	public ViewUI(MainUIService main){
+	public ViewUI(){
      	
 		int textlength = 150;
 		int textwidth = 30;
@@ -45,9 +42,7 @@ public class ViewUI extends JPanel{
 
 		
 		
-		setLayout(null);
-	    this.m=main;
-	    
+		setLayout(null);	    
 	    this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 		

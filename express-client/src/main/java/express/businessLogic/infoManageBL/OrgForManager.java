@@ -35,10 +35,10 @@ public class OrgForManager implements OrgManageBLService,OrgInfoManageService{
 					transList.add(vo);
 				}
 			}
-			if(list.size()>0)
+	//		if(list.size()>0)
 				return transList;
-			else
-				return null;
+//			else
+//				return null;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

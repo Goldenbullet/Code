@@ -2,6 +2,8 @@ package express.presentation.businessSaleUI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 
 import express.businessLogic.IDKeeper;
 import express.businesslogicService.businessSaleBLService.BusinessSaleShipmentDocumentblService;
@@ -27,9 +31,8 @@ import express.vo.ShipmentDocBusinessHallVO;
 
 public class businessShipmentUI extends JPanel {
 
-	private MainUIService m;
-	private JTextField textArea0, textArea1, textArea2, textArea3, textArea4,
-			textArea5, textArea6, textArea8, textArea9, textArea10;
+	private JTextField textArea1, textArea2, textArea8;
+	private JTextField[] tf;
 	private JTextArea textArea7;
 	private JButton button_confirm;
 	private JButton button_cancel;
@@ -38,8 +41,11 @@ public class businessShipmentUI extends JPanel {
 			checkMan, transMan, shipmentID, startPlace;
 	private ArrayList<String> orderID;
 	private double money;
+	private Border border, border1;
+	private boolean complete = true;
+	private BusinessSaleShipmentDocumentblService bssd;
 
-	public businessShipmentUI(MainUIService main) {
+	public businessShipmentUI() {
 		int textlength = 200;
 		int textwidth = 35;
 
@@ -47,24 +53,48 @@ public class businessShipmentUI extends JPanel {
 		int labelwidth = 30;
 
 		int leftside = 360;
-		int base = 125;
+		int base = 140;
 
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
-
+		bssd = new ShipmentDocBusinessHall();
+		
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 
 		JListener listener = new JListener();
+		Foclistener foclis = new Foclistener();
+		tf = new JTextField[7];
 
-		textArea0 = new JTextField();
-		textArea0.setBounds(leftside, base - labelwidth * 4, textlength,
-				textwidth);
-		textArea0.setFont(f);
-		this.add(textArea0);
+		shipmentID = bssd.getShipmentDocID();
+		
+		for (int i = 0; i < 7; i++) {
+			tf[i] = new JTextField();
+			if (i == 0) {
+				tf[i].setBounds(leftside, base - labelwidth * 4, textlength,
+						textwidth);
+				border = tf[i].getBorder();
+			}
+			if (i == 1){
+				tf[i].setBounds(leftside, base + labelwidth * 2, textlength,
+						textwidth);
+				tf[i].setText(shipmentID);
+				tf[i].setEditable(false);
+			}
+			if (i == 2)
+				tf[i].setBounds(190, base + labelwidth * 4, textlength,
+						textwidth);
+			if (i == 3)
+				tf[i].setBounds(520, base + labelwidth * 4, textlength,
+						textwidth);
+			if (i > 3)
+				tf[i].setBounds(leftside, base + labelwidth * (2 * i - 2),
+						textlength, textwidth);
+			tf[i].setFont(f);
+			tf[i].addFocusListener(foclis);
+			this.add(tf[i]);
+		}
 
 		textArea1 = new JTextField();
 		textArea1.setBounds(leftside, base - 2 * labelwidth, textlength,
@@ -88,46 +118,6 @@ public class businessShipmentUI extends JPanel {
 		textArea2.setEditable(false);
 		this.add(textArea2);
 
-		textArea3 = new JTextField();
-		textArea3.setBounds(leftside, base + labelwidth * 2, textlength,
-				textwidth);
-		textArea3.setFont(f);
-		// textArea3.setBackground(Color.BLUE);
-		// textArea3.setLineWrap(true);
-		// textArea3.setWrapStyleWord(true);
-		this.add(textArea3);
-
-		textArea9 = new JTextField();
-		textArea9.setBounds(190, base + labelwidth * 4, textlength, textwidth);
-		textArea9.setFont(f);
-		this.add(textArea9);
-
-		textArea10 = new JTextField();
-		textArea10.setBounds(520, base + labelwidth * 4, textlength, textwidth);
-		textArea10.setFont(f);
-		this.add(textArea10);
-
-		textArea4 = new JTextField();
-		textArea4.setBounds(leftside, base + labelwidth * 6, textlength,
-				textwidth);
-		textArea4.setFont(f);
-		// textArea4.setBackground(Color.BLUE);
-		// textArea4.setLineWrap(true);
-		// textArea4.setWrapStyleWord(true);
-		this.add(textArea4);
-
-		textArea5 = new JTextField();
-		textArea5.setBounds(leftside, base + labelwidth * 8, textlength,
-				textwidth);
-		textArea5.setFont(f);
-		this.add(textArea5);
-
-		textArea6 = new JTextField();
-		textArea6.setBounds(leftside, base + labelwidth * 10, textlength,
-				textwidth);
-		textArea6.setFont(f);
-		this.add(textArea6);
-
 		textArea7 = new JTextArea();
 		textArea7.setBounds(leftside, base + labelwidth * 12, textlength,
 				textwidth * 2);
@@ -135,6 +125,8 @@ public class businessShipmentUI extends JPanel {
 		textArea7.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		textArea7.setLineWrap(true);
 		textArea7.setWrapStyleWord(true);
+		textArea7.addFocusListener(foclis);
+		border1 = textArea7.getBorder();
 
 		JScrollPane scrollPane = new JScrollPane(textArea7);
 		scrollPane.setFont(font);
@@ -206,40 +198,75 @@ public class businessShipmentUI extends JPanel {
 		this.add(label8);
 
 		button_confirm = new JButton("确定");
-		button_confirm.setBounds(280, 620, 100, 30);
+		button_confirm.setBounds(280, 640, 100, 30);
 		button_confirm.setFont(font);
 		button_confirm.addMouseListener(listener);
 		this.add(button_confirm);
 
 		button_cancel = new JButton("取消");
-		button_cancel.setBounds(480, 620, 100, 30);
-		button_confirm.setFont(font);
+		button_cancel.setBounds(480, 640, 100, 30);
+		button_cancel.setFont(font);
 		button_cancel.addMouseListener(listener);
 		this.add(button_cancel);
+
+	}
+
+	private class Foclistener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			for (int i = 0; i < 7; i++) {
+				if (e.getSource() == tf[i])
+					tf[i].setBorder(border);
+			}
+			if (e.getSource() == textArea7) {
+				textArea7.setBorder(border1);
+			}
+			updateUI();
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+
+		}
 
 	}
 
 	private class JListener implements MouseListener {
 
 		public void mouseClicked(MouseEvent e) {
+			requestFocus();
 			if (e.getSource() == button_confirm) {
-				shipmentID = textArea0.getText();
+
 				date = textArea1.getText();
-				transID = textArea3.getText();
-				arrivalplace = textArea9.getText();
-				startPlace = textArea10.getText();
-				vanID = textArea4.getText();
-				checkMan = textArea5.getText();
-				transMan = textArea6.getText();
+				transID = tf[1].getText();
+				arrivalplace = tf[2].getText();
+				startPlace = tf[3].getText();
+				vanID = tf[4].getText();
+				checkMan = tf[5].getText();
+				transMan = tf[6].getText();
+
+				for (int i = 0; i < 7; i++) {
+					if (tf[i].getText().isEmpty()) {
+						tf[i].setBorder(new LineBorder(Color.RED));
+						complete = false;
+					}
+				}
+
 				String[] temp = textArea7.getText().split("\n");
+				if (textArea7.getText().isEmpty()) {
+					textArea7.setBorder(new LineBorder(Color.RED));
+					complete = false;
+				}
+				
 				orderID = new ArrayList<String>();
-				for(int i = 0;i<temp.length;i++){
+				for (int i = 0; i < temp.length; i++) {
 					orderID.add(temp[i]);
 				}
-				if (shipmentID.isEmpty() || date.isEmpty() || transID.isEmpty()
-						|| arrivalplace.isEmpty() || startPlace.isEmpty()
-						|| vanID.isEmpty() || checkMan.isEmpty()
-						|| transMan.isEmpty()||orderID.isEmpty()) {
+
+				if (!complete) {
 					JOptionPane.showMessageDialog(null, "信息未填写完整", "提示",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
@@ -247,33 +274,38 @@ public class businessShipmentUI extends JPanel {
 							date, businessHallNumber, transID, arrivalplace,
 							vanID, checkMan, transMan, orderID, money,
 							shipmentID, startPlace);
-					BusinessSaleShipmentDocumentblService bssd = new ShipmentDocBusinessHall();
+			
 					money = bssd.getShipmentfee(sdb);
+					boolean b = (money>0);
+					if(!b){
+						JOptionPane.showMessageDialog(null, "有订单未生成或订单号填写错误", "提示",
+								JOptionPane.ERROR_MESSAGE);
+					}else{
 					textArea8.setText(money + "");
 					sdb.setMoney(money);
 					if (!bssd.addShipmentDoc(sdb)) {
-						JOptionPane.showMessageDialog(null, "信息填写错误", "提示",
+						JOptionPane.showMessageDialog(null, "生成装车单失败", "提示",
 								JOptionPane.ERROR_MESSAGE);
 					} else {
 						JOptionPane.showMessageDialog(null, "生成装车单成功", "提示",
 								JOptionPane.INFORMATION_MESSAGE);
 						bssd.endShipmentDoc();
 					}
+					}
 				}
+				complete = true;
 			} else if (e.getSource() == button_cancel) {
-				textArea0.setText("");
+				for (int i = 0; i < 7; i++) {
+					tf[i].setText("");
+					tf[i].setBorder(border);
+				}
 				textArea1.setText(new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date()));
-				textArea3.setText("");
-				textArea4.setText("");
-				textArea5.setText("");
-				textArea6.setText("");
 				textArea7.setText("");
+				textArea7.setBorder(border1);
 				textArea8.setText("");
-				textArea9.setText("");
-				textArea10.setText("");
 			}
-			repaint();
+			updateUI();
 		}
 
 		public void mouseEntered(MouseEvent arg0) {

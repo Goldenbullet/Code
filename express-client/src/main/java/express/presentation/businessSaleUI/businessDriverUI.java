@@ -22,7 +22,6 @@ import express.presentation.mainUI.MainUIService;
 import express.presentation.mainUI.MyTableModel;
 
 public class businessDriverUI extends JPanel{
-    private MainUIService  m;
 	private DriverBusinessSaleblService dbs;
 	
 	private MyTableModel tableModel;
@@ -50,12 +49,11 @@ public class businessDriverUI extends JPanel{
 
 	private String[] genders={"男","女"};
 
-	public businessDriverUI(MainUIService main){
+	public businessDriverUI(){
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
-		this.m = main;
 
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);

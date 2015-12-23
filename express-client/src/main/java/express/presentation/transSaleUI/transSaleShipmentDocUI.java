@@ -28,7 +28,6 @@ import express.vo.ShipmentDocTransCenterVO;
 public class transSaleShipmentDocUI extends JPanel {
 
 	private JButton button_confirm, button_cancel;
-	private MainUIService m;
 	private DateChooser datechooser;
 	private JTextField textArea1, textArea2, textArea2_1, textArea3, textArea4, textArea5,
 			textArea7, textArea8, textArea9;
@@ -38,7 +37,7 @@ public class transSaleShipmentDocUI extends JPanel {
 	private ArrayList<String> orderID;
 	private double money;
 
-	public transSaleShipmentDocUI(MainUIService main) {
+	public transSaleShipmentDocUI() {
 
 		int base = 20;
 		int textlength = 200;
@@ -51,8 +50,6 @@ public class transSaleShipmentDocUI extends JPanel {
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
 		setLayout(null);
-		this.m = main;
-
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 

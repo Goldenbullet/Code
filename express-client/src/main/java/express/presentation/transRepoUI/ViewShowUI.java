@@ -14,13 +14,10 @@ public class ViewShowUI extends JPanel{
 	
 	private JButton button_viewShow;
 	private JButton button_return;
-    private MainUIService m;
 	
-	public ViewShowUI(MainUIService main){
+	public ViewShowUI(){
 		
 		setLayout(null);
-		this.m=main;
-		
 		this.setBounds(0, 0, 850, 700);
 		this.setBackground(Color.WHITE);
 		

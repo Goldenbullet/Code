@@ -16,7 +16,7 @@ public interface InnerAccountBLService {
 	
 	public boolean initOrganizationInfo(OrganizationVO organization);
 	
-	public boolean initRepoInfo(InDocVO inDoc);
+	public boolean initRepoInfo(RepoInfoVO repo);
 	
 	public boolean initVehicleInfo(VehicleInfoVO car);
 	

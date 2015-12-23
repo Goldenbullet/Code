@@ -4,6 +4,8 @@ import express.po.DeliveryType;
 import express.po.PackageType;
 
 public class OrderVO extends DocumentVO{
+	private String title ="订单";
+	
 	private String senderName;//寄件人信息
 	private String senderAddress;
 	private String senderWorkPlace;
@@ -153,4 +155,8 @@ public class OrderVO extends DocumentVO{
 			return packagetype;
 		}
 		
+		//add title
+		public String getTitle(){
+			return title;
+		}
 }

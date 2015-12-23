@@ -21,24 +21,26 @@ public class MyTableModel extends DefaultTableModel {
 	// 使表格具有可编辑性
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-
-		if (data[0][head.length - 1].equals(changeunder)||data[0][head.length - 1].equals(confirmunder)) {
-			if (columnIndex == head.length - 1) {
-				return false;
+		if (data.length > 0)
+			if (data[0][head.length - 1].equals(changeunder)
+					|| data[0][head.length - 1].equals(confirmunder)) {
+				if (columnIndex == head.length - 1) {
+					return false;
+				}
 			}
-		}
-		
+
 		if (edit) {
 			if (this.getValueAt(rowIndex, head.length - 1).equals(confirmunder)) {
 				return true;
 			}
 		}
 
-		if (columnIndex == 0) {
-			return true;
-		} else {
-			return false;
+		if (typeArray[0].equals(Boolean.class)) {
+			if (columnIndex == 0) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public void setrowedit() {

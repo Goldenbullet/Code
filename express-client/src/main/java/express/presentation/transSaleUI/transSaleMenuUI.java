@@ -12,22 +12,26 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import express.businessLogic.userBL.User;
+import express.businesslogicService.signBLService.LogInBLService;
 import express.presentation.mainUI.MainUIService;
+import express.vo.UserInfoSignVO;
 
 public class transSaleMenuUI extends JPanel {
 
 	private CardLayout card = new CardLayout();
 	private MainUIService main;
-
+	private LogInBLService login;
+	private String id;
 	private JPanel transsalePanel;
 	// 组件：
-	private JLabel userinfo;
+	private JLabel username, userid;
 	private JButton button_arrival = new JButton("生成到达单");
 	private JButton button_shipment = new JButton("生成装车单");
 	private JButton button_transfer = new JButton("生成中转单");
 	private JButton button_exit = new JButton("退出");
 
-	public transSaleMenuUI(MainUIService m) {
+	public transSaleMenuUI(MainUIService m,String id) {
 
 		int base = 150;
 		int width = 50;
@@ -46,12 +50,22 @@ public class transSaleMenuUI extends JPanel {
 		main.setpane1(transsalePanel);
 
 		JListener listener = new JListener();
-
-		userinfo = new JLabel();
-		userinfo.setBounds(0, 0, 150, base);
-		userinfo.setText("      userinfo");
-		userinfo.setForeground(Color.gray);
-		userinfo.setFont(new Font("隶书", Font.PLAIN, 14));
+		login = new User();
+		this.id = id;		
+		UserInfoSignVO vo = login.getUserInfo(id);
+		String name = vo.getName();
+		
+		username = new JLabel();
+		username.setBounds(50, 50, 70, 20);
+		username.setText(name);
+		username.setForeground(Color.BLACK);
+		username.setFont(new Font("隶书",Font.PLAIN,18));
+		
+		userid = new JLabel();
+		userid.setBounds(40, 75, 100, 20);
+		userid.setText(id);
+		userid.setForeground(Color.BLACK);
+		userid.setFont(new Font("隶书",Font.PLAIN,18));
 
 		button_arrival.setBounds(0, base, 150, width);
 		button_arrival.setFont(font);
@@ -73,7 +87,8 @@ public class transSaleMenuUI extends JPanel {
 		add(button_shipment);
 		add(button_transfer);
 		add(button_exit);
-		add(userinfo);
+		add(username);
+		add(userid);
 
 		this.setBounds(0, 0, 1000, 700);
 	}
@@ -96,7 +111,8 @@ public class transSaleMenuUI extends JPanel {
 				System.out.println("应该跳转到“中转单”界面的");
 
 			} else if (arg0.getSource() == button_exit) {
-				main.jumpToSignInUI();
+				login.SignOut(id);
+				main.jumpToLogInUI();
 				System.out.println("应该回到登陆界面的");
 
 			}

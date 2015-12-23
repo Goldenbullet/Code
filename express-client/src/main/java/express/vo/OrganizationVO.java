@@ -66,4 +66,5 @@ public class OrganizationVO {
 	public void setOrgID(String id){
 		orgID=id;
 	}
+
 }

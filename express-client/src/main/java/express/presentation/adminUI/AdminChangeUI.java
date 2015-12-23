@@ -17,15 +17,14 @@ import express.businesslogicService.adminBLService.AdminBLService;
 import express.businesslogicService.adminBLService.RemoveUserBLService;
 import express.po.UserRole;
 import express.vo.UserInfoAdminVO;
+import express.vo.UserInfoVO;
 
 public class AdminChangeUI extends JDialog {
 
 	private JTextField nametf, idtf, keytf,positiontf;
 	private JButton ok, exit,detele;
-//	private JComboBox positioncb;
 	private String name, position, id, key;
 	private UserRole posit;
-//	private Object[] values;
 	private DefaultTableModel tmodel;
 	private AdminBLService abs;
 	private UserInfoAdminVO vo;
@@ -43,8 +42,6 @@ public class AdminChangeUI extends JDialog {
 		Font font = new Font("楷体", Font.PLAIN, 18);
 		Font f = new Font("仿宋", Font.PLAIN, 16);
 
-//		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
-//				"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
 		JListener lis = new JListener();
 
 		JLabel namel = new JLabel("姓名");
@@ -64,13 +61,30 @@ public class AdminChangeUI extends JDialog {
 		positionl.setFont(font);
 		this.add(positionl);
 
+//		String[] pos = { "快递员", "管理员", "总经理", "普通财务人员", "最高权限财务人员",
+//		"中转中心仓库管理人员", "中转中心业务员", "营业厅业务员" };
     	posit = vo.getPosition();
-		position = posit.toString();
+    	position = new UserInfoVO().transposition(posit);
+//    	if(posit.equals(UserRole.Admin))
+//    		position = "管理员";
+//    	else if(posit.equals(UserRole.BusinessSale))
+//    		position = "营业厅业务员";
+//    	else if(posit.equals(UserRole.DeliverMan))
+//    		position = "快递员";
+//    	else if(posit.equals(UserRole.Financial))
+//    		position = "普通财务人员";
+//    	else if(posit.equals(UserRole.Financial_highest))
+//    		position = "最高权限财务人员";
+//    	else if(posit.equals(UserRole.Manager))
+//    		position = "总经理";
+//    	else if(posit.equals(UserRole.TransCenterRepo))
+//    		position = "中转中心仓库管理人员";
+//    	else if(posit.equals(UserRole.TransCenterSale))
+//    		position = "中转中心业务员";
+    	
 		positiontf = new JTextField(position);
-//		positioncb = new JComboBox(pos);
 		positiontf.setBounds(70, 45, 120, 30);
 		positiontf.setFont(f);
-//		positioncb.setSelectedItem(position);
 		positiontf.setEditable(false);
 		this.add(positiontf);
 
